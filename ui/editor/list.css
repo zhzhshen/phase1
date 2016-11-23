@@ -1,0 +1,11 @@
+ul, li {
+    list-style-type: none;
+}
+
+ul.components {
+    float: left;
+}
+
+li.row {
+    overflow: hidden;
+}
