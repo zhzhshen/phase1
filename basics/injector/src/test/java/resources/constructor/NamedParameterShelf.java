@@ -1,4 +1,7 @@
-package resources;
+package resources.constructor;
+
+import resources.Book;
+import resources.BookShelf;
 
 import javax.inject.Inject;
 import javax.inject.Named;

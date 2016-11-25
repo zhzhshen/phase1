@@ -1,7 +1,9 @@
 import com.sid.injector.Container;
 import com.sid.injector.exceptions.MultiConstructorInjectionException;
 import org.junit.Test;
-import resources.*;
+import resources.Book;
+import resources.BookShelf;
+import resources.constructor.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

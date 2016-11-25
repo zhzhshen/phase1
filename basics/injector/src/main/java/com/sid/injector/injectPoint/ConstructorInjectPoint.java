@@ -1,4 +1,4 @@
-package com.sid.injector.injectors;
+package com.sid.injector.injectPoint;
 
 import com.sid.injector.Container;
 import com.sid.injector.exceptions.MultiConstructorInjectionException;
@@ -11,11 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ConstructorInjector implements Injector {
+public class ConstructorInjectPoint implements InjectPoint {
     private Class klass;
     private String namedValue;
 
-    public ConstructorInjector(Class klass, String namedValue) {
+    public ConstructorInjectPoint(Class klass, String namedValue) {
         this.klass = klass;
         this.namedValue = namedValue;
     }
@@ -42,7 +42,7 @@ public class ConstructorInjector implements Injector {
 
         List parameters = Arrays.asList(constructor.getParameters())
                 .stream()
-                .map(parameter -> new ConstructorInjector(parameter.getType(), parameter.isAnnotationPresent(Named.class) ? parameter.getAnnotation(Named.class).value() : null).resolve(container))
+                .map(parameter -> new ConstructorInjectPoint(parameter.getType(), parameter.isAnnotationPresent(Named.class) ? parameter.getAnnotation(Named.class).value() : null).resolve(container))
                 .collect(Collectors.toList());
         try {
             return (T) constructor.newInstance(parameters.toArray());

@@ -2,8 +2,9 @@ package com.sid.injector;
 
 import com.sid.injector.exceptions.BindingException;
 import com.sid.injector.exceptions.NoRegistrationException;
-import com.sid.injector.injectors.ConstructorInjector;
-import com.sid.injector.injectors.Injector;
+import com.sid.injector.injectPoint.ConstructorInjectPoint;
+import com.sid.injector.injectPoint.FieldInjectPoint;
+import com.sid.injector.injectPoint.InjectPoint;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,8 +20,8 @@ public class Container {
             throw new NoRegistrationException(klass);
         }
 
-        Injector injector = new ConstructorInjector(klass, null);
-        return injector.resolve(this);
+        InjectPoint injectPoint = new FieldInjectPoint(klass, new ConstructorInjectPoint(klass, null));
+        return injectPoint.resolve(this);
     }
 
     public Container register(Class klass) {

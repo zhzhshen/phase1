@@ -1,7 +1,7 @@
-package com.sid.injector.injectors;
+package com.sid.injector.injectPoint;
 
 import com.sid.injector.Container;
 
-public interface Injector {
+public interface InjectPoint {
     <T> T resolve(Container container);
 }
