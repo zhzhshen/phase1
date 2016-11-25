@@ -1,6 +1,8 @@
 import com.sid.injector.Container;
 import org.junit.Test;
+import resources.Book;
 import resources.BookShelf;
+import resources.field.NamedFieldInjectShelf;
 import resources.field.NoFieldInjectShelf;
 import resources.field.OneFieldInjectShelf;
 
@@ -28,5 +30,16 @@ public class FieldInjectPointTest {
         BookShelf shelf = container.resolve(OneFieldInjectShelf.class);
 
         assertThat(shelf.getBook(), is(notNullValue()));
+    }
+
+    @Test
+    public void should_inject_on_field_with_named_annotation() {
+        Container container = new Container();
+        Book theBook = new Book();
+        container.register(NamedFieldInjectShelf.class).bind(Book.class).annotatedWith("theBook").toInstance(theBook);
+
+        BookShelf shelf = container.resolve(NamedFieldInjectShelf.class);
+
+        assertThat(shelf.getBook(), is(theBook));
     }
 }

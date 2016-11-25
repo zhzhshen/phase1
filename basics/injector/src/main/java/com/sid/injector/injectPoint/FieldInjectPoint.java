@@ -3,6 +3,7 @@ package com.sid.injector.injectPoint;
 import com.sid.injector.Container;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
@@ -27,7 +28,7 @@ public class FieldInjectPoint implements InjectPoint {
         field.setAccessible(true);
 
         try {
-            field.set(object, new ConstructorInjectPoint((Class) field.getType(), null).resolve(container));
+            field.set(object, new ConstructorInjectPoint((Class) field.getType(), field.isAnnotationPresent(Named.class) ? field.getAnnotation(Named.class).value() : null).resolve(container));
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
