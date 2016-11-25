@@ -24,7 +24,7 @@ public class ConstructorInjectPoint implements InjectPoint {
     public <T> T resolve(Container container) {
         T object = container.resolveBinding(namedValue);
         if (object != null) {
-            return object;
+            return new FieldInjectPoint(object).resolve(container);
         }
 
         List<Constructor> injectConstructors = Arrays.asList(klass.getConstructors())
