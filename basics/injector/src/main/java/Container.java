@@ -1,3 +1,8 @@
+import exceptions.BindingException;
+import exceptions.NoRegistrationException;
+import injectors.ConstructorInjector;
+import injectors.Injector;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,7 +12,7 @@ public class Container {
     private Set<Class> registration = new HashSet<>();
     private Map<String, Object> bindings = new HashMap<>();
 
-    public <T> T resolve(Class<T> klass) {
+    <T> T resolve(Class<T> klass) {
         if (registration.isEmpty()) {
             throw new NoRegistrationException(klass);
         }
@@ -30,7 +35,7 @@ public class Container {
         bindings.put(name, instance);
     }
 
-    public <T> T resolveBinding(String name) {
+    <T> T resolveBinding(String name) {
         return (T) bindings.get(name);
     }
 
@@ -38,10 +43,9 @@ public class Container {
         private final Container container;
         private final Class klass;
         private String name;
-
         private Object instance;
 
-        public Binding(Container container, Class klass) {
+        Binding(Container container, Class klass) {
             this.container = container;
             this.klass = klass;
         }
@@ -50,16 +54,21 @@ public class Container {
             this.name = name;
             return this;
         }
+
         public <T> Container toInstance(T instance) {
             this.instance = instance;
 
+            bind(instance);
+
+            return container;
+        }
+
+        private <T> void bind(T instance) {
             if (instance.getClass().equals(klass)) {
-                container.bind(name, instance);
+                container.bind(name, this.instance);
             } else {
                 throw new BindingException(klass, instance);
             }
-
-            return container;
         }
     }
 }

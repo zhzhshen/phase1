@@ -1,9 +1,7 @@
+import exceptions.NoRegistrationException;
 import org.junit.Test;
+import resources.Book;
 
-
-class Book {
-
-}
 
 public class RegistrationTest {
 

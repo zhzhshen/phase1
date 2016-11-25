@@ -1,3 +1,5 @@
+package injectors;
+
 public class ConstructorInjector implements Injector {
     private Class klass;
 

@@ -1,4 +1,6 @@
+import exceptions.BindingException;
 import org.junit.Test;
+import resources.Book;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
