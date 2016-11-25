@@ -1,4 +1,5 @@
-import exceptions.BindingException;
+import com.sid.injector.Container;
+import com.sid.injector.exceptions.BindingException;
 import org.junit.Test;
 import resources.Book;
 

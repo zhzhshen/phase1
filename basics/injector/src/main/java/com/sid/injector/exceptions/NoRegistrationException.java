@@ -1,4 +1,4 @@
-package exceptions;
+package com.sid.injector.exceptions;
 
 public class NoRegistrationException extends RuntimeException {
     public NoRegistrationException(Class klass) {

@@ -1,4 +1,4 @@
-package exceptions;
+package com.sid.injector.exceptions;
 
 public class BindingException extends RuntimeException {
     public <T> BindingException(Class klass, T instance) {

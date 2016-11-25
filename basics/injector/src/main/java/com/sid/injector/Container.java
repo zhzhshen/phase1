@@ -1,7 +1,9 @@
-import exceptions.BindingException;
-import exceptions.NoRegistrationException;
-import injectors.ConstructorInjector;
-import injectors.Injector;
+package com.sid.injector;
+
+import com.sid.injector.exceptions.BindingException;
+import com.sid.injector.exceptions.NoRegistrationException;
+import com.sid.injector.injectors.ConstructorInjector;
+import com.sid.injector.injectors.Injector;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,14 +14,13 @@ public class Container {
     private Set<Class> registration = new HashSet<>();
     private Map<String, Object> bindings = new HashMap<>();
 
-    <T> T resolve(Class<T> klass) {
+    public <T> T resolve(Class<T> klass) {
         if (registration.isEmpty()) {
             throw new NoRegistrationException(klass);
         }
 
         Injector injector = new ConstructorInjector(klass);
-
-        return injector.inject();
+        return injector.resolve(this);
     }
 
     public Container register(Class klass) {
@@ -35,7 +36,7 @@ public class Container {
         bindings.put(name, instance);
     }
 
-    <T> T resolveBinding(String name) {
+    public <T> T resolveBinding(String name) {
         return (T) bindings.get(name);
     }
 
