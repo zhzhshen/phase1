@@ -19,7 +19,7 @@ public class Container {
             throw new NoRegistrationException(klass);
         }
 
-        Injector injector = new ConstructorInjector(klass);
+        Injector injector = new ConstructorInjector(klass, null);
         return injector.resolve(this);
     }
 

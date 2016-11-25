@@ -37,4 +37,16 @@ public class ConstructorInjectorTest {
 
         assertThat(shelf.getBook() instanceof Book, is(true));
     }
+
+    @Test
+    public void should_inject_bind_instance_if_inject_annotation_named_parameter() {
+        Container container = new Container();
+
+        Book theBook = new Book();
+        container.register(NamedParameterShelf.class).bind(Book.class).annotatedWith("theBook").toInstance(theBook);
+
+        BookShelf shelf = container.resolve(NamedParameterShelf.class);
+
+        assertThat(shelf.getBook(), is(theBook));
+    }
 }
