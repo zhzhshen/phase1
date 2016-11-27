@@ -12,8 +12,9 @@ import java.util.*;
 
 public class Container {
     private Set<Class> registration = new HashSet<>();
-    private Map<String, Object> bindings = new HashMap<>();
+    private Map<String, Object> nameBindings = new HashMap<>();
     private Map<Class, Object> qualifierBindings = new HashMap<>();
+    private Map<Class, Object> singletonBindings = new HashMap<>();
 
     public <T> T resolve(Class<T> klass) {
         if (registration.isEmpty() || !registration.contains(klass)) {
@@ -29,26 +30,34 @@ public class Container {
         return this;
     }
 
-    public NamedBinding bind(Class klass) {
-        return new NamedBinding(this, klass);
+    public <T> T resolveBinding(String name, Annotation[] annotations) {
+        Object object = null;
+        if (name != null && !name.isEmpty()) {
+            object = nameBindings.get(name);
+        } else if (annotations != null && annotations.length != 0){
+            object = Arrays.asList(annotations).stream().map(annotation -> qualifierBindings.get(annotation.annotationType())).filter(o -> o != null).findFirst().orElse(null);
+        }
+        return (T) object;
+    }
+
+    public <T> T resolveSingleton(Class klass) {
+        return (T) singletonBindings.get(klass);
     }
 
     private <T> void bind(String name, T instance) {
-        bindings.put(name, instance);
+        nameBindings.put(name, instance);
     }
 
     private <T> void bindQualifier(Class klass, T instance) {
         qualifierBindings.put(klass, instance);
     }
 
-    public <T> T resolveBinding(String name, Annotation[] annotations) {
-        Object object = null;
-        if (name != null && !name.isEmpty()) {
-            object = bindings.get(name);
-        } else if (annotations != null && annotations.length != 0){
-            object = Arrays.asList(annotations).stream().map(annotation -> qualifierBindings.get(annotation.annotationType())).filter(o -> o != null).findFirst().orElse(null);
-        }
-        return (T) object;
+    public <T> void bindSingleton(Class klass, T instance) {
+        singletonBindings.put(klass, instance);
+    }
+
+    public NamedBinding bind(Class klass) {
+        return new NamedBinding(this, klass);
     }
 
     public QualifierBinding qualifier(Class klass) {

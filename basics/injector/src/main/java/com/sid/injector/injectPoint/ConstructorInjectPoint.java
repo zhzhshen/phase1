@@ -5,6 +5,7 @@ import com.sid.injector.exceptions.MultiConstructorInjectionException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.inject.Singleton;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -29,9 +30,19 @@ public class ConstructorInjectPoint implements InjectPoint {
 
     @Override
     public <T> T resolve(Container container) {
-        T object = container.resolveBinding(namedValue, annotations);
-        if (object != null) {
-            return new FieldInjectPoint(object).resolve(container);
+        T object = null;
+        if (klass.isAnnotationPresent(Singleton.class)) {
+            object = container.resolveSingleton(klass);
+            if (object != null) {
+                return object;
+            }
+        } else {
+            object = container.resolveBinding(namedValue, annotations);
+            if (object != null) {
+                object = new FieldInjectPoint(object).resolve(container);
+                container.bindSingleton(klass, object);
+                return object;
+            }
         }
 
         List<Constructor> injectConstructors = Arrays.asList(klass.getConstructors())
@@ -42,10 +53,16 @@ public class ConstructorInjectPoint implements InjectPoint {
         if (injectConstructors.size() > 1) {
             throw new MultiConstructorInjectionException(klass);
         } else if (injectConstructors.size() == 0) {
-            return defaultConstructor();
+            object = defaultConstructor();
+        } else {
+            object = parameterConstructor(container, injectConstructors.get(0));
         }
+        container.bindSingleton(klass, object);
+        return object;
+    }
 
-        Constructor constructor = injectConstructors.get(0);
+    private <T> T parameterConstructor(Container container, Constructor injectConstructors) {
+        Constructor constructor = injectConstructors;
 
         List parameters = Arrays.asList(constructor.getParameters())
                 .stream()
