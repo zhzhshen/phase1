@@ -6,7 +6,7 @@ import resources.Book;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class BindingTest {
+public class NamedBindingTest {
 
     @Test
     public void should_inject_default_instance_if_no_binding() {
@@ -23,7 +23,7 @@ public class BindingTest {
         Book theBook = new Book();
         container.bind(Book.class).annotatedWith("the book").toInstance(theBook);
 
-        Book book = container.resolveBinding("the book");
+        Book book = container.resolveBinding("the book", null);
 
         assertThat(book == theBook, is(true));
     }

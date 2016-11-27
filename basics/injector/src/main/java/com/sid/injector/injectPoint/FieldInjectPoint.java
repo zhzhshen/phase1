@@ -19,7 +19,7 @@ public class FieldInjectPoint implements InjectPoint {
 
     public <T> FieldInjectPoint(T object) {
         klass = object.getClass();
-        constructorInjectPoint = new ConstructorInjectPoint(object.getClass(), null);
+        constructorInjectPoint = new ConstructorInjectPoint(object.getClass(), "");
         this.object = object;
     }
 
@@ -37,7 +37,13 @@ public class FieldInjectPoint implements InjectPoint {
         field.setAccessible(true);
 
         try {
-            field.set(object, new FieldInjectPoint(field.getType(), new ConstructorInjectPoint(field.getType(), field.isAnnotationPresent(Named.class) ? field.getAnnotation(Named.class).value() : null)).resolve(container));
+            ConstructorInjectPoint constructorInjectPoint;
+            if (field.isAnnotationPresent(Named.class)) {
+                constructorInjectPoint = new ConstructorInjectPoint(field.getType(), field.getAnnotation(Named.class).value());
+            } else {
+                constructorInjectPoint = new ConstructorInjectPoint(field.getType(), field.getAnnotations());
+            }
+            field.set(object, new FieldInjectPoint(field.getType(), constructorInjectPoint).resolve(container));
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }

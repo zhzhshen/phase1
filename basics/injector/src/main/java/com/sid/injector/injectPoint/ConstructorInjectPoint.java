@@ -5,6 +5,7 @@ import com.sid.injector.exceptions.MultiConstructorInjectionException;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 public class ConstructorInjectPoint implements InjectPoint {
     private Class klass;
+    private Annotation[] annotations;
     private String namedValue;
 
     public ConstructorInjectPoint(Class klass, String namedValue) {
@@ -20,9 +22,14 @@ public class ConstructorInjectPoint implements InjectPoint {
         this.namedValue = namedValue;
     }
 
+    public ConstructorInjectPoint(Class klass, Annotation[] annotations) {
+        this.klass = klass;
+        this.annotations = annotations;
+    }
+
     @Override
     public <T> T resolve(Container container) {
-        T object = container.resolveBinding(namedValue);
+        T object = container.resolveBinding(namedValue, annotations);
         if (object != null) {
             return new FieldInjectPoint(object).resolve(container);
         }
@@ -54,12 +61,9 @@ public class ConstructorInjectPoint implements InjectPoint {
     private <T> T defaultConstructor() {
         try {
             return (T) klass.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
-        throw new RuntimeException();
     }
 
 }

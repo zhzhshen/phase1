@@ -16,6 +16,6 @@ public class ProviderInjectPoint implements InjectPoint {
 
     @Override
     public <T> T resolve(Container container) {
-        return (T) (Provider) () -> new ConstructorInjectPoint(klass, null).resolve(container);
+        return (T) (Provider) () -> new ConstructorInjectPoint(klass, "").resolve(container);
     }
 }
