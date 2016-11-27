@@ -1,7 +1,7 @@
-package resources;
-
 import com.sid.injector.Container;
 import org.junit.Test;
+import resources.Book;
+import resources.BookShelf;
 import resources.method.MultiInjectMethodShelf;
 import resources.method.NamedMethodParameterShelf;
 import resources.method.OneMethodInjectShelf;
