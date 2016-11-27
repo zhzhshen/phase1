@@ -5,6 +5,7 @@ import com.sid.injector.exceptions.NoRegistrationException;
 import com.sid.injector.injectPoint.ConstructorInjectPoint;
 import com.sid.injector.injectPoint.FieldInjectPoint;
 import com.sid.injector.injectPoint.InjectPoint;
+import com.sid.injector.injectPoint.MethodInjectPoint;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +21,7 @@ public class Container {
             throw new NoRegistrationException(klass);
         }
 
-        InjectPoint injectPoint = new FieldInjectPoint(klass, new ConstructorInjectPoint(klass, null));
+        InjectPoint injectPoint = new MethodInjectPoint(klass, new FieldInjectPoint(klass, new ConstructorInjectPoint(klass, null)));
         return injectPoint.resolve(this);
     }
 

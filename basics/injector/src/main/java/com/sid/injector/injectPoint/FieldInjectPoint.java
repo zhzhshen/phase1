@@ -12,7 +12,7 @@ public class FieldInjectPoint implements InjectPoint {
     private Object object;
     private final InjectPoint constructorInjectPoint;
 
-    public <T> FieldInjectPoint(Class klass, InjectPoint constructorInjectPoint) {
+    public FieldInjectPoint(Class klass, InjectPoint constructorInjectPoint) {
         this.klass = klass;
         this.constructorInjectPoint = constructorInjectPoint;
     }
