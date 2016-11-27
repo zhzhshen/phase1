@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +30,10 @@ public class MethodInjectPoint implements InjectPoint {
     }
 
     private <T> void resolveMethod(T object, Method method, Container container) {
-        List<Object> parameters = Arrays.asList(method.getParameters()).stream().map(parameter -> new FieldInjectPoint(parameter.getType(), new ConstructorInjectPoint(parameter.getType(), parameter.isAnnotationPresent(Named.class) ? parameter.getAnnotation(Named.class).value() : null)).resolve(container)).collect(Collectors.toList());
+        List<Object> parameters = Arrays.asList(method.getParameters())
+                .stream()
+                .map(parameter -> new FieldInjectPoint(parameter.getType(), parameter.getParameterizedType() instanceof ParameterizedType ? new ProviderInjectPoint(parameter.getParameterizedType()) : new ConstructorInjectPoint(parameter.getType(), parameter.isAnnotationPresent(Named.class) ? parameter.getAnnotation(Named.class).value() : null)).resolve(container))
+                .collect(Collectors.toList());
 
         try {
             method.invoke(object, parameters.toArray());
