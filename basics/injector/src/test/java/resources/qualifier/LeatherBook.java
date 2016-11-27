@@ -1,15 +1,15 @@
 package resources.qualifier;
 
+import resources.Book;
+
 import javax.inject.Inject;
 
-import static resources.qualifier.Leather.*;
-
-public class Book {
+public class LeatherBook extends Book {
     @Inject
     @Leather
     public Color color;
 
-    public Book() {
+    public LeatherBook() {
     }
 
     public Color getColor() {
