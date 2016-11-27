@@ -3,6 +3,7 @@ package com.sid.injector.injectPoint;
 import com.sid.injector.Container;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public class MethodInjectPoint implements InjectPoint {
     }
 
     private <T> void resolveMethod(T object, Method method, Container container) {
-        List<Object> parameters = Arrays.asList(method.getParameters()).stream().map(parameter -> new FieldInjectPoint(parameter.getType(), new ConstructorInjectPoint(parameter.getType(), null)).resolve(container)).collect(Collectors.toList());
+        List<Object> parameters = Arrays.asList(method.getParameters()).stream().map(parameter -> new FieldInjectPoint(parameter.getType(), new ConstructorInjectPoint(parameter.getType(), parameter.isAnnotationPresent(Named.class) ? parameter.getAnnotation(Named.class).value() : null)).resolve(container)).collect(Collectors.toList());
 
         try {
             method.invoke(object, parameters.toArray());
