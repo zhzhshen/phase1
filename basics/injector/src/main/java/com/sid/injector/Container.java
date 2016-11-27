@@ -17,7 +17,7 @@ public class Container {
     private Map<String, Object> bindings = new HashMap<>();
 
     public <T> T resolve(Class<T> klass) {
-        if (registration.isEmpty()) {
+        if (registration.isEmpty() || !registration.contains(klass)) {
             throw new NoRegistrationException(klass);
         }
 

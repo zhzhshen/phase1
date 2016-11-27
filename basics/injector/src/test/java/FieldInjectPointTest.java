@@ -49,7 +49,7 @@ public class FieldInjectPointTest {
         Container container = new Container();
         Book theBook = new Book();
         String bookName = "Harry Porter";
-        container.register(NamedFieldInjectShelf.class)
+        container.register(NamedParameterShelf.class)
                 .bind(Book.class).annotatedWith("theBook").toInstance(theBook)
                 .bind(String.class).annotatedWith("name").toInstance(bookName);
 
