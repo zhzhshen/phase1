@@ -8,6 +8,9 @@ mediaType: application/json
     responses:
       201:
         description: success to create new plan
+        headers:
+          Location:
+            example: "/plans/1"
       400:
         description: fail to create new plan
       404:
@@ -18,6 +21,20 @@ mediaType: application/json
     responses:
       200:
         description: success to view plans
+        body:
+          application/json:
+            example: |
+              [{
+                "price": "88",
+                "data": "1GB",
+                "call": 1000
+              },
+              {
+                "price": "68",
+                "data": "500MB",
+                "call": 800
+              }
+              ]
 
   /{plan_id}:
     get:
@@ -25,11 +42,17 @@ mediaType: application/json
         view a specific plan
       responses:
         200:
-          description:
-            success to view plan
+          description: success to view plan
+          body:
+            application/json:
+              example: |
+                {
+                  "price": "68",
+                  "data": "500MB",
+                  "call": 800
+                }
         404:
-          description:
-            fail to view plan
+          description: fail to view plan
 
 /products:
   post:
@@ -37,6 +60,9 @@ mediaType: application/json
     responses:
       201:
         description: success to create new product
+        headers:
+          Location:
+            example: "/products/1"
       400:
         description: fail to create new product
       404:
@@ -54,6 +80,14 @@ mediaType: application/json
       responses:
         200:
           description: success to view product
+          body:
+            application/json:
+              example: |
+                {
+                  "type": "data",
+                  "amount": "500MB",
+                  "price": 30
+                }
         404:
           description: fail to view product
 
@@ -64,6 +98,14 @@ mediaType: application/json
       responses:
         200:
           description: success to view number status
+          body:
+            application/json:
+              example: |
+                {
+                  "balance": 50,
+                  "data": "543MB",
+                  "call": 123
+                }
         404:
           description: fail to view number status
 
@@ -73,6 +115,9 @@ mediaType: application/json
         responses:
           201:
             description: success to create plan for number
+            headers:
+              Location:
+                example: "/plans/1"
           400:
             description: fail to create plan for number
           404:
@@ -83,6 +128,14 @@ mediaType: application/json
         responses:
           200:
             description: success to view plan for number
+            body:
+              application/json:
+                example: |
+                  {
+                    "price": "68",
+                    "data": "500MB",
+                    "call": 800
+                  }
           404:
             description: fail to view plan for number
 
@@ -102,6 +155,20 @@ mediaType: application/json
         responses:
           200:
             description: success to view all purchases
+            body:
+              application/json:
+                example: |
+                  [{
+                    "product": 1,
+                    "price": 123,
+                    "date": "2016.10.30"
+                  },
+                  {
+                    "product": 2,
+                    "price": 234,
+                    "date": "2016.10.31"
+                  }
+                  ]
           404:
             description: fail to view all purchases
 
@@ -111,6 +178,14 @@ mediaType: application/json
           responses:
             200:
               description: success to view a purchase
+              body:
+                application/json:
+                  example: |
+                    {
+                      "product": 1,
+                      "price": 123,
+                      "date": "2016.10.30"
+                    }
             404:
               description: fail to view a purchase
 
@@ -120,6 +195,13 @@ mediaType: application/json
             responses:
               200:
                 description: success to view a refill
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "data": "500MB",
+                        "call": 100
+                      }
               404:
                 description: fail to view a refill
 
@@ -129,6 +211,9 @@ mediaType: application/json
         responses:
           201:
             description: success to create plan purchase
+            headers:
+              Location:
+                example: "/purchases/1"
           400:
             description: fail to create plan purchase
           404:
@@ -140,6 +225,9 @@ mediaType: application/json
         responses:
           201:
             description: success to create product purchase
+            headers:
+              Location:
+                example: "/purchases/2"
           400:
             description: fail to create product purchase
           404:
@@ -151,6 +239,9 @@ mediaType: application/json
         responses:
           201:
             description: success to create a topup
+            headers:
+              Location:
+                example: "/top-ups/1"
           400:
             description: fail to create a topup
           404:
@@ -161,6 +252,17 @@ mediaType: application/json
         responses:
           200:
             description: success to view all topups
+            body:
+              application/json:
+                example: |
+                  [{
+                    "amount": 100,
+                    "date": "2016.10.30"
+                  },
+                  {
+                    "amount": 200,
+                    "date": "2016.10.31"
+                  }]
           404:
             description: fail to view topups
 
@@ -170,6 +272,13 @@ mediaType: application/json
           responses:
             200:
               description: success to view a top-up
+              body:
+                application/json:
+                  example: |
+                    {
+                      "amount": 100,
+                      "date": "2016.10.30"
+                    }
             404:
               description: fail to view a top-up
 
@@ -179,6 +288,28 @@ mediaType: application/json
         responses:
           200:
             description: success to view usages
+            body:
+              application/json:
+                example: |
+                  [{
+                    "type": "data",
+                    "amount": "10MB",
+                    "date": "2016.10.30",
+                    "time": "19:40",
+                    "location": "beijing",
+                    "charge": 0,
+                    "plan": 10
+                  },
+                  {
+                    "type": "call",
+                    "duration": 10,
+                    "date": "2016.10.31",
+                    "time": "12:40",
+                    "number": 13800000000,
+                    "outgoing": true,
+                    "charge": 2,
+                    "plan": 5
+                  }]
           404:
             description: fail to view usages
 
@@ -188,9 +319,21 @@ mediaType: application/json
           responses:
             200:
               description: success to view a usage
+              body:
+                application/json:
+                  example: |
+                    {
+                      "type": "call",
+                      "duration": 10,
+                      "date": "2016.10.31",
+                      "time": "12:40",
+                      "number": 13800000000,
+                      "outgoing": true,
+                      "charge": 0,
+                      "plan": 10
+                    }
             404:
               description: fail to view a usage
-
 
     /calls:
       post:
@@ -198,6 +341,9 @@ mediaType: application/json
         responses:
           201:
             description: success to create a call record
+            headers:
+              Location:
+                example: "/usages/1"
           400:
             description: fail to create a call record
           404:
@@ -209,6 +355,9 @@ mediaType: application/json
         responses:
           201:
             description: success to create a data usage
+            headers:
+              Location:
+                example: "/usages/2"
           400:
             description: fail to create a data usage
           404:
@@ -221,6 +370,9 @@ mediaType: application/json
           201:
             description:
               success to create plan usage on a number
+            headers:
+              Location:
+                example: "/usages/3"
           400:
             description:
               fail to create plan usage on a number
