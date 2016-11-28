@@ -1,342 +1,278 @@
 #%RAML 0.8
-title: music app paid user api
+title: credit card repayment API
 mediaType: application/json
 
-/plans:
-  get:
-    description: |
-      view all membership plans
-    responses:
-      200:
-        description: |
-          successfully view plans
-        body:
-          application/json:
-            example: |
-              [{
-                "id":1,
-                "name":"xxx",
-                "duration":"xxx"
-              }]
-  post:
-    description: |
-      admin wants to create new membership plan
-    body:
-      application/json:
-        example: |
-          {
-            "name": "XXX",
-            "duration": "XXX"
-          }
-    responses:
-      201:
-        description: |
-          successfully create a new plan
-      400:
-        description: |
-          fail to register new plan
-      403:
-        description: |
-          forbidden
-
-  /{plan_id}:
-    get:
-      description: |
-        view plan
-      responses:
-        200:
-          description: |
-            success view plan info
-        404:
-          description:
-            fail to view plan info
-
-    /prices:
-      get:
-        description: |
-          view prices for the plan
-        responses:
-          200:
-            description: |
-              admin can see all historical prices, while user can see current price
-          404:
-            description:
-              fail to view price for the plan inexist
-      post:
-        description: |
-          create a price for a plan
-        responses:
-          201:
-            description: |
-              admin successfully create price for a plan
-          403:
-            description: |
-              user is forbidden to create price
-          400:
-            description: |
-              admin fail to create price for plan
-
-/musics:
-  post:
-    description: |
-      admin wants to create new musics
-    responses:
-      201:
-        description: |
-          admin successfully create new music
-      400:
-        description: |
-          admin fail to create new music
-      403:
-        description: |
-          user is forbidden to create new music
-  get:
-    description: |
-      view all the musisc
-    responses:
-      200:
-        description: |
-          success to view all musics
-
-  /"{music_id}":
-    get:
-      description: |
-        view/listen to a music
-      responses:
-        200:
-          description: |
-            success to listen to music
-        403:
-          description: |
-            user has no access to the music
-        404:
-          description:
-            fail to listen to inexist music
-
-    /prices:
-      get:
-        description: |
-          view price for the music
-        responses:
-          200:
-            description: |
-              user see current price, while admin see historical prices
-          404:
-            description:
-              fail to see price for inexist music
-      post:
-        description: |
-          admin wants to create price the music
-        responses:
-          201:
-            description: |
-              admin success to create price
-          400:
-            description: |
-              admin fail to create price
-          403:
-            description: |
-              user is forbidden to create price
-
-
-/albumns:
-  get:
-    description: |
-      view all albumns
-    responses:
-      200:
-        description: |
-          success to view all albumns
-  post:
-    description:
-      admin wants to create new albumn
-    responses:
-      201:
-        description:
-          admin success to create albumn
-      400:
-        description:
-          admin fail to create albumn
-      403:
-        description:
-          user is forbidden to create albumn
-  /{albumn_id}:
-    get:
-      description:
-        view musics in the albumn & albumn info
-      responses:
-        200:
-          description:
-            success to view musics in albumn
-        404:
-          description:
-            fail to view musics of an inexist albumn
-
-    /musics:
-      post:
-        description:
-          admin wants to create new music in albumn
-        responses:
-          201:
-            description:
-              admin success to create music in albumn
-          400:
-            description:
-              admin fail to create music in albumn
-          403:
-            description:
-              user is forbidden to create music in albumn
-
 /users:
-  post:
-    description:
-      create a new user
-    responses:
-      201:
-        description:
-          success to create a new user
-      400:
-        description:
-          fail to create a new user
   /{user_id}:
     get:
-      description:
-        view user account
+      description: |
+        user wants to view account info
       responses:
         200:
           description:
             success to view account
-        403:
+        404:
           description:
-            forbidden to view account
+            fail to view account
 
-    /orders:
+    /cards:
       get:
         description:
-          view all orders of an user
+          user wants to view all cards
         responses:
           200:
             description:
-              success to view orders
+              success to view all cards
           404:
             description:
-              fail to view order
-      post:
-        description:
-          create order for an user
-        responses:
-          201:
-            description:
-              success to create order
-          400:
-            description:
-              fail to create order
-          403:
-            description:
-              forbidden to create order
+              fail to view all cards
 
-      /item:
+      /{card_id}:
         get:
           description:
-            view the item in the order
+            user wants to view a specific card
           responses:
             200:
               description:
-                success to view item in an order
+                success to view card
             404:
               description:
-                fail to view item in an order
+                fail to view card
 
-      /payment:
-        get:
-          description:
-            view payment of on order
-          responses:
-            200:
-              description:
-                success to view payment
-            404:
-              description:
-                fail to view payment
-        post:
-          description:
-            create payment for an order
-          responses:
-            201:
-              description:
-                success to create payment
-            400:
-              description:
-                fail to create payment
-            403:
-              description:
-                forbidden to create payment
-
-      /membership:
-        post:
-          description:
-            create memberships of an user
-          responses:
-            201:
-              description:
-                success to create membership
-            400:
-              description:
-                fail to create membership
-            403:
-              description:
-                forbidden to create membership
-
-      /access:
-        post:
-          description:
-            create music access for user in an order
-          responses:
-            201:
-              description:
-                success to create music access for user
-            400:
-              description:
-                fail to create music access for user
-            403:
-              description:
-                forbidden to create music access for user
-
-    /memberships:
-      get:
-        description:
-          view all memberships of user
-        responses:
-          200:
+        /contract:
+          get:
             description:
-              success to view all memberships
-          403:
-            description:
-              forbidden to view memberships
+              user wants to view contract of a card
+            responses:
+              200:
+                description:
+                  success to view contract
+              404:
+                description:
+                  fail to view contract
 
-      /"{membership_id}":
-        get:
-          description:
-            view membership of an user
-          responses:
-            200:
-              description:
-                success to view memership
-            403:
-              description:
-                forbidden to view memership
-            404:
-              description:
-                fail to view membership
+        /transactions:
+          get:
+            description:
+              user wants to view transactions of a card
+            responses:
+              200:
+                description:
+                  success to view transactions
+              404:
+                description:
+                  fail to view transactions
 
-    /accesses:
-      get:
-        description:
-          view all music accesses of an user
-        responses:
-          200:
+          /{transaction_id}:
+            get:
+              description:
+                user wants to view a transaction
+              responses:
+                200:
+                  description:
+                    success to view transaction
+                404:
+                  description:
+                    fail to view transaction
+
+        /repayments:
+          get:
             description:
-              success to view music accesses
-          403:
+              user wants to view repayments of a card
+            responses:
+              200:
+                description:
+                  success to view repayments
+              404:
+                description:
+                  fail to view repayments
+
+          post:
             description:
-              forbidden to view music accesses
+              user wants to create repayment
+            responses:
+              201:
+                description:
+                  success to create repayment
+              400:
+                description:
+                  fail to create repayment
+              404:
+                description:
+                  fail to create repayment
+
+          /{repayment_id}:
+            get:
+              description:
+                user wants to view a repayment
+              responses:
+                200:
+                  description:
+                    success to view repayment
+                404:
+                  description:
+                    fail to view repayment
+
+        /statements:
+          get:
+            description:
+              user wants to view all statements
+            responses:
+              200:
+                description:
+                  success to view all statements
+              404:
+                description:
+                  fail to view all statements
+
+          post:
+            description:
+              user wants to create a statement
+            responses:
+              201:
+                description:
+                  success to create statement
+              400:
+                description:
+                  fail to create statement
+              404:
+                description:
+                  fail to create statement
+
+          /{statement_id}:
+            get:
+              description:
+                user want to view a statement
+              responses:
+                200:
+                  description:
+                    success to view statement
+                404:
+                  description:
+                    fail to view statement
+
+            /bill:
+              get:
+                description:
+                  user wants to see the bill part of a statement
+                responses:
+                  200:
+                    description:
+                      success to view bill
+                  404:
+                    description:
+                      fail to view bill
+
+            /fine:
+              get:
+                description:
+                  user wants to see the fine part of a statement
+                responses:
+                  200:
+                    description:
+                      success to view fine
+                  404:
+                    description:
+                      fail to view fine
+
+            /interest:
+              get:
+                description:
+                  user wants to see the interest part of a statement
+                responses:
+                  200:
+                    description:
+                      success to view interest
+                  404:
+                    description:
+                      fail to view interest
+
+            /instalment:
+              get:
+                description:
+                  user wants to see the instalment part of a statement
+                responses:
+                  200:
+                    description:
+                      success to view instalment
+                  404:
+                    description:
+                      fail to view instalment
+
+            /clearing:
+              get:
+                description:
+                  user wants to see the statement clearing
+                responses:
+                  200:
+                    description:
+                      success to view clearing
+                  404:
+                    description:
+                      fail to view clearing
+
+              post:
+                description:
+                  user wants to create statement clearing
+                responses:
+                  201:
+                    description:
+                      success to create clearing
+                  400:
+                    description:
+                      fail to create clearing
+                  404:
+                    description:
+                      fail to create clearing
+
+            /instalment-contract:
+              post:
+                description:
+                  create instalment contract of a statement
+                responses:
+                  201:
+                    description:
+                      success to create instalment contract
+                  400:
+                    description:
+                      fail to create instalment contract
+                  404:
+                    description:
+                      fail to create instalment contract
+
+        /instalment-contracts:
+          get:
+            description:
+              user wants to view instalment contracts
+            responses:
+              200:
+                description: success to view contracts
+              404:
+                description: fail to view contracts
+
+          /{contract_id}:
+            get:
+              description: user wants to view a specific instalment contract
+              responses:
+                200:
+                  description: success to view contract
+                404:
+                  description: fail to view contract
+
+            /instalments:
+              get:
+                description: view instalments of an instalment contract
+                responses:
+                  200:
+                    description: success to view instalments
+                  404:
+                    description: fail to view instalments
+
+              /{instalment_id}:
+                get:
+                  description: view instalment of instalment contract
+                  responses:
+                    200:
+                      description: success to view a instalment of instalment contract
+                    404:
+                      description: fail to view a instalment of instalment contract
