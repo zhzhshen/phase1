@@ -1,0 +1,229 @@
+#%RAML 0.8
+title: mobile phone payment API
+mediaType: application/json
+
+/plans:
+  post:
+    description: operator create new plan
+    responses:
+      201:
+        description: success to create new plan
+      400:
+        description: fail to create new plan
+      404:
+        description: fail to create new plan
+
+  get:
+    description: view plans
+    responses:
+      200:
+        description: success to view plans
+
+  /{plan_id}:
+    get:
+      description: |
+        view a specific plan
+      responses:
+        200:
+          description:
+            success to view plan
+        404:
+          description:
+            fail to view plan
+
+/products:
+  post:
+    description: operator wants to create a new product
+    responses:
+      201:
+        description: success to create new product
+      400:
+        description: fail to create new product
+      404:
+        description: fail to create new product
+
+  get:
+    description: view all products
+    responses:
+      200:
+        description: success to view all products
+
+  /{product_id}:
+    get:
+      description: view a specific product
+      responses:
+        200:
+          description: success to view product
+        404:
+          description: fail to view product
+
+/numbers:
+  /{number}:
+    get:
+      description: user wants to view phone number status
+      responses:
+        200:
+          description: success to view number status
+        404:
+          description: fail to view number status
+
+    /plan:
+      post:
+        description: create plan for a number
+        responses:
+          201:
+            description: success to create plan for number
+          400:
+            description: fail to create plan for number
+          404:
+            description: fail to create plan for number
+
+      get:
+        description: view plan for a number
+        responses:
+          200:
+            description: success to view plan for number
+          404:
+            description: fail to view plan for number
+
+      put:
+        description: update plan for a number
+        responses:
+          204:
+            description: success to update plan
+          400:
+            description: fail to update plan
+          404:
+            description: fail to update plan
+
+    /purchases:
+      get:
+        description: user wants to view all purchases
+        responses:
+          200:
+            description: success to view all purchases
+          404:
+            description: fail to view all purchases
+
+      /{purchase_id}:
+        get:
+          description: view a specific purchase
+          responses:
+            200:
+              description: success to view a purchase
+            404:
+              description: fail to view a purchase
+
+        /refill:
+          get:
+            description: view the data/call refill of a purchase on a number
+            responses:
+              200:
+                description: success to view a refill
+              404:
+                description: fail to view a refill
+
+    /plan-purchases:
+      post:
+        description: create a plan purchase on a number
+        responses:
+          201:
+            description: success to create plan purchase
+          400:
+            description: fail to create plan purchase
+          404:
+            description: fail to create plan purchase
+
+    /product-purchases:
+      post:
+        description: create a product purchase on a number
+        responses:
+          201:
+            description: success to create product purchase
+          400:
+            description: fail to create product purchase
+          404:
+            description: fail to create product purchase
+
+    /top-ups:
+      post:
+        description: create a top-up on a number
+        responses:
+          201:
+            description: success to create a topup
+          400:
+            description: fail to create a topup
+          404:
+            description: fail to create a topup
+
+      get:
+        description: view all top-ups of a number
+        responses:
+          200:
+            description: success to view all topups
+          404:
+            description: fail to view topups
+
+      /{topup_id}:
+        get:
+          description: view a specific top-up on a number
+          responses:
+            200:
+              description: success to view a top-up
+            404:
+              description: fail to view a top-up
+
+    /usages:
+      get:
+        description: user wants to view all usages on a number
+        responses:
+          200:
+            description: success to view usages
+          404:
+            description: fail to view usages
+
+      /{usage_id}:
+        get:
+          description: view a specific usage on a number
+          responses:
+            200:
+              description: success to view a usage
+            404:
+              description: fail to view a usage
+
+
+    /calls:
+      post:
+        description: create a call record on a number
+        responses:
+          201:
+            description: success to create a call record
+          400:
+            description: fail to create a call record
+          404:
+            description: fail to create a call record
+
+    /data-usages:
+      post:
+        description: create a data usage record on a number
+        responses:
+          201:
+            description: success to create a data usage
+          400:
+            description: fail to create a data usage
+          404:
+            description: fail to create a data usage
+
+    /plan-usages:
+      post:
+        description: create a plan usage record on a number
+        responses:
+          201:
+            description:
+              success to create plan usage on a number
+          400:
+            description:
+              fail to create plan usage on a number
+          404:
+            description:
+              fail to create plan usage on a number
