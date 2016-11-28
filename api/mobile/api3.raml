@@ -152,6 +152,12 @@ mediaType: application/json
     /purchases:
       get:
         description: user wants to view all purchases
+        queryParameters:
+          filter:
+            description: the filter of purchase type
+            type: string
+            default: "all"
+            enum: ["all", "product", "plan"]
         responses:
           200:
             description: success to view all purchases
@@ -285,6 +291,12 @@ mediaType: application/json
     /usages:
       get:
         description: user wants to view all usages on a number
+        queryParameters:
+          filter:
+            description: the filter of usage type
+            type: string
+            default: "all"
+            enum: ["all", "data", "call"]
         responses:
           200:
             description: success to view usages
