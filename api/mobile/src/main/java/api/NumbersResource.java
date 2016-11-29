@@ -1,7 +1,7 @@
 package api;
 
 import jersey.Routes;
-import model.CardRepository;
+import repository.CardRepository;
 import model.Session;
 
 import javax.inject.Inject;

@@ -1,6 +1,6 @@
 import jersey.RoutesFeature;
 import model.Plan;
-import model.PlanRepository;
+import repository.PlanRepository;
 import model.Session;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;

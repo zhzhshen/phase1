@@ -1,4 +1,6 @@
-package model;
+package repository;
+
+import model.Plan;
 
 import java.util.List;
 import java.util.Map;

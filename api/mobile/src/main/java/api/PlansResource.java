@@ -2,7 +2,7 @@ package api;
 
 import jersey.Routes;
 import model.Plan;
-import model.PlanRepository;
+import repository.PlanRepository;
 import model.Session;
 
 import javax.inject.Inject;

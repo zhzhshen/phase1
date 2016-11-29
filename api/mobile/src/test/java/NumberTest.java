@@ -1,8 +1,8 @@
 import jersey.RoutesFeature;
 import model.Card;
-import model.CardRepository;
+import repository.CardRepository;
 import model.Plan;
-import model.PlanRepository;
+import repository.PlanRepository;
 import model.Session;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -34,7 +34,7 @@ public class NumberTest extends JerseyTest{
 
     private String number = "13800000000";
 
-    private Card card = new Card(11.0, 22.2, 33, 1);
+    private Card card = new Card(number, 11.0, 22.2, 33, 1);
     private Plan plan = new Plan(1, 88, 500, 100);
 
     @Override

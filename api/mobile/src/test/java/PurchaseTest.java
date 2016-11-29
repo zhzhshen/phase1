@@ -8,13 +8,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import repository.CardRepository;
+import repository.PlanRepository;
+import repository.PurchaseRepository;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,9 +43,10 @@ public class PurchaseTest extends JerseyTest {
 
     private String number = "13800000000";
 
-    private Card card = new Card(11.0, 22.2, 33, 1);
+    private Card card = new Card(number, 11.0, 22.2, 33, 1);
     private Plan plan = new Plan(1, 88, 500, 100);
-    private Purchase purchase;
+    private Purchase planPurchase = new PlanPurchase(1);
+    private Purchase productPurchase = new ProductPurchase(2);
 
     @Override
     protected Application configure() {
@@ -71,8 +77,7 @@ public class PurchaseTest extends JerseyTest {
 
     @Test
     public void should_success_to_create_plan_purchase() throws URISyntaxException {
-        purchase = new PlanPurchase(1);
-        when(purchaseRepository.findById(eq((long)1))).thenReturn(purchase);
+        when(purchaseRepository.findById(eq((long)1))).thenReturn(planPurchase);
 
         Response response = target("/numbers/" + number + "/plan-purchases").request().post(Entity.json(planPurchase()));
 
@@ -82,8 +87,7 @@ public class PurchaseTest extends JerseyTest {
 
     @Test
     public void should_fail_to_create_plan_purchase() throws URISyntaxException {
-        purchase = new PlanPurchase(1);
-        when(purchaseRepository.findById(eq((long)1))).thenReturn(purchase);
+        when(purchaseRepository.findById(eq((long)1))).thenReturn(planPurchase);
         when(purchaseRepository.create(any(),any())).thenReturn((long)0);
 
         Response response = target("/numbers/" + number + "/plan-purchases").request().post(Entity.json(planPurchase()));
@@ -93,8 +97,7 @@ public class PurchaseTest extends JerseyTest {
 
     @Test
     public void should_others_fail_to_create_plan_purchase() throws URISyntaxException {
-        purchase = new PlanPurchase(1);
-        when(purchaseRepository.findById(eq((long)1))).thenReturn(purchase);
+        when(purchaseRepository.findById(eq((long)1))).thenReturn(planPurchase);
         when(session.validate()).thenReturn(false);
 
         Response response = target("/numbers/" + number + "/plan-purchases").request().post(Entity.json(planPurchase()));
@@ -113,19 +116,17 @@ public class PurchaseTest extends JerseyTest {
 
     @Test
     public void should_success_to_create_product_purchase() throws URISyntaxException {
-        purchase = new ProductPurchase(1);
-        when(purchaseRepository.findById(eq((long)1))).thenReturn(purchase);
+        when(purchaseRepository.findById(eq((long)1))).thenReturn(productPurchase);
 
         Response response = target("/numbers/" + number + "/product-purchases").request().post(Entity.json(productPurchase()));
 
         assertThat(response.getStatus(), is(201));
-        assertThat(response.getLocation(), is(new URI(getBaseUri() + "purchases/1")));
+        assertThat(response.getLocation(), is(new URI(getBaseUri() + "purchases/2")));
     }
 
     @Test
     public void should_fail_to_create_product_purchase() throws URISyntaxException {
-        purchase = new ProductPurchase(1);
-        when(purchaseRepository.findById(eq((long)1))).thenReturn(purchase);
+        when(purchaseRepository.findById(eq((long)1))).thenReturn(productPurchase);
         when(purchaseRepository.create(any(),any())).thenReturn((long)0);
 
         Response response = target("/numbers/" + number + "/product-purchases").request().post(Entity.json(productPurchase()));
@@ -135,8 +136,7 @@ public class PurchaseTest extends JerseyTest {
 
     @Test
     public void should_others_fail_to_create_product_purchase() throws URISyntaxException {
-        purchase = new ProductPurchase(1);
-        when(purchaseRepository.findById(eq((long)1))).thenReturn(purchase);
+        when(purchaseRepository.findById(eq((long)1))).thenReturn(productPurchase);
         when(session.validate()).thenReturn(false);
 
         Response response = target("/numbers/" + number + "/product-purchases").request().post(Entity.json(productPurchase()));
@@ -151,5 +151,26 @@ public class PurchaseTest extends JerseyTest {
             put("date", "2016-10-30");
             put("time", "17:01");
         }};
+    }
+
+    @Test
+    public void should_success_to_view_all_purchases_on_a_number() throws URISyntaxException {
+        when(purchaseRepository.findByNumber(eq(number))).thenReturn(Arrays.asList(planPurchase, productPurchase));
+
+        Response response = target("/numbers/" + number + "/purchases").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        List<Map<String, Object>> results = response.readEntity(List.class);
+        assertThat(results.get(0).get("type"), is("plan"));
+        assertThat(results.get(1).get("type"), is("product"));
+    }
+
+    @Test
+    public void should_others_fail_to_view_all_purchases_on_a_number() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/numbers/" + number + "/purchases").request().get();
+
+        assertThat(response.getStatus(), is(404));
     }
 }
