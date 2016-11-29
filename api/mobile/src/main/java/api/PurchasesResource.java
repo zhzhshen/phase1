@@ -6,10 +6,7 @@ import model.Refill;
 import repository.PurchaseRepository;
 import repository.RefillRepository;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -34,7 +31,11 @@ public class PurchasesResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Purchase getPurchase(@PathParam("purchase_id") long id,
                                 @Context PurchaseRepository repository) {
-        return repository.findById(id);
+        Purchase purchase = repository.findById(id);
+        if (purchase != null) {
+            return purchase;
+        }
+        throw new NotFoundException();
     }
 
     @GET
@@ -45,6 +46,10 @@ public class PurchasesResource {
                             @Context RefillRepository refillRepository) {
         Purchase purchase = getPurchase(id, repository);
 
-        return refillRepository.findByPurchase(purchase);
+        Refill refill = refillRepository.findByPurchase(purchase);
+        if (refill != null) {
+            return refill;
+        }
+        throw new NotFoundException();
     }
 }

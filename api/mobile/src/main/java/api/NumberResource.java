@@ -32,7 +32,11 @@ public class NumberResource {
     @Path("plan")
     @Produces(MediaType.APPLICATION_JSON)
     public Plan getPlan(@Context PlanRepository planRepository) {
-        return planRepository.findById(card.getPlanId());
+        Plan plan = planRepository.findById(card.getPlanId());
+        if (plan != null) {
+            return plan;
+        }
+        throw new NotFoundException();
     }
 
     @POST
@@ -55,5 +59,10 @@ public class NumberResource {
     @Path("purchases")
     public PurchasesResource getPurchases() {
         return new PurchasesResource(card);
+    }
+
+    @Path("top-ups")
+    public TopupsResource getTopups() {
+        return new TopupsResource(card);
     }
 }

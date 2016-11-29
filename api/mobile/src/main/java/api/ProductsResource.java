@@ -32,7 +32,6 @@ public class ProductsResource {
                 return Response.status(400).build();
             }
             return Response.created(routes.product(repository.findById(productId))).build();
-//            return Response.created(new URI("products/" + productId)).build();
         }
         return Response.status(404).build();
     }

@@ -3,6 +3,7 @@ package jersey;
 import model.Plan;
 import model.Product;
 import model.Purchase;
+import model.Topup;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -25,5 +26,9 @@ public class Routes {
 
     public URI purchase(Purchase purchase) {
         return URI.create(String.format("%spurchases/%s", baseUri, purchase.getId()));
+    }
+
+    public URI topup(Topup topup) {
+        return URI.create(String.format("%stop-ups/%s", baseUri, topup.getId()));
     }
 }
