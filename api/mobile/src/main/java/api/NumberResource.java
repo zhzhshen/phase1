@@ -43,4 +43,18 @@ public class NumberResource {
         return Response.created(routes.purchase(repository.findById(purchaseId))).build();
     }
 
+    @POST
+    @Path("product-purchases")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createProductPurchase(Map<String, Object> info,
+                                       @Context PurchaseRepository repository,
+                                       @Context Session session,
+                                       @Context Routes routes) {
+        long purchaseId = repository.create(card, info);
+        if (purchaseId == 0) {
+            return Response.status(400).build();
+        }
+        return Response.created(routes.purchase(repository.findById(purchaseId))).build();
+    }
+
 }
