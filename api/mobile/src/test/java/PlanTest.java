@@ -1,6 +1,8 @@
+import model.Plan;
 import model.PlanRepository;
 import model.Session;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
@@ -10,7 +12,9 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,6 +33,8 @@ public class PlanTest extends JerseyTest {
         session = mock(Session.class);
 
         return new ResourceConfig().packages("api")
+                .packages("model")
+                .register(JacksonFeature.class)
                 .register(new AbstractBinder() {
                     @Override
                     protected void configure() {
@@ -45,7 +51,7 @@ public class PlanTest extends JerseyTest {
 
         Response response = target("/plans").request().post(Entity.json(plan()));
 
-        assertThat(response.getStatus(), is(200));
+        assertThat(response.getStatus(), is(201));
         assertThat(response.getLocation(), is(new URI(getBaseUri() + "plans/1")));
     }
 
@@ -66,6 +72,17 @@ public class PlanTest extends JerseyTest {
         Response response = target("/plans").request().post(Entity.json(plan()));
 
         assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_all_success_to_view_all_plans() throws URISyntaxException {
+        when(session.currentUser()).thenReturn(null);
+        when(planRepository.all()).thenReturn(Arrays.asList(new Plan(88, 500, 100)));
+
+        Response response = target("/plans").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.readEntity(List.class), is(Arrays.asList(plan())));
     }
 
 
