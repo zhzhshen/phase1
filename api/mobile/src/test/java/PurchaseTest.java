@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import repository.CardRepository;
 import repository.PlanRepository;
 import repository.PurchaseRepository;
+import repository.RefillRepository;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
@@ -39,6 +40,9 @@ public class PurchaseTest extends JerseyTest {
     PurchaseRepository purchaseRepository;
 
     @Mock
+    RefillRepository refillRepository;
+
+    @Mock
     Session session;
 
     private String number = "13800000000";
@@ -62,6 +66,7 @@ public class PurchaseTest extends JerseyTest {
                         bind(cardRepository).to(CardRepository.class);
                         bind(planRepository).to(PlanRepository.class);
                         bind(purchaseRepository).to(PurchaseRepository.class);
+                        bind(refillRepository).to(RefillRepository.class);
                     }
                 });
     }
@@ -170,6 +175,46 @@ public class PurchaseTest extends JerseyTest {
         when(session.validate()).thenReturn(false);
 
         Response response = target("/numbers/" + number + "/purchases").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_a_purchase_on_a_number() throws URISyntaxException {
+        when(purchaseRepository.findById(eq((long)1))).thenReturn(productPurchase);
+
+        Response response = target("/numbers/" + number + "/purchases/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.readEntity(Map.class).get("type"), is("product"));
+    }
+
+    @Test
+    public void should_others_fail_to_view_a_purchase_on_a_number() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/numbers/" + number + "/purchases/1").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_refill_of_a_purchase_on_a_number() throws URISyntaxException {
+        Refill refill = new Refill("data", 500);
+        when(purchaseRepository.findById(eq((long)1))).thenReturn(productPurchase);
+        when(refillRepository.findByPurchase(eq(productPurchase))).thenReturn(refill);
+
+        Response response = target("/numbers/" + number + "/purchases/1/refill").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.readEntity(Map.class).get("type"), is("data"));
+    }
+
+    @Test
+    public void should_others_fail_to_view_refill_of_a_purchase_on_a_number() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/numbers/" + number + "/purchases/1/refill").request().get();
 
         assertThat(response.getStatus(), is(404));
     }
