@@ -1,6 +1,7 @@
 package model;
 
 public class DataUsage implements Usage {
+    private final String type = "data";
     private final long id;
     private final int amount;
     private String location;
@@ -21,5 +22,9 @@ public class DataUsage implements Usage {
 
     public String getLocation() {
         return location;
+    }
+
+    public String getType() {
+        return type;
     }
 }

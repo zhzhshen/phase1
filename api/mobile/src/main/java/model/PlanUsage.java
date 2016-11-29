@@ -1,6 +1,7 @@
 package model;
 
 public class PlanUsage implements Usage {
+    private final String type = "plan";
     private final long id;
     private final int planId;
     private final int year;
@@ -27,5 +28,9 @@ public class PlanUsage implements Usage {
 
     public int getMonth() {
         return month;
+    }
+
+    public String getType() {
+        return type;
     }
 }

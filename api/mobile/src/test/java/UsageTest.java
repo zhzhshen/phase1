@@ -17,7 +17,9 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -181,5 +183,36 @@ public class UsageTest extends JerseyTest {
             put("year", 2016);
             put("month", 10);
         }};
+    }
+
+    @Test
+    public void should_success_to_view_all_usages_on_a_number() throws URISyntaxException {
+        when(usageRepository.findByNumber(eq(number))).thenReturn(Arrays.asList(planUsage, dataUsage));
+
+        Response response = target("/numbers/" + number + "/usages").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        List<Map<String, Object>> results = response.readEntity(List.class);
+        assertThat(results.get(0).get("type"), is("plan"));
+        assertThat(results.get(1).get("type"), is("data"));
+    }
+
+    @Test
+    public void should_others_fail_to_view_all_usages_on_a_number() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/numbers/" + number + "/usages").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_a_usage_on_a_number() throws URISyntaxException {
+        when(usageRepository.findById(eq((long)1))).thenReturn(planUsage);
+
+        Response response = target("/numbers/" + number + "/usages/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.readEntity(Map.class).get("type"), is("plan"));
     }
 }

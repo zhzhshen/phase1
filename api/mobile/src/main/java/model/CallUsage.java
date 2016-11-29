@@ -1,6 +1,7 @@
 package model;
 
 public class CallUsage implements Usage {
+    private final String type = "call";
     private final String toNumber;
     private final String outgoing;
     private final int duration;
@@ -28,5 +29,9 @@ public class CallUsage implements Usage {
 
     public int getDuration() {
         return duration;
+    }
+
+    public String getType() {
+        return type;
     }
 }

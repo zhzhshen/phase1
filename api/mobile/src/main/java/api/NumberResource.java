@@ -78,4 +78,9 @@ public class NumberResource {
     public TopupsResource getTopups() {
         return new TopupsResource(card);
     }
+
+    @Path("usages")
+    public UsagesResource getUsages() {
+        return new UsagesResource(card);
+    }
 }
