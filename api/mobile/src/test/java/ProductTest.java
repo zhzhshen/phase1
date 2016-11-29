@@ -90,7 +90,6 @@ public class ProductTest extends JerseyTest {
 
     @Test
     public void should_all_success_to_view_all_products() throws URISyntaxException {
-        when(session.currentUser()).thenReturn(null);
 
         Response response = target("/products").request().get();
 
@@ -102,8 +101,6 @@ public class ProductTest extends JerseyTest {
 
     @Test
     public void should_all_success_to_view_a_product() throws URISyntaxException {
-        when(session.currentUser()).thenReturn(null);
-
         Response response = target("/products/" + id).request().get();
 
         assertThat(response.getStatus(), is(200));
@@ -112,7 +109,6 @@ public class ProductTest extends JerseyTest {
 
     @Test
     public void should_all_fail_to_view_a_inexist_product() throws URISyntaxException {
-        when(session.currentUser()).thenReturn(null);
         when(productRepository.findById(id)).thenReturn(null);
 
         Response response = target("/products/" + id).request().get();

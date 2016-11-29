@@ -89,8 +89,6 @@ public class PlanTest extends JerseyTest {
 
     @Test
     public void should_all_success_to_view_all_plans() throws URISyntaxException {
-        when(session.currentUser()).thenReturn(null);
-
         Response response = target("/plans").request().get();
 
         assertThat(response.getStatus(), is(200));
@@ -101,8 +99,6 @@ public class PlanTest extends JerseyTest {
 
     @Test
     public void should_all_success_to_view_a_plan() throws URISyntaxException {
-        when(session.currentUser()).thenReturn(null);
-
         Response response = target("/plans/" + id).request().get();
 
         assertThat(response.getStatus(), is(200));
@@ -111,7 +107,6 @@ public class PlanTest extends JerseyTest {
 
     @Test
     public void should_all_fail_to_view_a_inexist_plan() throws URISyntaxException {
-        when(session.currentUser()).thenReturn(null);
         when(planRepository.findById(id)).thenReturn(null);
 
         Response response = target("/plans/" + id).request().get();
