@@ -45,6 +45,8 @@ public class UsageTest extends JerseyTest {
     private Card card = new Card(number, 11.0, 22.2, 33, 1);
     private Plan plan = new Plan(1, 88, 500, 100);
     private Usage callUsage = new CallUsage(1, toNumber, "outgoing", 10);
+    private Usage dataUsage = new DataUsage(1, 10, "beijing");
+    private Usage planUsage = new PlanUsage(1, 1, 2016, 10);
 
     @Override
     protected Application configure() {
@@ -100,11 +102,84 @@ public class UsageTest extends JerseyTest {
         assertThat(response.getStatus(), is(404));
     }
 
+    @Test
+    public void should_success_to_create_data_usage() throws URISyntaxException {
+        when(usageRepository.findById((long) 1)).thenReturn(dataUsage);
+        when(usageRepository.create(any(), any())).thenReturn((long) 1);
+
+        Response response = target("/numbers/" + number + "/data-usages").request().post(Entity.json(data()));
+
+        assertThat(response.getStatus(), is(201));
+        assertThat(response.getLocation(), is(new URI(getBaseUri() + "usages/1")));
+    }
+
+    @Test
+    public void should_fail_to_create_data_usage() throws URISyntaxException {
+        when(usageRepository.create(any(), any())).thenReturn((long) 0);
+
+        Response response = target("/numbers/" + number + "/data-usages").request().post(Entity.json(data()));
+
+        assertThat(response.getStatus(), is(400));
+    }
+
+    @Test
+    public void should_others_fail_to_create_data_usage() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/numbers/" + number + "/data-usages").request().post(Entity.json(data()));
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_create_plan_usage() throws URISyntaxException {
+        when(usageRepository.findById((long) 1)).thenReturn(planUsage);
+        when(usageRepository.create(any(), any())).thenReturn((long) 1);
+
+        Response response = target("/numbers/" + number + "/plan-usages").request().post(Entity.json(plan()));
+
+        assertThat(response.getStatus(), is(201));
+        assertThat(response.getLocation(), is(new URI(getBaseUri() + "usages/1")));
+    }
+
+    @Test
+    public void should_fail_to_create_plan_usage() throws URISyntaxException {
+        when(usageRepository.create(any(), any())).thenReturn((long) 0);
+
+        Response response = target("/numbers/" + number + "/plan-usages").request().post(Entity.json(plan()));
+
+        assertThat(response.getStatus(), is(400));
+    }
+
+    @Test
+    public void should_others_fail_to_create_plan_usage() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/numbers/" + number + "/plan-usages").request().post(Entity.json(plan()));
+
+        assertThat(response.getStatus(), is(404));
+    }
+
     private Map<String, Object> call() {
         return new HashMap<String, Object>() {{
             put("to", toNumber);
             put("type", "outgoing");
             put("duration", 10);
+        }};
+    }
+
+    private Map<String, Object> data() {
+        return new HashMap<String, Object>() {{
+            put("amount", 10);
+            put("location", "beijing");
+        }};
+    }
+
+    private Map<String, Object> plan() {
+        return new HashMap<String, Object>() {{
+            put("planId", 1);
+            put("year", 2016);
+            put("month", 10);
         }};
     }
 }
