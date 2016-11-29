@@ -1,5 +1,6 @@
 package api;
 
+import jersey.Routes;
 import model.Plan;
 import model.PlanRepository;
 import model.Session;
@@ -9,7 +10,6 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +17,10 @@ import java.util.Map;
 @Path("plans")
 public class PlansResource {
     @Inject
-    PlanRepository repository;
+    Routes routes;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Plan> all() {
-        return repository.all();
-    }
+    @Inject
+    PlanRepository repository;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -34,15 +31,21 @@ public class PlansResource {
             if (planId == 0) {
                 return Response.status(400).build();
             }
-            return Response.created(new URI("plans/" + planId)).build();
+            return Response.created(routes.plan(repository.findById(planId))).build();
         }
         return Response.status(404).build();
     }
 
-    @Path("{plan_id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Plan get(@PathParam("plan_id") String id){
+    public List<Plan> all() {
+        return repository.all();
+    }
+
+    @GET
+    @Path("{plan_id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Plan get(@PathParam("plan_id") String id) {
         Plan plan = repository.findById(Long.valueOf(id));
         if (plan != null) {
             return plan;

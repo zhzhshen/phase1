@@ -4,8 +4,10 @@ public class Plan {
     private final int price;
     private final int data;
     private final int call;
+    private long id;
 
-    public Plan(int price, int data, int call) {
+    public Plan(int id, int price, int data, int call) {
+        this.id = id;
         this.price = price;
         this.data = data;
         this.call = call;
@@ -21,5 +23,9 @@ public class Plan {
 
     public int getPrice() {
         return price;
+    }
+
+    public long getId() {
+        return id;
     }
 }
