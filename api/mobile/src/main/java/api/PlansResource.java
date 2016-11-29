@@ -38,4 +38,15 @@ public class PlansResource {
         }
         return Response.status(404).build();
     }
+
+    @Path("{plan_id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Plan get(@PathParam("plan_id") String id){
+        Plan plan = repository.findById(Long.valueOf(id));
+        if (plan != null) {
+            return plan;
+        }
+        throw new NotFoundException();
+    }
 }

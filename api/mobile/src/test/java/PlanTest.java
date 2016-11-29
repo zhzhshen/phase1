@@ -85,6 +85,27 @@ public class PlanTest extends JerseyTest {
         assertThat(response.readEntity(List.class), is(Arrays.asList(plan())));
     }
 
+    @Test
+    public void should_all_success_to_view_a_plan() throws URISyntaxException {
+        when(session.currentUser()).thenReturn(null);
+        when(planRepository.findById((long) 1)).thenReturn(new Plan(88, 500, 100));
+
+        Response response = target("/plans/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.readEntity(Map.class), is(plan()));
+    }
+
+    @Test
+    public void should_all_fail_to_view_a_inexist_plan() throws URISyntaxException {
+        when(session.currentUser()).thenReturn(null);
+        when(planRepository.findById((long) 1)).thenReturn(null);
+
+        Response response = target("/plans/1").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
 
     private Map<String, Object> plan() {
         return new HashMap<String, Object>() {{
