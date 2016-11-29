@@ -1,6 +1,8 @@
 import jersey.RoutesFeature;
 import model.Card;
 import model.CardRepository;
+import model.Plan;
+import model.PlanRepository;
 import model.Session;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -25,11 +27,15 @@ public class NumberTest extends JerseyTest{
     CardRepository cardRepository;
 
     @Mock
+    PlanRepository planRepository;
+
+    @Mock
     Session session;
 
     private String number = "13800000000";
 
-    private Card card = new Card(11, 22.2, 33);
+    private Card card = new Card(11.0, 22.2, 33, 1);
+    private Plan plan = new Plan(1, 88, 500, 100);
 
     @Override
     protected Application configure() {
@@ -43,6 +49,7 @@ public class NumberTest extends JerseyTest{
                     protected void configure() {
                         bind(session).to(Session.class);
                         bind(cardRepository).to(CardRepository.class);
+                        bind(planRepository).to(PlanRepository.class);
                     }
                 });
     }
@@ -50,6 +57,7 @@ public class NumberTest extends JerseyTest{
     @Before
     public void before() {
         when(cardRepository.findByNumber(eq(number))).thenReturn(card);
+        when(planRepository.findById((long)1)).thenReturn(plan);
         when(session.isOperator()).thenReturn(false);
         when(session.validate()).thenReturn(true);
     }
@@ -69,5 +77,13 @@ public class NumberTest extends JerseyTest{
         Response response = target("/numbers/" + number).request().get();
 
         assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_others_success_to_view_plan_of_number() {
+        Response response = target("/numbers/" + number + "/plan").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.readEntity(Map.class).get("price"), is(88));
     }
 }
