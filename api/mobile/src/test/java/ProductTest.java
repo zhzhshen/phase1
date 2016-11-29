@@ -6,7 +6,10 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
@@ -19,18 +22,22 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ProductTest extends JerseyTest {
+    @Mock
     ProductRepository productRepository;
+
+    @Mock
     Session session;
+
+    long id = Long.valueOf(1);
+
+    Product product = new Product(1, "data", 30, 500);
 
     @Override
     protected Application configure() {
-        productRepository = mock(ProductRepository.class);
-        session = mock(Session.class);
-
+        MockitoAnnotations.initMocks(this);
         return new ResourceConfig().packages("api")
                 .packages("model")
                 .register(JacksonFeature.class)
@@ -44,15 +51,15 @@ public class ProductTest extends JerseyTest {
                 });
     }
 
-    @Test
-    public void should_operator_success_to_create_new_product() throws URISyntaxException {
-        long id = Long.valueOf(1);
-        Product product = mock(Product.class);
-        when(product.getId()).thenReturn(id);
+    @Before
+    public void before() {
         when(session.isOperator()).thenReturn(true);
         when(productRepository.create(any())).thenReturn(id);
         when(productRepository.findById(id)).thenReturn(product);
+    }
 
+    @Test
+    public void should_operator_success_to_create_new_product() throws URISyntaxException {
         Response response = target("/products").request().post(Entity.json(product()));
 
         assertThat(response.getStatus(), is(201));
@@ -62,7 +69,6 @@ public class ProductTest extends JerseyTest {
 
     @Test
     public void should_operator_fail_to_create_a_new_product() throws URISyntaxException {
-        when(session.isOperator()).thenReturn(true);
         when(productRepository.create(any())).thenReturn((long) 0);
 
         Response response = target("/products").request().post(Entity.json(product()));
