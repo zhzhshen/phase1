@@ -1,13 +1,11 @@
 package api;
 
 import jersey.Routes;
-import model.Card;
-import model.Plan;
-import model.Purchase;
-import model.Session;
+import model.*;
 import repository.PlanRepository;
 import repository.PurchaseRepository;
 import repository.RefillRepository;
+import repository.UsageRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -54,6 +52,21 @@ public class NumberResource {
         Purchase purchase = repository.findById(purchaseId);
         refillRepository.create(purchase);
         return Response.created(routes.purchase(purchase)).build();
+    }
+
+    @POST
+    @Path("/{a:calls|data-usages|plan-usages}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createUsage(Map<String, Object> info,
+                                   @Context UsageRepository repository,
+                                   @Context Session session,
+                                   @Context Routes routes) {
+        long usageId = repository.create(card, info);
+        if (usageId == 0) {
+            return Response.status(400).build();
+        }
+        Usage usage = repository.findById(usageId);
+        return Response.created(routes.usage(usage)).build();
     }
 
     @Path("purchases")
