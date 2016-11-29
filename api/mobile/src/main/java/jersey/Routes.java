@@ -2,6 +2,7 @@ package jersey;
 
 import model.Plan;
 import model.Product;
+import model.Purchase;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
@@ -20,5 +21,9 @@ public class Routes {
 
     public URI plan(Plan plan) {
         return URI.create(String.format("%splans/%s", baseUri, plan.getId()));
+    }
+
+    public URI purchase(Purchase purchase) {
+        return URI.create(String.format("%spurchases/%s", baseUri, purchase.getId()));
     }
 }

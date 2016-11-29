@@ -1,14 +1,13 @@
 package api;
 
-import model.Card;
-import model.Plan;
-import model.PlanRepository;
+import jersey.Routes;
+import model.*;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.Map;
 
 public class NumberResource {
     private Card card;
@@ -29,4 +28,19 @@ public class NumberResource {
     public Plan getPlan(@Context PlanRepository planRepository) {
         return planRepository.findById(card.getPlanId());
     }
+
+    @POST
+    @Path("plan-purchases")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createPlanPurchase(Map<String, Object> info,
+                                       @Context PurchaseRepository repository,
+                                       @Context Session session,
+                                       @Context Routes routes) {
+        long purchaseId = repository.create(card, info);
+        if (purchaseId == 0) {
+            return Response.status(400).build();
+        }
+        return Response.created(routes.purchase(repository.findById(purchaseId))).build();
+    }
+
 }
