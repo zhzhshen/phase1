@@ -16,17 +16,25 @@ var view = function () {
 var edit = function () {
     clearContent();
     $('.title').each(function() {
-        $(this).append("<h1 contenteditable=\"true\">"+ $(this).attr("data-content") +"</h1>");
+        let component = $(this);
+        component.append("<input type=\"text\" value=\"" + component.attr("data-content") + "\">");
+        component.children(":first").change(function(){
+            component.attr("data-content", $(this).val());
+        });
     });
 
     $('.textarea').each(function() {
-        $(this).append("<p contenteditable=\"true\">"+ $(this).attr("data-content") +"</p>");
+        let component = $(this);
+        component.append("<textarea>" + component.attr("data-content") + "</textarea>");
+        component.children(":first").change(function(){
+            component.attr("data-content", $(this).val());
+        });
     });
 }
 
 var clearContent = function () {
     $('.components').each(function(components){
-        children = $(this).children();
+        let children = $(this).children();
         children.each(function(component){
             $(this).empty();
         });
