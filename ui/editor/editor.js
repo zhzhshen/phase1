@@ -5,7 +5,7 @@ $(document).ready(function(){
 var view = function () {
     clearContent();
     $('.title').each(function() {
-        $(this).append("<h1>"+ $(this).attr("data-content") +"</h1>");
+        $(this).append("<h4>"+ $(this).attr("data-content") +"</h4>");
     });
 
     $('.textarea').each(function() {
@@ -17,7 +17,7 @@ var edit = function () {
     clearContent();
     $('.title').each(function() {
         let component = $(this);
-        component.append("<input type=\"text\" value=\"" + component.attr("data-content") + "\">");
+        component.append("<input class=\"form-control\" type=\"text\" value=\"" + component.attr("data-content") + "\">");
         component.children(":first").change(function(){
             component.attr("data-content", $(this).val());
         });
@@ -25,7 +25,7 @@ var edit = function () {
 
     $('.textarea').each(function() {
         let component = $(this);
-        component.append("<textarea>" + component.attr("data-content") + "</textarea>");
+        component.append("<textarea class=\"form-control\">" + component.attr("data-content") + "</textarea>");
         component.children(":first").change(function(){
             component.attr("data-content", $(this).val());
         });

@@ -1,60 +1,80 @@
 <html>
-<header>
-    <script src="http://www.google.com/jsapi" type="text/javascript"></script>
-    <script type="text/javascript">google.load("jquery", "1.3.2");</script>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="editor.js"></script>
     <link rel="stylesheet" type="text/css" href="list.css"/>
-</header>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
 
 <body>
-<button class="view" onclick="view()">View</button>
-<button class="edit" onclick="edit()">Edit</button>
-<ul class="page">
-    <li class="row">
-        <ul class="columns">
-            <li class="column">
-                <ul class="components">
-                    <li class="title" data-content="row1 column1">
+<div class="container">
+    <div class="row">
+        <div class="col-md-1">
+            <div class="panel">
+            </div>
+        </div>
+        <div class="col-md-11">
+            <div class="panel panel-default content">
+                <div class="panel-heading">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default view" onclick="view()">View</button>
+                        <button type="button" class="btn btn-default edit" onclick="edit()">Edit</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <ul class="page">
+                        <li class="row">
+                            <ul class="columns">
+                                <li class="column">
+                                    <ul class="components">
+                                        <li class="title" data-content="row1 column1">
 
-                    </li>
-                    <li class="textarea" data-content="this is a text area">
+                                        </li>
+                                        <li class="textarea" data-content="this is a text area">
 
-                    </li>
-                </ul>
-            </li>
+                                        </li>
+                                    </ul>
+                                </li>
 
-            <li class="column">
-                <ul class="components">
-                    <li class="title" data-content="row1 column2">
+                                <li class="column">
+                                    <ul class="components">
+                                        <li class="title" data-content="row1 column2">
 
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-    <li class="row">
-        <ul class="columns">
-            <li class="column">
-                <ul class="components">
-                    <li class="title" data-content="row2 column1">
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="row">
+                            <ul class="columns">
+                                <li class="column">
+                                    <ul class="components">
+                                        <li class="title" data-content="row2 column1">
 
-                    </li>
-                    <li class="textarea" data-content="this is a text area">
+                                        </li>
+                                        <li class="textarea" data-content="this is a text area">
 
-                    </li>
-                </ul>
-            </li>
+                                        </li>
+                                    </ul>
+                                </li>
 
-            <li class="column">
-                <ul class="components">
-                    <li class="title" data-content="row2 column2">
+                                <li class="column">
+                                    <ul class="components">
+                                        <li class="title" data-content="row2 column2">
 
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-</ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

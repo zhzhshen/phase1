@@ -9,3 +9,21 @@ ul.components {
 li.row {
     overflow: hidden;
 }
+
+div.container {
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+div.content {
+    height:100%;
+}
+
+.form-control {
+    margin: 10px;
+}
+
+h4, p {
+    padding: 6px 12px;
+}
