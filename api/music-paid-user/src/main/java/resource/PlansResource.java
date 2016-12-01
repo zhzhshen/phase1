@@ -43,14 +43,12 @@ public class PlansResource {
         return repository.all();
     }
 
-    @GET
     @Path("{plan_id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Plan get(@PathParam("plan_id") String id) {
+    public PlanResource get(@PathParam("plan_id") long id) {
         Optional<Plan> plan = repository.findById(Long.valueOf(id));
         if (plan.isPresent()) {
-            return plan.get();
+            return new PlanResource(plan.get());
         }
-        throw new NotFoundException();
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 import jersey.RoutesFeature;
 import model.Plan;
+import model.PlanPrice;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -8,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import repository.PlanPriceRepository;
 import repository.PlanRepository;
 import session.Session;
 
@@ -21,6 +23,7 @@ import java.util.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 public class PlanResourceTest extends JerseyTest{
@@ -28,11 +31,16 @@ public class PlanResourceTest extends JerseyTest{
     PlanRepository planRepository;
 
     @Mock
+    PlanPriceRepository planPriceRepository;
+
+    @Mock
     Session session;
 
     private Plan plan = new Plan(1, "6 month plan", 6, 500);
+    private PlanPrice planPrice = new PlanPrice(1, 1, 100, new Date());
 
     long id = Long.valueOf(1);
+    long priceId = Long.valueOf(1);
 
     @Override
     protected Application configure() {
@@ -45,6 +53,7 @@ public class PlanResourceTest extends JerseyTest{
                     @Override
                     protected void configure() {
                         bind(planRepository).to(PlanRepository.class);
+                        bind(planPriceRepository).to(PlanPriceRepository.class);
                         bind(session).to(Session.class);
                     }
                 });
@@ -54,8 +63,10 @@ public class PlanResourceTest extends JerseyTest{
     public void before() {
         when(session.isAdmin()).thenReturn(true);
         when(planRepository.create(any())).thenReturn(id);
-        when(planRepository.findById(id)).thenReturn(Optional.of(plan));
+        when(planRepository.findById(eq(id))).thenReturn(Optional.of(plan));
         when(planRepository.all()).thenReturn(Arrays.asList(plan));
+        when(planPriceRepository.create(any(), any())).thenReturn(priceId);
+        when(planPriceRepository.findById(eq(priceId))).thenReturn(Optional.of(planPrice));
     }
 
     @Test
@@ -112,6 +123,21 @@ public class PlanResourceTest extends JerseyTest{
         Response response = target("/plans/" + id).request().get();
 
         assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_admin_success_to_create_price_for_a_plan() throws URISyntaxException {
+        Response response = target("/plans/" + id + "/prices").request().post(Entity.json(planPrice()));
+
+        assertThat(response.getStatus(), is(201));
+        assertThat(response.getLocation(), is(new URI(getBaseUri() + "prices/" + priceId)));
+    }
+
+    private Map<String, Object> planPrice() {
+        return new HashMap<String, Object>() {{
+            put("price", 100);
+            put("date", new Date());
+        }};
     }
 
     private Map<String, Object> plan() {
