@@ -6,6 +6,10 @@ ul.components {
     float: left;
 }
 
+ul, li {
+    padding: 0px;
+}
+
 li.row {
     overflow: hidden;
 }

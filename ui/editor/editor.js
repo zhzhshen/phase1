@@ -1,4 +1,6 @@
 $(document).ready(function(){
+    wrapRow();
+    view();
     $('#toggle-one').change(function() {
         editable = $(this).prop('checked');
         if (editable) {
@@ -7,7 +9,6 @@ $(document).ready(function(){
             view();
         }
     })
-    view();
 });
 
 var view = function () {
@@ -37,6 +38,13 @@ var edit = function () {
         component.children(":first").change(function(){
             component.attr("data-content", $(this).val());
         });
+    });
+}
+
+var wrapRow = function() {
+    $('li.row').each(function() {
+        console.log('wala');
+        $(this).replaceWith('<div class="panel panel-default"><div class="panel-body">' + this.innerHTML + '</div></div>');
     });
 }
 
