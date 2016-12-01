@@ -1,13 +1,11 @@
 ul, li {
     list-style-type: none;
+    padding: 0px;
+    margin: 15px;
 }
 
 ul.components {
     float: left;
-}
-
-ul, li {
-    padding: 0px;
 }
 
 li.row {
@@ -21,11 +19,16 @@ div.container {
 }
 
 div.content {
-    height:100%;
+    height: 100%;
 }
 
-.form-control {
-    margin: 10px;
+.panel-body {
+    padding: 0px !important;
+    height: 100%;
+}
+
+textarea {
+    max-width: 100%;
 }
 
 h4, p {

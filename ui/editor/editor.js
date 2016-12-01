@@ -1,5 +1,6 @@
 $(document).ready(function(){
-    wrapRow();
+//    wrapRow();
+    wrapColumn();
     view();
     $('#toggle-one').change(function() {
         editable = $(this).prop('checked');
@@ -43,13 +44,18 @@ var edit = function () {
 
 var wrapRow = function() {
     $('li.row').each(function() {
-        console.log('wala');
         $(this).replaceWith('<div class="panel panel-default"><div class="panel-body">' + this.innerHTML + '</div></div>');
     });
 }
 
+var wrapColumn = function() {
+    $('li.column').each(function() {
+        $(this).replaceWith('<div class="panel panel-default col-md-6"><div class="panel-body">' + this.innerHTML + '</div></div>');
+    });
+}
+
 var clearContent = function () {
-    $('.components').each(function(components){
+    $('ul.row').each(function(components){
         let children = $(this).children();
         children.each(function(component){
             $(this).empty();
