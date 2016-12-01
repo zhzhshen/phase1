@@ -18,10 +18,6 @@ div.container {
     height: 100%;
 }
 
-div.content {
-    height: 100%;
-}
-
 .panel-body {
     padding: 0px !important;
     height: 100%;
