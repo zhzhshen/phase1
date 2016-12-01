@@ -1,24 +1,34 @@
 $(document).ready(function(){
-    edit();
+    view();
 });
 
 var view = function () {
-    $('.title').each(function(title) {
-        $(this).replaceWith("<li><h1>"+ $(this).attr("data") +"</h1></li>");
+    clearContent();
+    $('.title').each(function() {
+        $(this).append("<h1>"+ $(this).attr("data-content") +"</h1>");
     });
 
-    $('.textarea').each(function(title) {
-        $(this).replaceWith("<li><p>"+ $(this).attr("data") +"</p></li>");
+    $('.textarea').each(function() {
+        $(this).append("<p>"+ $(this).attr("data-content") +"</p>");
     });
 }
 
 var edit = function () {
-    $('.title').each(function(title) {
-        $(this).replaceWith("<li><h1 contenteditable=\"true\">"+ $(this).attr("data") +"</h1></li>");
-//        $(this).replaceWith("<li><input type=\"text\" value=\""+ $(this).attr("data") +"\"></input></li>");
+    clearContent();
+    $('.title').each(function() {
+        $(this).append("<h1 contenteditable=\"true\">"+ $(this).attr("data-content") +"</h1>");
     });
 
-    $('.textarea').each(function(title) {
-        $(this).replaceWith("<li><p contenteditable=\"true\">"+ $(this).attr("data") +"</p></li>");
+    $('.textarea').each(function() {
+        $(this).append("<p contenteditable=\"true\">"+ $(this).attr("data-content") +"</p>");
+    });
+}
+
+var clearContent = function () {
+    $('.components').each(function(components){
+        children = $(this).children();
+        children.each(function(component){
+            $(this).empty();
+        });
     });
 }
