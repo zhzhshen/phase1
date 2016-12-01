@@ -1,4 +1,12 @@
 $(document).ready(function(){
+    $('#toggle-one').change(function() {
+        editable = $(this).prop('checked');
+        if (editable) {
+            edit();
+        } else {
+            view();
+        }
+    })
     view();
 });
 
