@@ -1,5 +1,4 @@
 $(document).ready(function(){
-//    wrapRow();
     wrapColumn();
     view();
     $('#toggle-one').change(function() {
@@ -14,6 +13,7 @@ $(document).ready(function(){
 
 var view = function () {
     clearContent();
+    undraggableRow();
     $('.title').each(function() {
         $(this).append("<h4>"+ $(this).attr("data-content") +"</h4>");
     });
@@ -25,6 +25,7 @@ var view = function () {
 
 var edit = function () {
     clearContent();
+    draggableRow();
     $('.title').each(function() {
         let component = $(this);
         component.append("<input class=\"form-control\" type=\"text\" value=\"" + component.attr("data-content") + "\">");
@@ -42,9 +43,15 @@ var edit = function () {
     });
 }
 
-var wrapRow = function() {
-    $('li.row').each(function() {
-        $(this).replaceWith('<div class="panel panel-default"><div class="panel-body">' + this.innerHTML + '</div></div>');
+var draggableRow = function() {
+    $('ul.row').each(function() {
+        $(this).draggable({disabled:false});
+    });
+}
+
+var undraggableRow = function() {
+    $('ul.row').each(function() {
+        $(this).draggable({disabled:true});
     });
 }
 

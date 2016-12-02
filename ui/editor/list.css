@@ -30,3 +30,7 @@ textarea {
 h4, p {
     padding: 6px 12px;
 }
+
+.ui-state-disabled {
+    opacity: 1;
+}
