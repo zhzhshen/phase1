@@ -8,8 +8,8 @@ ul.components {
     float: left;
 }
 
-li.row {
-    overflow: hidden;
+.ui-draggable:not(.ui-draggable-disabled) {
+    cursor: hand;
 }
 
 div.container {
@@ -33,4 +33,11 @@ h4, p {
 
 .ui-state-disabled {
     opacity: 1;
+}
+
+.glyphicon {
+    position: absolute;
+    left: 1px;
+    top: 40%;
+    color: lightgrey;
 }
