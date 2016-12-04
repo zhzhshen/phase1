@@ -28,15 +28,25 @@ var edit = function () {
     draggableRow();
     $('.component').each(function() {
         let component = $(this);
-        component.append("<span class=\"glyphicon glyphicon-move\"></span>");
+        $("<span class=\"glyphicon glyphicon-move\"></span>").appendTo(component);
         if ($(this).hasClass('title')) {
-            component.append("<input class=\"form-control\" type=\"text\" value=\"" + component.attr("data-content") + "\">");
+            $("<input class=\"form-control\" type=\"text\" value=\"" + component.attr("data-content") + "\">")
+                .on('change', function() {
+                    component.attr("data-content", $(this).val());
+                })
+                .appendTo(component);
         } else if ($(this).hasClass('textarea')) {
-            component.append("<textarea class=\"form-control\">" + component.attr("data-content") + "</textarea>");
+            $("<textarea class=\"form-control\">" + component.attr("data-content") + "</textarea>")
+                .on('change', function() {
+                    component.attr("data-content", $(this).val());
+                })
+                .appendTo(component);
         }
-        component.find('.form-control').change(function(){
-            component.attr("data-content", $(this).val());
-        });
+        $("<span class=\"glyphicon glyphicon-remove\"></span>")
+            .on('click', function() {
+                $(this).closest('.row').remove();
+            })
+            .appendTo(component);
     });
 }
 

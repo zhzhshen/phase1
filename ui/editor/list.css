@@ -35,9 +35,18 @@ h4, p {
     opacity: 1;
 }
 
-.glyphicon {
+.glyphicon-move {
     position: absolute;
     left: 1px;
     top: 40%;
     color: lightgrey;
+}
+
+.glyphicon-remove {
+    position: absolute;
+    right: 7px;
+    top: 7px;
+    color: lightgrey;
+    border-radius: 50%;
+    border: 2px solid #E2E2E2;
 }
