@@ -49,8 +49,13 @@ h4, p {
     color: red;
 }
 
+#tw-logo {
+    margin-top: 20px;
+    height: 17px;
+}
+
 .left-panel {
-    margin-top: 80px;
+    margin-top: 60px;
     text-align: center;
 }
 
