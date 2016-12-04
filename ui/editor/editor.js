@@ -42,7 +42,7 @@ var edit = function () {
                 })
                 .appendTo(component);
         }
-        $("<span class=\"glyphicon glyphicon-remove\"></span>")
+        $("<span class=\"glyphicon glyphicon-remove-circle\"></span>")
             .on('click', function() {
                 $(this).closest('.row').remove();
             })

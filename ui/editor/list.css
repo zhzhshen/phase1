@@ -42,11 +42,9 @@ h4, p {
     color: lightgrey;
 }
 
-.glyphicon-remove {
+.glyphicon-remove-circle {
     position: absolute;
-    right: 7px;
-    top: 7px;
-    color: lightgrey;
-    border-radius: 50%;
-    border: 2px solid #E2E2E2;
+    right: 10px;
+    top: 10px;
+    color: red;
 }
