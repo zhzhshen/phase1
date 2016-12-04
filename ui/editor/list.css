@@ -48,3 +48,14 @@ h4, p {
     top: 10px;
     color: red;
 }
+
+.left-panel {
+    margin-top: 80px;
+    text-align: center;
+}
+
+.left-panel > .icon {
+    cursor: hand;
+    font-size: 30px;
+    margin: 30px;
+}
