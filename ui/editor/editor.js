@@ -17,11 +17,7 @@ var view = function () {
         let component = $(this);
         component.removeContent();
 
-        if (component.hasClass("title")) {
-            $("<h4>"+ component.attr("data-content") +"</h4>").appendTo(component);
-        } else if (component.hasClass("textarea")) {
-            $("<p style=\"height: "+ component.attr("data-height") + "px\">"+ component.attr("data-content") +"</p>").appendTo(component);
-        }
+        $(new Component(component).toViewHtml()).appendTo(component);
     });
 }
 
@@ -74,6 +70,22 @@ var wrapColumn = function() {
     $('li.column').each(function() {
         $(this).replaceWith('<div class="panel panel-default col-md-6"><div class="panel-body">' + this.innerHTML + '</div></div>');
     });
+}
+
+function Component(component){
+    var type = component.attr("class");
+    var data = component.attr("data-content");
+    var height = component.attr("data-height");
+    var htmlElement;
+
+    this.toViewHtml = function() {
+        if (type.includes('title')) {
+            htmlElement = "<h4>"+ data +"</h4>";
+        } else if (type.includes('textarea')) {
+            htmlElement = "<p style=\"height: "+ height + "px\">"+ data +"</p>";
+        }
+        return htmlElement;
+    }
 }
 
 $.fn.removeContent = function() {
