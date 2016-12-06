@@ -12,14 +12,23 @@ $(document).ready(function(){
 });
 
 var view = function () {
-    clearContent();
     undraggableRow();
-    $('.title').each(function() {
-        $(this).append("<h4>"+ $(this).attr("data-content") +"</h4>");
-    });
 
-    $('.textarea').each(function() {
-        $(this).append("<p>"+ $(this).attr("data-content") +"</p>");
+    $('.component').each(function(){
+        let widget = $(this).find('.form-control');
+        let height = widget.outerHeight();
+        $(this).attr("data-height", height);
+
+        let children = $(this).children();
+        children.each(function(component){
+            $(this).remove();
+        });
+
+        if ($(this).hasClass("title")) {
+            $("<h4>"+ $(this).attr("data-content") +"</h4>").appendTo($(this));
+        } else if ($(this).hasClass("textarea")) {
+            $("<p style=\"height: "+ height + "px\">"+ $(this).attr("data-content") +"</p>").appendTo($(this));
+        }
     });
 }
 
@@ -36,7 +45,7 @@ var edit = function () {
                 })
                 .appendTo(component);
         } else if ($(this).hasClass('textarea')) {
-            $("<textarea class=\"form-control\">" + component.attr("data-content") + "</textarea>")
+            $("<textarea class=\"form-control\" style=\"height: "+ component.attr("data-height") + "px\">" + component.attr("data-content") + "</textarea>")
                 .on('change', function() {
                     component.attr("data-content", $(this).val());
                 })
