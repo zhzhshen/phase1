@@ -1,43 +1,30 @@
 $(document).ready(function(){
     wrapColumn();
     view();
-    $('#toggle-one').change(function() {
-        editable = $(this).prop('checked');
-        if (editable) {
-            edit();
-        } else {
-            view();
-        }
+    $('#modeSwitch').change(function() {
+        switchMode();
     })
 });
 
+var switchMode = function () {
+    if (mode === 'view') {
+        edit();
+    } else {
+        view();
+    }
+}
+
 var view = function () {
-    undraggableRow();
+    mode = 'view';
     $('.component').each(function(){
-        let component = $(this);
-        new Component(component).view();
-//        $(new Component(component).toViewHtml()).appendTo(component);
+        new Component($(this)).view();
     });
 }
 
 var edit = function () {
-    draggableRow();
+    mode = 'edit';
     $('.component').each(function() {
-        let component = $(this);
-        new Component(component).edit();
-//        $(new Component(component).toEditHtml()).appendTo(component);
-    });
-}
-
-var draggableRow = function() {
-    $('ul.row').each(function() {
-        $(this).draggable({disabled: false});
-    });
-}
-
-var undraggableRow = function() {
-    $('ul.row').each(function() {
-        $(this).draggable({disabled: true, axis: "y"});
+        new Component($(this)).edit();
     });
 }
 
@@ -48,13 +35,14 @@ var wrapColumn = function() {
 }
 
 function Component(component){
-    var type = component.attr("class");
-    var data = component.attr("data-content");
-    var height = component.attr("data-height");
-    var htmlElement;
+    let type = component.attr("class");
+    let data = component.attr("data-content");
+    let height = component.attr("data-height");
+    let htmlElement;
 
     this.view = function() {
-        component.removeContent();
+        undraggable();
+        removeContent();
         if (type.includes('title')) {
             htmlElement = "<h4>"+ data +"</h4>";
         } else if (type.includes('textarea')) {
@@ -64,7 +52,8 @@ function Component(component){
     }
 
     this.edit = function() {
-        component.removeContent();
+        draggable();
+        removeContent();
         htmlElement = $("<div></div>");
         $("<span class=\"glyphicon glyphicon-move\"></span>").appendTo(htmlElement);
 
@@ -92,10 +81,18 @@ function Component(component){
             .appendTo(htmlElement);
         $(htmlElement).appendTo(component);
     }
-}
 
-$.fn.removeContent = function() {
-    $(this).children().each(function(component){
-        $(this).remove();
-    });
+    function removeContent() {
+        component.children().each(function(){
+            $(this).remove();
+        });
+    }
+
+    function undraggable() {
+        component.closest('.row').draggable({disabled: true, axis: "y"});
+    }
+
+    function draggable() {
+        component.closest('.row').draggable({disabled: false});
+    }
 }
