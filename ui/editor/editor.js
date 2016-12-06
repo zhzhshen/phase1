@@ -13,16 +13,14 @@ $(document).ready(function(){
 
 var view = function () {
     undraggableRow();
-
     $('.component').each(function(){
-        $(this).children().each(function(component){
-            $(this).remove();
-        });
+        let component = $(this);
+        component.removeContent();
 
-        if ($(this).hasClass("title")) {
-            $("<h4>"+ $(this).attr("data-content") +"</h4>").appendTo($(this));
-        } else if ($(this).hasClass("textarea")) {
-            $("<p style=\"height: "+ $(this).attr("data-height") + "px\">"+ $(this).attr("data-content") +"</p>").appendTo($(this));
+        if (component.hasClass("title")) {
+            $("<h4>"+ component.attr("data-content") +"</h4>").appendTo(component);
+        } else if (component.hasClass("textarea")) {
+            $("<p style=\"height: "+ component.attr("data-height") + "px\">"+ component.attr("data-content") +"</p>").appendTo(component);
         }
     });
 }
@@ -30,20 +28,18 @@ var view = function () {
 var edit = function () {
     draggableRow();
     $('.component').each(function() {
-        $(this).children().each(function(component){
-            $(this).remove();
-        });
-
         let component = $(this);
+        component.removeContent();
+
         $("<span class=\"glyphicon glyphicon-move\"></span>").appendTo(component);
 
-        if ($(this).hasClass('title')) {
+        if (component.hasClass('title')) {
             $("<input class=\"form-control\" type=\"text\" value=\"" + component.attr("data-content") + "\">")
                 .change(function() {
                     component.attr("data-content", $(this).val());
                 })
                 .appendTo(component);
-        } else if ($(this).hasClass('textarea')) {
+        } else if (component.hasClass('textarea')) {
             $("<textarea class=\"form-control\" style=\"height: "+ component.attr("data-height") + "px\">" + component.attr("data-content") + "</textarea>")
                 .mouseup(function() {
                     component.attr("data-height", $(this).outerHeight());
@@ -56,7 +52,7 @@ var edit = function () {
 
         $("<span class=\"glyphicon glyphicon-remove-circle\"></span>")
             .click(function() {
-                $(this).closest('.row').remove();
+                component.closest('.row').remove();
             })
             .appendTo(component);
     });
@@ -77,5 +73,11 @@ var undraggableRow = function() {
 var wrapColumn = function() {
     $('li.column').each(function() {
         $(this).replaceWith('<div class="panel panel-default col-md-6"><div class="panel-body">' + this.innerHTML + '</div></div>');
+    });
+}
+
+$.fn.removeContent = function() {
+    $(this).children().each(function(component){
+        $(this).remove();
     });
 }
