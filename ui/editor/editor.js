@@ -27,30 +27,7 @@ var edit = function () {
         let component = $(this);
         component.removeContent();
 
-        $("<span class=\"glyphicon glyphicon-move\"></span>").appendTo(component);
-
-        if (component.hasClass('title')) {
-            $("<input class=\"form-control\" type=\"text\" value=\"" + component.attr("data-content") + "\">")
-                .change(function() {
-                    component.attr("data-content", $(this).val());
-                })
-                .appendTo(component);
-        } else if (component.hasClass('textarea')) {
-            $("<textarea class=\"form-control\" style=\"height: "+ component.attr("data-height") + "px\">" + component.attr("data-content") + "</textarea>")
-                .mouseup(function() {
-                    component.attr("data-height", $(this).outerHeight());
-                })
-                .change(function() {
-                    component.attr("data-content", $(this).val());
-                })
-                .appendTo(component);
-        }
-
-        $("<span class=\"glyphicon glyphicon-remove-circle\"></span>")
-            .click(function() {
-                component.closest('.row').remove();
-            })
-            .appendTo(component);
+        $(new Component(component).toEditHtml()).appendTo(component);
     });
 }
 
@@ -84,6 +61,35 @@ function Component(component){
         } else if (type.includes('textarea')) {
             htmlElement = "<p style=\"height: "+ height + "px\">"+ data +"</p>";
         }
+        return htmlElement;
+    }
+
+    this.toEditHtml = function() {
+        htmlElement = $("<div></div>");
+        $("<span class=\"glyphicon glyphicon-move\"></span>").appendTo(htmlElement);
+
+        if (type.includes('title')) {
+            $("<input class=\"form-control\" type=\"text\" value=\"" + data + "\">")
+                .change(function() {
+                    component.attr("data-content", $(this).val());
+                })
+                .appendTo(htmlElement);
+        } else if (type.includes('textarea')) {
+            $("<textarea class=\"form-control\" style=\"height: "+ height + "px\">" + data + "</textarea>")
+                .mouseup(function() {
+                    component.attr("data-height", $(this).outerHeight());
+                })
+                .change(function() {
+                    component.attr("data-content", $(this).val());
+                })
+                .appendTo(htmlElement);
+        }
+
+        $("<span class=\"glyphicon glyphicon-remove-circle\"></span>")
+            .click(function() {
+                component.closest('.row').remove();
+            })
+            .appendTo(htmlElement);
         return htmlElement;
     }
 }
