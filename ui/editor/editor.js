@@ -15,9 +15,8 @@ var view = function () {
     undraggableRow();
     $('.component').each(function(){
         let component = $(this);
-        component.removeContent();
-
-        $(new Component(component).toViewHtml()).appendTo(component);
+        new Component(component).view();
+//        $(new Component(component).toViewHtml()).appendTo(component);
     });
 }
 
@@ -25,9 +24,8 @@ var edit = function () {
     draggableRow();
     $('.component').each(function() {
         let component = $(this);
-        component.removeContent();
-
-        $(new Component(component).toEditHtml()).appendTo(component);
+        new Component(component).edit();
+//        $(new Component(component).toEditHtml()).appendTo(component);
     });
 }
 
@@ -55,16 +53,18 @@ function Component(component){
     var height = component.attr("data-height");
     var htmlElement;
 
-    this.toViewHtml = function() {
+    this.view = function() {
+        component.removeContent();
         if (type.includes('title')) {
             htmlElement = "<h4>"+ data +"</h4>";
         } else if (type.includes('textarea')) {
             htmlElement = "<p style=\"height: "+ height + "px\">"+ data +"</p>";
         }
-        return htmlElement;
+        $(htmlElement).appendTo(component);
     }
 
-    this.toEditHtml = function() {
+    this.edit = function() {
+        component.removeContent();
         htmlElement = $("<div></div>");
         $("<span class=\"glyphicon glyphicon-move\"></span>").appendTo(htmlElement);
 
@@ -90,7 +90,7 @@ function Component(component){
                 component.closest('.row').remove();
             })
             .appendTo(htmlElement);
-        return htmlElement;
+        $(htmlElement).appendTo(component);
     }
 }
 
