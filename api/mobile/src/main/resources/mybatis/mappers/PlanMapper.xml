@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="mapper.PlanMapper">
+<mapper namespace="com.sid.mobile.mapper.PlanMapper">
     <insert id="save">
-        insert into plans(id, name, price, data, call) VALUES (#{info.id}, #{info.name}, #{info.price}, #{info.data}, #{info.call})
+        insert into plan(id, name, price, data, calls) VALUES (#{info.id}, #{info.name}, #{info.price}, #{info.data}, #{info.calls})
     </insert>
-    <select id="findById" resultType="model.Plan">
-        SELECT id, name, price, data, call from plans where id = #{id}
+    <select id="findById" resultType="com.sid.mobile.model.Plan">
+        SELECT id, name, price, data, calls from plan where id = #{id}
     </select>
-    <select id="findByName" resultType="model.Plan">
-        SELECT id, name, price, data, call from plans where username = #{name}
+    <select id="findByName" resultType="com.sid.mobile.model.Plan">
+        SELECT id, name, price, data, calls from plan where username = #{name}
+    </select>
+    <select id="all" resultType="com.sid.mobile.model.Plan">
+        SELECT id, name, price, data, calls from plan
     </select>
 </mapper>

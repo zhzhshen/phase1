@@ -2,9 +2,32 @@ group 'com.sid'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'idea'
 
 repositories {
     mavenCentral()
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.flywaydb:flyway-gradle-plugin:3.0"
+    }
+}
+
+apply plugin: 'flyway'
+flyway {
+    driver = 'com.mysql.cj.jdbc.Driver'
+    url = String.format(
+            "jdbc:mysql://%s:%s/%s?user=%s&password=%s",
+            System.getenv().getOrDefault("db.url.dev", "127.0.0.1"),
+            System.getenv().getOrDefault("db.port.dev", "3306"),
+            System.getenv().getOrDefault("db.name.dev", "mobile"),
+            System.getenv().getOrDefault("db.user.dev", "mysql"),
+            System.getenv().getOrDefault("db.password.dev", "mysql")
+    )
 }
 
 dependencies {
@@ -16,4 +39,8 @@ dependencies {
     compile 'org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-grizzly2:2.24.1'
     compile 'org.glassfish.jersey.media:jersey-media-json-jackson:2.24.1'
     compile 'org.mybatis:mybatis:3.2.8'
+    compile 'org.mybatis:mybatis-guice:3.8'
+    compile "org.glassfish.hk2:guice-bridge:2.4.0-b09"
+    compile 'com.google.inject:guice:4.1.0'
+    compile 'mysql:mysql-connector-java:6.0.5'
 }
