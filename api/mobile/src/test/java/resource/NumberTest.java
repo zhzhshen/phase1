@@ -36,8 +36,8 @@ public class NumberTest extends JerseyTest{
 
     private String number = "13800000000";
 
-    private Card card = new Card(number, 11.0, 22.2, 33, 1);
-    private Plan plan = new Plan(1, 88, 500, 100);
+    private Card card = new Card(number, 11.0, 22.2, 33, "1");
+    private Plan plan = new Plan("1", 88, 500, 100);
 
     @Override
     protected Application configure() {
@@ -58,7 +58,7 @@ public class NumberTest extends JerseyTest{
     @Before
     public void before() {
         when(cardRepository.findByNumber(eq(number))).thenReturn(card);
-        when(planRepository.findById((long)1)).thenReturn(plan);
+        when(planRepository.findById("1")).thenReturn(plan);
         when(session.isOperator()).thenReturn(false);
         when(session.validate()).thenReturn(true);
     }

@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProductRepository {
-    long create(Map<String, Object> info);
+    String create(Map<String, Object> info);
 
-    Product findById(long id);
+    Product findById(String id);
 
     List<Product> all();
 }

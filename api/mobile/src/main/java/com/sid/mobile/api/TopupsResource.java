@@ -1,5 +1,6 @@
 package com.sid.mobile.api;
 
+import com.google.common.base.Strings;
 import com.sid.mobile.jersey.Routes;
 import com.sid.mobile.model.Card;
 import com.sid.mobile.model.Topup;
@@ -24,9 +25,9 @@ public class TopupsResource {
     public Response create(Map<String, Object> info,
                            @Context TopupRepository repository,
                            @Context Routes routes) {
-        long id = repository.create(card, info);
+        String id = repository.create(card, info);
 
-        if (id == 0) {
+        if (Strings.isNullOrEmpty(id)) {
             return Response.status(400).build();
         }
         return Response.created(routes.topup(repository.findById(id))).build();
@@ -41,7 +42,7 @@ public class TopupsResource {
     @GET
     @Path("{topup_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Topup get(@PathParam("topup_id") long id,
+    public Topup get(@PathParam("topup_id") String id,
                      @Context TopupRepository repository) {
         Topup topup = repository.findById(id);
         if (topup != null) {

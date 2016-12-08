@@ -9,7 +9,7 @@ import java.util.Map;
 public interface TopupRepository {
     List<Topup> findByNumber(String number);
 
-    long create(Card card, Map<String, Object> info);
+    String create(Card card, Map<String, Object> info);
 
-    Topup findById(long id);
+    Topup findById(String id);
 }

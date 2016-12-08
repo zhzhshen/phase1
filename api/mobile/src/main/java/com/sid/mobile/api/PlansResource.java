@@ -1,5 +1,6 @@
 package com.sid.mobile.api;
 
+import com.google.common.base.Strings;
 import com.sid.mobile.jersey.Routes;
 import com.sid.mobile.model.Plan;
 import com.sid.mobile.spi.repository.PlanRepository;
@@ -27,8 +28,8 @@ public class PlansResource {
     public Response create(Map<String, Object> info,
                            @Context Session session) throws URISyntaxException {
         if (session.isOperator()) {
-            long planId = repository.create(info);
-            if (planId == 0) {
+            String planId = repository.create(info);
+            if (Strings.isNullOrEmpty(planId)) {
                 return Response.status(400).build();
             }
             return Response.created(routes.plan(repository.findById(planId))).build();
@@ -46,7 +47,7 @@ public class PlansResource {
     @Path("{plan_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Plan get(@PathParam("plan_id") String id) {
-        Plan plan = repository.findById(Long.valueOf(id));
+        Plan plan = repository.findById(id);
         if (plan != null) {
             return plan;
         }

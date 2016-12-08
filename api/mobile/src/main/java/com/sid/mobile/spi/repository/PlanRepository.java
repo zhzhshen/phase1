@@ -8,9 +8,9 @@ import java.util.Map;
 
 @Contract
 public interface PlanRepository {
-    long create(Map<String, Object> info);
+    String create(Map<String, Object> info);
 
     List<Plan> all();
 
-    Plan findById(long id);
+    Plan findById(String id);
 }

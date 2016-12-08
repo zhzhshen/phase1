@@ -27,7 +27,7 @@ public class UsagesResource {
     @GET
     @Path("{usage_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Usage getPurchase(@PathParam("usage_id") long id,
+    public Usage getPurchase(@PathParam("usage_id") String id,
                                 @Context UsageRepository repository) {
         Usage usage = repository.findById(id);
         if (usage != null) {

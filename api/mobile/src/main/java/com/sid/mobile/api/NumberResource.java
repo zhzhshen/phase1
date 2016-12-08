@@ -1,5 +1,6 @@
 package com.sid.mobile.api;
 
+import com.google.common.base.Strings;
 import com.sid.mobile.jersey.Routes;
 import com.sid.mobile.model.Card;
 import com.sid.mobile.model.Plan;
@@ -49,8 +50,8 @@ public class NumberResource {
                                        @Context RefillRepository refillRepository,
                                        @Context Session session,
                                        @Context Routes routes) {
-        long purchaseId = repository.create(card, info);
-        if (purchaseId == 0) {
+        String purchaseId = repository.create(card, info);
+        if (Strings.isNullOrEmpty(purchaseId)) {
             return Response.status(400).build();
         }
         Purchase purchase = repository.findById(purchaseId);
@@ -65,8 +66,8 @@ public class NumberResource {
                                    @Context UsageRepository repository,
                                    @Context Session session,
                                    @Context Routes routes) {
-        long usageId = repository.create(card, info);
-        if (usageId == 0) {
+        String usageId = repository.create(card, info);
+        if (Strings.isNullOrEmpty(usageId)) {
             return Response.status(400).build();
         }
         Usage usage = repository.findById(usageId);

@@ -16,7 +16,7 @@ public class PlanRepository implements com.sid.mobile.spi.repository.PlanReposit
     PlanMapper mapper;
 
     @Override
-    public long create(Map<String, Object> info) {
+    public String create(Map<String, Object> info) {
         final Plan plan = mapper.findByName(String.valueOf(info.get("name")));
         if (plan != null){
             throw new InvalidParameterException("plan with name " + info.get("name") + " already exist!");
@@ -34,7 +34,7 @@ public class PlanRepository implements com.sid.mobile.spi.repository.PlanReposit
     }
 
     @Override
-    public Plan findById(long id) {
+    public Plan findById(String id) {
         return mapper.findById(String.valueOf(id));
     }
 }

@@ -48,8 +48,8 @@ public class UsageTest extends JerseyTest {
     private String number = "13800000000";
     private String toNumber = "18800000000";
 
-    private Card card = new Card(number, 11.0, 22.2, 33, 1);
-    private Plan plan = new Plan(1, 88, 500, 100);
+    private Card card = new Card(number, 11.0, 22.2, 33, "1");
+    private Plan plan = new Plan("1", 88, 500, 100);
     private Usage callUsage = new CallUsage(1, toNumber, "outgoing", 10);
     private Usage dataUsage = new DataUsage(1, 10, "beijing");
     private Usage planUsage = new PlanUsage(1, 1, 2016, 10);
@@ -74,9 +74,9 @@ public class UsageTest extends JerseyTest {
     @Before
     public void before() {
         when(cardRepository.findByNumber(eq(number))).thenReturn(card);
-        when(planRepository.findById((long) 1)).thenReturn(plan);
-        when(usageRepository.create(any(), any())).thenReturn((long) 1);
-        when(usageRepository.findById((long) 1)).thenReturn(callUsage);
+        when(planRepository.findById("1")).thenReturn(plan);
+        when(usageRepository.create(any(), any())).thenReturn("1");
+        when(usageRepository.findById("1")).thenReturn(callUsage);
         when(session.isOperator()).thenReturn(false);
         when(session.validate()).thenReturn(true);
     }
@@ -91,7 +91,7 @@ public class UsageTest extends JerseyTest {
 
     @Test
     public void should_fail_to_create_call_usage() throws URISyntaxException {
-        when(usageRepository.create(any(), any())).thenReturn((long) 0);
+        when(usageRepository.create(any(), any())).thenReturn(null);
 
         Response response = target("/numbers/" + number + "/calls").request().post(Entity.json(call()));
 
@@ -109,8 +109,8 @@ public class UsageTest extends JerseyTest {
 
     @Test
     public void should_success_to_create_data_usage() throws URISyntaxException {
-        when(usageRepository.findById((long) 1)).thenReturn(dataUsage);
-        when(usageRepository.create(any(), any())).thenReturn((long) 1);
+        when(usageRepository.findById("1")).thenReturn(dataUsage);
+        when(usageRepository.create(any(), any())).thenReturn("1");
 
         Response response = target("/numbers/" + number + "/data-usages").request().post(Entity.json(data()));
 
@@ -120,7 +120,7 @@ public class UsageTest extends JerseyTest {
 
     @Test
     public void should_fail_to_create_data_usage() throws URISyntaxException {
-        when(usageRepository.create(any(), any())).thenReturn((long) 0);
+        when(usageRepository.create(any(), any())).thenReturn(null);
 
         Response response = target("/numbers/" + number + "/data-usages").request().post(Entity.json(data()));
 
@@ -138,8 +138,8 @@ public class UsageTest extends JerseyTest {
 
     @Test
     public void should_success_to_create_plan_usage() throws URISyntaxException {
-        when(usageRepository.findById((long) 1)).thenReturn(planUsage);
-        when(usageRepository.create(any(), any())).thenReturn((long) 1);
+        when(usageRepository.findById("1")).thenReturn(planUsage);
+        when(usageRepository.create(any(), any())).thenReturn("1");
 
         Response response = target("/numbers/" + number + "/plan-usages").request().post(Entity.json(plan()));
 
@@ -149,7 +149,7 @@ public class UsageTest extends JerseyTest {
 
     @Test
     public void should_fail_to_create_plan_usage() throws URISyntaxException {
-        when(usageRepository.create(any(), any())).thenReturn((long) 0);
+        when(usageRepository.create(any(), any())).thenReturn(null);
 
         Response response = target("/numbers/" + number + "/plan-usages").request().post(Entity.json(plan()));
 
@@ -211,7 +211,7 @@ public class UsageTest extends JerseyTest {
 
     @Test
     public void should_success_to_view_a_usage_on_a_number() throws URISyntaxException {
-        when(usageRepository.findById(eq((long)1))).thenReturn(planUsage);
+        when(usageRepository.findById(eq("1"))).thenReturn(planUsage);
 
         Response response = target("/numbers/" + number + "/usages/1").request().get();
 

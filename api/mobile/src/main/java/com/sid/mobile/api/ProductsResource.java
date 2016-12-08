@@ -1,5 +1,6 @@
 package com.sid.mobile.api;
 
+import com.google.common.base.Strings;
 import com.sid.mobile.jersey.Routes;
 import com.sid.mobile.model.Product;
 import com.sid.mobile.spi.repository.ProductRepository;
@@ -27,8 +28,8 @@ public class ProductsResource {
     public Response create(Map<String, Object> info,
                            @Context Session session) throws URISyntaxException {
         if (session.isOperator()) {
-            long productId = repository.create(info);
-            if (productId == 0) {
+            String productId = repository.create(info);
+            if (Strings.isNullOrEmpty(productId)) {
                 return Response.status(400).build();
             }
             return Response.created(routes.product(repository.findById(productId))).build();
@@ -46,7 +47,7 @@ public class ProductsResource {
     @Path("{product_id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Product get(@PathParam("product_id") String id) {
-        Product product = repository.findById(Long.valueOf(id));
+        Product product = repository.findById(id);
         if (product != null) {
             return product;
         }

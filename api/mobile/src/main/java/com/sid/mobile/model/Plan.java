@@ -1,13 +1,16 @@
 package com.sid.mobile.model;
 
 public class Plan {
-    private long id;
-    private final int price;
-    private final int data;
-    private final int call;
-    private final String name = null;
+    private String id;
+    private int price;
+    private int data;
+    private int call;
+    private String name;
 
-    public Plan(int id, int price, int data, int call) {
+    public Plan() {
+    }
+
+    public Plan(String id, int price, int data, int call) {
         this.id = id;
         this.price = price;
         this.data = data;
@@ -30,7 +33,7 @@ public class Plan {
         return price;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 }

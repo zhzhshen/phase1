@@ -35,9 +35,9 @@ public class PlanTest extends JerseyTest {
     @Mock
     Session session;
 
-    private Plan plan = new Plan(1, 88, 500, 100);
+    private Plan plan = new Plan("1", 88, 500, 100);
 
-    long id = Long.valueOf(1);
+    String id = "1";
 
     @Override
     protected Application configure() {
@@ -72,7 +72,7 @@ public class PlanTest extends JerseyTest {
 
     @Test
     public void should_operator_fail_to_create_a_new_plan() throws URISyntaxException {
-        when(planRepository.create(any())).thenReturn((long) 0);
+        when(planRepository.create(any())).thenReturn(null);
 
         Response response = target("/plans").request().post(Entity.json(plan()));
 
@@ -115,13 +115,12 @@ public class PlanTest extends JerseyTest {
         assertThat(response.getStatus(), is(404));
     }
 
-
     private Map<String, Object> plan() {
         return new HashMap<String, Object>() {{
             put("name", "88元套餐");
             put("price", 88);
             put("data", 500);
-            put("call", 100);
+            put("calls", 100);
         }};
     }
 }

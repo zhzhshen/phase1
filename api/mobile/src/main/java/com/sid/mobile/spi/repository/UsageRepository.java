@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface UsageRepository {
-    long create(Card card, Map<String, Object> info);
+    String create(Card card, Map<String, Object> info);
 
-    Usage findById(long id);
+    Usage findById(String id);
 
     List<Usage> findByNumber(String number);
 }

@@ -46,8 +46,8 @@ public class TopupTest extends JerseyTest {
 
     private String number = "13800000000";
 
-    private Card card = new Card(number, 11.0, 22.2, 33, 1);
-    private Plan plan = new Plan(1, 88, 500, 100);
+    private Card card = new Card(number, 11.0, 22.2, 33, "1");
+    private Plan plan = new Plan("1", 88, 500, 100);
     private Topup topup = new Topup(1, 100);
 
     @Override
@@ -70,9 +70,9 @@ public class TopupTest extends JerseyTest {
     @Before
     public void before() {
         when(cardRepository.findByNumber(eq(number))).thenReturn(card);
-        when(planRepository.findById((long) 1)).thenReturn(plan);
-        when(topupRepository.create(any(), any())).thenReturn((long) 1);
-        when(topupRepository.findById((long) 1)).thenReturn(topup);
+        when(planRepository.findById("1")).thenReturn(plan);
+        when(topupRepository.create(any(), any())).thenReturn("1");
+        when(topupRepository.findById("1")).thenReturn(topup);
         when(session.isOperator()).thenReturn(false);
         when(session.validate()).thenReturn(true);
     }
@@ -86,7 +86,7 @@ public class TopupTest extends JerseyTest {
 
     @Test
     public void should_fail_to_create_topup() {
-        when(topupRepository.create(any(), any())).thenReturn((long) 0);
+        when(topupRepository.create(any(), any())).thenReturn(null);
 
         Response response = target("/numbers/" + number + "/top-ups").request().post(Entity.json(topup()));
 

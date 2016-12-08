@@ -5,9 +5,9 @@ public class Card {
     private double balance;
     private double data;
     private int call;
-    private long planId;
+    private String planId;
 
-    public Card(String number, double balance, double data, int call, long planId) {
+    public Card(String number, double balance, double data, int call, String planId) {
         this.number = number;
         this.balance = balance;
         this.data = data;
@@ -27,7 +27,7 @@ public class Card {
         return call;
     }
 
-    public long getPlanId() {
+    public String getPlanId() {
         return planId;
     }
 

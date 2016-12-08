@@ -35,7 +35,7 @@ public class ProductTest extends JerseyTest {
     @Mock
     Session session;
 
-    long id = Long.valueOf(1);
+    String id = "1";
 
     Product product = new Product(1, "data", 30, 500);
 
@@ -73,7 +73,7 @@ public class ProductTest extends JerseyTest {
 
     @Test
     public void should_operator_fail_to_create_a_new_product() throws URISyntaxException {
-        when(productRepository.create(any())).thenReturn((long) 0);
+        when(productRepository.create(any())).thenReturn(null);
 
         Response response = target("/products").request().post(Entity.json(product()));
 

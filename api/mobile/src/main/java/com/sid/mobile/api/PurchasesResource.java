@@ -29,7 +29,7 @@ public class PurchasesResource {
     @GET
     @Path("{purchase_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Purchase getPurchase(@PathParam("purchase_id") long id,
+    public Purchase getPurchase(@PathParam("purchase_id") String id,
                                 @Context PurchaseRepository repository) {
         Purchase purchase = repository.findById(id);
         if (purchase != null) {
@@ -41,7 +41,7 @@ public class PurchasesResource {
     @GET
     @Path("{purchase_id}/refill")
     @Produces(MediaType.APPLICATION_JSON)
-    public Refill getRefill(@PathParam("purchase_id") long id,
+    public Refill getRefill(@PathParam("purchase_id") String id,
                             @Context PurchaseRepository repository,
                             @Context RefillRepository refillRepository) {
         Purchase purchase = getPurchase(id, repository);

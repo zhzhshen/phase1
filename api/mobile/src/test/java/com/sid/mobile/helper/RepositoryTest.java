@@ -9,9 +9,13 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.Application;
 
+@Ignore
+@RunWith(MybatisTestRunner.class)
 public class RepositoryTest extends JerseyTest {
 
     @Override
@@ -22,11 +26,11 @@ public class RepositoryTest extends JerseyTest {
     }
 
     @Before
-    public void setUp() {
+    public void before() {
         ServiceLocator locator = ServiceLocatorUtilities.bind(new AbstractBinder() {
             @Override
             protected void configure() {
-                bind(PlanRepository.class).to(PlanRepository.class);
+                bind(PlanRepository.class).to(com.sid.mobile.spi.repository.PlanRepository.class);
             }
         });
         locator.inject(this);

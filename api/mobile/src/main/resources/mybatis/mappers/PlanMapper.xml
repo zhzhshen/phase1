@@ -8,7 +8,7 @@
         SELECT id, name, price, data, calls from plan where id = #{id}
     </select>
     <select id="findByName" resultType="com.sid.mobile.model.Plan">
-        SELECT id, name, price, data, calls from plan where username = #{name}
+        SELECT id, name, price, data, calls from plan where name = #{name}
     </select>
     <select id="all" resultType="com.sid.mobile.model.Plan">
         SELECT id, name, price, data, calls from plan
