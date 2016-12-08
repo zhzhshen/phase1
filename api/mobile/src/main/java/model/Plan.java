@@ -1,16 +1,21 @@
 package model;
 
 public class Plan {
+    private long id;
     private final int price;
     private final int data;
     private final int call;
-    private long id;
+    private final String name = null;
 
     public Plan(int id, int price, int data, int call) {
         this.id = id;
         this.price = price;
         this.data = data;
         this.call = call;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getCall() {

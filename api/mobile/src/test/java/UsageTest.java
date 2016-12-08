@@ -8,9 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import repository.CardRepository;
-import repository.PlanRepository;
-import repository.UsageRepository;
+import spi.model.Session;
+import spi.model.Usage;
+import spi.repository.CardRepository;
+import spi.repository.PlanRepository;
+import spi.repository.UsageRepository;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;

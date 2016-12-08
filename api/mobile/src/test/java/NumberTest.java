@@ -1,9 +1,9 @@
 import jersey.RoutesFeature;
 import model.Card;
-import repository.CardRepository;
+import spi.repository.CardRepository;
 import model.Plan;
-import repository.PlanRepository;
-import model.Session;
+import spi.repository.PlanRepository;
+import spi.model.Session;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;

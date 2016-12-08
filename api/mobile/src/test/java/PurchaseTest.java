@@ -8,10 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import repository.CardRepository;
-import repository.PlanRepository;
-import repository.PurchaseRepository;
-import repository.RefillRepository;
+import spi.model.Purchase;
+import spi.model.Session;
+import spi.repository.CardRepository;
+import spi.repository.PlanRepository;
+import spi.repository.PurchaseRepository;
+import spi.repository.RefillRepository;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;

@@ -1,7 +1,7 @@
-package repository;
+package spi.repository;
 
 import model.Card;
-import model.Purchase;
+import spi.model.Purchase;
 
 import java.util.List;
 import java.util.Map;

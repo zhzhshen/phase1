@@ -1,5 +1,7 @@
 package model;
 
+import spi.model.Purchase;
+
 public class PlanPurchase implements Purchase {
     private long id;
     private final String type = "plan";

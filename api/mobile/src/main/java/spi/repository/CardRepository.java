@@ -1,4 +1,4 @@
-package repository;
+package spi.repository;
 
 import model.Card;
 

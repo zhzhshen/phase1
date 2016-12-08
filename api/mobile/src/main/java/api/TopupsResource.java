@@ -3,7 +3,7 @@ package api;
 import jersey.Routes;
 import model.Card;
 import model.Topup;
-import repository.TopupRepository;
+import spi.repository.TopupRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;

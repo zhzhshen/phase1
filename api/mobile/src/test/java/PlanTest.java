@@ -1,7 +1,7 @@
 import jersey.RoutesFeature;
 import model.Plan;
-import repository.PlanRepository;
-import model.Session;
+import spi.repository.PlanRepository;
+import spi.model.Session;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -117,6 +117,7 @@ public class PlanTest extends JerseyTest {
 
     private Map<String, Object> plan() {
         return new HashMap<String, Object>() {{
+            put("name", "88元套餐");
             put("price", 88);
             put("data", 500);
             put("call", 100);

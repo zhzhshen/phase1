@@ -1,5 +1,7 @@
 package model;
 
+import spi.model.Usage;
+
 public class CallUsage implements Usage {
     private final String type = "call";
     private final String toNumber;

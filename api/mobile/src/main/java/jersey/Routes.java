@@ -1,6 +1,8 @@
 package jersey;
 
 import model.*;
+import spi.model.Purchase;
+import spi.model.Usage;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;

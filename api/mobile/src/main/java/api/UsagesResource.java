@@ -1,8 +1,8 @@
 package api;
 
 import model.Card;
-import model.Usage;
-import repository.UsageRepository;
+import spi.model.Usage;
+import spi.repository.UsageRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;

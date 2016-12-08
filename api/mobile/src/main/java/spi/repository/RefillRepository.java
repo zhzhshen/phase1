@@ -1,6 +1,6 @@
-package repository;
+package spi.repository;
 
-import model.Purchase;
+import spi.model.Purchase;
 import model.Refill;
 
 public interface RefillRepository {

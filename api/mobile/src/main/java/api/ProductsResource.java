@@ -2,8 +2,8 @@ package api;
 
 import jersey.Routes;
 import model.Product;
-import repository.ProductRepository;
-import model.Session;
+import spi.repository.ProductRepository;
+import spi.model.Session;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

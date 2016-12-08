@@ -1,8 +1,8 @@
 package api;
 
 import jersey.Routes;
-import repository.CardRepository;
-import model.Session;
+import spi.repository.CardRepository;
+import spi.model.Session;
 
 import javax.inject.Inject;
 import javax.ws.rs.Path;

@@ -2,10 +2,13 @@ package api;
 
 import jersey.Routes;
 import model.*;
-import repository.PlanRepository;
-import repository.PurchaseRepository;
-import repository.RefillRepository;
-import repository.UsageRepository;
+import spi.model.Purchase;
+import spi.model.Session;
+import spi.model.Usage;
+import spi.repository.PlanRepository;
+import spi.repository.PurchaseRepository;
+import spi.repository.RefillRepository;
+import spi.repository.UsageRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;

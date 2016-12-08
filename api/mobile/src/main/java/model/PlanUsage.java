@@ -1,5 +1,7 @@
 package model;
 
+import spi.model.Usage;
+
 public class PlanUsage implements Usage {
     private final String type = "plan";
     private final long id;

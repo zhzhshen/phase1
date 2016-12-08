@@ -1,10 +1,10 @@
 package api;
 
 import model.Card;
-import model.Purchase;
+import spi.model.Purchase;
 import model.Refill;
-import repository.PurchaseRepository;
-import repository.RefillRepository;
+import spi.repository.PurchaseRepository;
+import spi.repository.RefillRepository;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;

@@ -1,7 +1,7 @@
 import jersey.RoutesFeature;
 import model.Card;
 import model.Plan;
-import model.Session;
+import spi.model.Session;
 import model.Topup;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import repository.CardRepository;
-import repository.PlanRepository;
-import repository.TopupRepository;
+import spi.repository.CardRepository;
+import spi.repository.PlanRepository;
+import spi.repository.TopupRepository;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;

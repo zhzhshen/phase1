@@ -1,4 +1,4 @@
-package model;
+package spi.model;
 
 public interface Usage {
     long getId();
