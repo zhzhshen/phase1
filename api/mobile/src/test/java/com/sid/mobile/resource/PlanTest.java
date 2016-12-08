@@ -1,7 +1,10 @@
-package resource;
+package com.sid.mobile.resource;
 
+import com.sid.mobile.helper.TestData;
 import com.sid.mobile.jersey.RoutesFeature;
 import com.sid.mobile.model.Plan;
+import com.sid.mobile.spi.model.Session;
+import com.sid.mobile.spi.repository.PlanRepository;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -10,8 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import com.sid.mobile.spi.model.Session;
-import com.sid.mobile.spi.repository.PlanRepository;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
@@ -19,7 +20,6 @@ import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +64,7 @@ public class PlanTest extends JerseyTest {
 
     @Test
     public void should_operator_success_to_create_a_new_plan() throws URISyntaxException {
-        Response response = target("/plans").request().post(Entity.json(plan()));
+        Response response = target("/plans").request().post(Entity.json((Map<String,Object>) TestData.PLAN));
 
         assertThat(response.getStatus(), is(201));
         assertThat(response.getLocation(), is(new URI(getBaseUri() + "plans/" + id)));
@@ -74,7 +74,7 @@ public class PlanTest extends JerseyTest {
     public void should_operator_fail_to_create_a_new_plan() throws URISyntaxException {
         when(planRepository.create(any())).thenReturn(null);
 
-        Response response = target("/plans").request().post(Entity.json(plan()));
+        Response response = target("/plans").request().post(Entity.json((Map<String,Object>) TestData.PLAN));
 
         assertThat(response.getStatus(), is(400));
     }
@@ -83,7 +83,7 @@ public class PlanTest extends JerseyTest {
     public void should_user_fail_to_create_a_new_plan() throws URISyntaxException {
         when(session.isOperator()).thenReturn(false);
 
-        Response response = target("/plans").request().post(Entity.json(plan()));
+        Response response = target("/plans").request().post(Entity.json((Map<String,Object>) TestData.PLAN));
 
         assertThat(response.getStatus(), is(404));
     }
@@ -113,14 +113,5 @@ public class PlanTest extends JerseyTest {
         Response response = target("/plans/" + id).request().get();
 
         assertThat(response.getStatus(), is(404));
-    }
-
-    private Map<String, Object> plan() {
-        return new HashMap<String, Object>() {{
-            put("name", "88元套餐");
-            put("price", 88);
-            put("data", 500);
-            put("calls", 100);
-        }};
     }
 }

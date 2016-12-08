@@ -1,4 +1,4 @@
-package resource;
+package com.sid.mobile.resource;
 
 import com.sid.mobile.jersey.RoutesFeature;
 import com.sid.mobile.model.Card;

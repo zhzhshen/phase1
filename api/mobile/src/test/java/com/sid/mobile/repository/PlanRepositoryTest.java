@@ -1,11 +1,10 @@
 package com.sid.mobile.repository;
 
 import com.sid.mobile.helper.RepositoryTest;
+import com.sid.mobile.helper.TestData;
 import org.junit.Test;
 
 import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -28,7 +27,7 @@ public class PlanRepositoryTest extends RepositoryTest {
 
     @Test
     public void should_save_successfully () {
-        String id = planRepository.create(plan());
+        String id = planRepository.create(TestData.PLAN);
         assertThat(planRepository.findById(id), is(notNullValue()));
     }
 
@@ -38,12 +37,4 @@ public class PlanRepositoryTest extends RepositoryTest {
         assertThat(planRepository.all().size(), is(1));
     }
 
-    private Map<String, Object> plan() {
-        return new HashMap<String, Object>() {{
-            put("name", "88元套餐");
-            put("price", 88);
-            put("data", 500);
-            put("calls", 100);
-        }};
-    }
 }
