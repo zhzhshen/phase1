@@ -1,0 +1,4 @@
+rootProject.name = 'webworks'
+include 'containers'
+include 'core-server'
+
