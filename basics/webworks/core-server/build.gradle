@@ -8,5 +8,7 @@ repositories {
 }
 
 dependencies {
+    compile project(':containers')
     testCompile 'junit:junit:4.11'
+    testCompile 'org.mockito:mockito-all:1.10.19'
 }
