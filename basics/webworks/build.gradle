@@ -1,11 +1,19 @@
-group 'com.sid'
-version '1.0-SNAPSHOT'
+allprojects {
+    group 'com.sid'
+    version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
+    apply plugin: 'java'
 
-repositories {
-    mavenCentral()
+    repositories {
+        mavenCentral()
+    }
 }
 
-dependencies {
+subprojects {
+    dependencies {
+        compile 'org.glassfish.hk2:hk2-api:2.5.0-b30'
+
+        testCompile 'junit:junit:4.11'
+        testCompile 'org.mockito:mockito-all:1.10.19'
+    }
 }

@@ -1,17 +1,6 @@
-group 'com.sid'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     compile project(':core-server')
 
     compile 'org.glassfish.grizzly:grizzly-http-server:2.3.28'
-    compile 'org.glassfish.hk2:hk2-api:2.5.0-b30'
-
-    testCompile 'junit:junit:4.11'
 }

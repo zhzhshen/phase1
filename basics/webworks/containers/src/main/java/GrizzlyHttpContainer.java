@@ -1,11 +1,8 @@
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.grizzly.http.server.Response;
-import org.glassfish.hk2.api.DynamicConfiguration;
-import org.glassfish.hk2.api.DynamicConfigurationService;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.api.ServiceLocatorFactory;
-import org.glassfish.hk2.utilities.BuilderHelper;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.Method;
@@ -18,7 +15,7 @@ public class GrizzlyHttpContainer extends HttpHandler {
 
     public GrizzlyHttpContainer(ResourceConfig resourceConfig) {
         this.resourceConfig = resourceConfig;
-        populate(locator, resourceConfig);
+        resourceConfig.register(locator);
     }
 
     @Override
@@ -37,15 +34,5 @@ public class GrizzlyHttpContainer extends HttpHandler {
 
     private boolean methodMatched(Method m, org.glassfish.grizzly.http.Method method) {
         return Arrays.stream(m.getAnnotations()).filter(annotation -> annotation.toString().contains(method.getMethodString())).count() == 1;
-    }
-
-    private void populate(ServiceLocator locator, ResourceConfig resourceConfig) {
-        DynamicConfigurationService dcs = locator.getService(DynamicConfigurationService.class);
-        DynamicConfiguration config = dcs.createDynamicConfiguration();
-
-        resourceConfig.getResources()
-                .stream()
-                .forEach(resourceClass -> config.bind(BuilderHelper.createDescriptorFromClass(resourceClass)));
-        config.commit();
     }
 }
