@@ -23,7 +23,6 @@ public class ServerTest {
     @Test
     public void should_success_to_create_server () {
         final URI BASE_URI = URI.create("http://localhost:1234/");
-
         final HttpServer server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, true);
 
         NetworkListener listener = server.getListener("grizzly");
