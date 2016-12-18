@@ -1,3 +1,4 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.Request;
 import org.glassfish.grizzly.http.server.Response;
@@ -5,6 +6,8 @@ import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.api.ServiceLocatorFactory;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -25,7 +28,19 @@ public class GrizzlyHttpContainer extends HttpHandler {
                 .filter(resource -> ((Path) resource.getAnnotation(Path.class)).value().equals(request.getHttpHandlerPath()))
                 .findFirst().map(resource -> resource).get();
 
-        response.getWriter().write((String) findMethod(resourceClass, request.getMethod()).invoke(locator.getService(resourceClass)));
+        Method method = findMethod(resourceClass, request.getMethod());
+
+        String[] typesString = method.isAnnotationPresent(Produces.class)
+                ? method.getAnnotation(Produces.class).value()
+                : null;
+        MediaType type = MediaType.valueOf(typesString[0]);
+
+        Object result = method.invoke(locator.getService(resourceClass));
+        if (type.toString().equals(MediaType.APPLICATION_JSON)) {
+            result = new ObjectMapper().writeValueAsString(result);
+        }
+
+        response.getWriter().write((String) result);
     }
 
     private Method findMethod(Class resourceClass, org.glassfish.grizzly.http.Method method) {

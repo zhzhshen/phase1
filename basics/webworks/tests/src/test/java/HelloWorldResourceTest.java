@@ -11,7 +11,7 @@ import java.net.URI;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class ResourceTest {
+public class HelloWorldResourceTest {
     final URI BASE_URI = URI.create("http://localhost:8080/");
     HttpServer server;
 
