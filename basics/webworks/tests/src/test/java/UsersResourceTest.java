@@ -28,6 +28,6 @@ public class UsersResourceTest {
         Response res = client.target(BASE_URI + "users").request("application/json").get();
 
         assertThat(res.getStatus(), is(200));
-        assertThat(res.readEntity(String.class), is("{\"name\":\"Sid\"}"));
+        assertThat(res.readEntity(String.class), is("{\"firstName\":\"Sid\",\"lastName\":\"Shen\"}"));
     }
 }
