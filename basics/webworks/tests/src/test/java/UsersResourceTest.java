@@ -1,6 +1,8 @@
+import models.User;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Test;
+import util.MyMessageBodyReader;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -24,10 +26,13 @@ public class UsersResourceTest {
         ResourceConfig config = new ResourceConfig(UsersResource.class);
         server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, config, true);
 
-        Client client = ClientBuilder.newClient();
+        Client client = ClientBuilder.newClient().register(MyMessageBodyReader.class);
         Response res = client.target(BASE_URI + "users").request("application/json").get();
 
+        User user = res.readEntity(User.class);
         assertThat(res.getStatus(), is(200));
-        assertThat(res.readEntity(String.class), is("{\"firstName\":\"Sid\",\"lastName\":\"Shen\"}"));
+        assertThat(user.getFirstName(), is("Sid"));
+        assertThat(user.getLastName(), is("Shen"));
     }
+
 }
