@@ -1,3 +1,5 @@
+package config;
+
 import org.glassfish.hk2.api.DynamicConfiguration;
 import org.glassfish.hk2.api.DynamicConfigurationService;
 import org.glassfish.hk2.api.ServiceLocator;
@@ -6,18 +8,18 @@ import org.glassfish.hk2.utilities.BuilderHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-class ResourceConfig {
+public class ResourceConfig {
     private List<Class> resources = new ArrayList<>();
 
-    ResourceConfig(Class klass) {
+    public ResourceConfig(Class klass) {
         resources.add(klass);
     }
 
-    List<Class> getResources() {
+    public List<Class> getResources() {
         return resources;
     }
 
-    void register(ServiceLocator locator) {
+    public void registerResources(ServiceLocator locator) {
         DynamicConfigurationService dcs = locator.getService(DynamicConfigurationService.class);
         DynamicConfiguration config = dcs.createDynamicConfiguration();
 

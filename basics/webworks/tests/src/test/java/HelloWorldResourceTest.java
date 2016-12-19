@@ -1,3 +1,4 @@
+import config.ResourceConfig;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
 import org.junit.Test;
