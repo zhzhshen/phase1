@@ -2,7 +2,6 @@ import config.ResourceConfig;
 import models.User;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import util.MyMessageBodyReader;
 
@@ -39,7 +38,6 @@ public class UsersResourceTest {
         assertThat(user.get("lastName"), is("Shen"));
     }
 
-    @Ignore
     @Test
     public void should_success_to_get_specific_users () {
         ResourceConfig config = new ResourceConfig(UsersResource.class);

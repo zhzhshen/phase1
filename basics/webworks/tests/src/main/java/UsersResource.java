@@ -2,7 +2,6 @@ import models.User;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
@@ -16,9 +15,9 @@ public class UsersResource {
         return Arrays.asList(new User("Sid", "Shen"));
     }
 
-    @Path("/{id}")
+    @Path("/1")
     @Produces(MediaType.APPLICATION_JSON)
-    public User get(@PathParam("id") String id) {
+    public User get() {
         return new User("Sid", "Shen");
     }
 }

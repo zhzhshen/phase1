@@ -15,23 +15,35 @@ public class Router {
         if (routes.containsKey(path)) {
             return routes.get(path);
         } else {
-            Class resourceClass = resourceConfig.getResources()
-                .stream()
-                .filter(resource -> ((Path) resource.getAnnotation(Path.class)).value().equals(path))
+            Class resourceClass = resourceConfig.getResources().stream()
+                .filter(resource -> resource.isAnnotationPresent(Path.class))
+                .filter(resource -> path.startsWith(((Path) resource.getAnnotation(Path.class)).value()))
                 .findFirst().map(resource -> resource).get();
+            String[] splitPath = path.split(((Path) resourceClass.getAnnotation(Path.class)).value());
 
-            Method method = findMethod(resourceClass, methodString);
+            Method method = findMethod(resourceClass,
+                    splitPath.length > 1 ? splitPath[1] : null,
+                    methodString);
             Route route = new Route(path, new Endpoint(resourceClass, method));
             routes.put(path, route);
             return route;
         }
     }
 
-    private static Method findMethod(Class resourceClass, String method) {
-        return Arrays.stream(resourceClass.getMethods()).filter(m -> methodMatched(m, method)).findFirst().get();
+    private static Method findMethod(Class resourceClass, String subpath, String method) {
+        if (subpath == null) {
+            return Arrays.stream(resourceClass.getMethods()).filter(m -> methodMatched(m, method)).findFirst().get();
+        } else {
+            return Arrays.stream(resourceClass.getMethods())
+                    .filter(m -> m.isAnnotationPresent(Path.class))
+                    .filter(m -> m.getAnnotation(Path.class).value().equals(subpath))
+                    .findFirst().map(m -> m).get();
+        }
     }
 
     private static boolean methodMatched(Method m, String method) {
-        return Arrays.stream(m.getAnnotations()).filter(annotation -> annotation.toString().contains(method)).count() == 1;
+        return Arrays.stream(m.getAnnotations())
+                .filter(annotation -> annotation.toString().contains(method))
+                .count() == 1;
     }
 }
