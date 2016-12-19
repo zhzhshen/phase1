@@ -4,14 +4,17 @@ public class Card {
     private String number;
     private double balance;
     private double data;
-    private int call;
+    private int calls;
     private String planId;
 
-    public Card(String number, double balance, double data, int call, String planId) {
+    public Card() {
+    }
+
+    public Card(String number, double balance, double data, int calls, String planId) {
         this.number = number;
         this.balance = balance;
         this.data = data;
-        this.call = call;
+        this.calls = calls;
         this.planId = planId;
     }
 
@@ -23,8 +26,8 @@ public class Card {
         return data;
     }
 
-    public int getCall() {
-        return call;
+    public int getCalls() {
+        return calls;
     }
 
     public String getPlanId() {

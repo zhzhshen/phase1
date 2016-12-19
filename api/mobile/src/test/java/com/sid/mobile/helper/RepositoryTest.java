@@ -1,6 +1,7 @@
 package com.sid.mobile.helper;
 
 import com.sid.mobile.jersey.RoutesFeature;
+import com.sid.mobile.repository.CardRepository;
 import com.sid.mobile.repository.PlanRepository;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
@@ -31,6 +32,7 @@ public class RepositoryTest extends JerseyTest {
             @Override
             protected void configure() {
                 bind(PlanRepository.class).to(com.sid.mobile.spi.repository.PlanRepository.class);
+                bind(CardRepository.class).to(com.sid.mobile.spi.repository.CardRepository.class);
             }
         });
         locator.inject(this);

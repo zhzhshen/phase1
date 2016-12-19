@@ -4,25 +4,25 @@ public class Plan {
     private String id;
     private int price;
     private int data;
-    private int call;
+    private int calls;
     private String name;
 
     public Plan() {
     }
 
-    public Plan(String id, int price, int data, int call) {
+    public Plan(String id, int price, int data, int calls) {
         this.id = id;
         this.price = price;
         this.data = data;
-        this.call = call;
+        this.calls = calls;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getCall() {
-        return call;
+    public int getCalls() {
+        return calls;
     }
 
     public int getData() {
