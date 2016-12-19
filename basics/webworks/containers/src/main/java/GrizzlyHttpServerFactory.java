@@ -33,7 +33,7 @@ public class GrizzlyHttpServerFactory {
             final String path = uri.getPath().replaceAll("/{2,}", "/");
 
             final String contextPath = path.endsWith("/") ? path.substring(0, path.length() - 1) : path;
-            config.addHttpHandler(new GrizzlyHttpContainer(resourceConfig), HttpHandlerRegistration.bulder().contextPath(contextPath).build());
+            config.addHttpHandler(new GrizzlyHttpContainer(resourceConfig), HttpHandlerRegistration.builder().contextPath(contextPath).build());
         }
 
         if (start) {
