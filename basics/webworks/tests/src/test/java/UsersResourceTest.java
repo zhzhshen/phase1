@@ -1,5 +1,7 @@
+import models.User;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import util.MyMessageBodyReader;
 
@@ -36,4 +38,18 @@ public class UsersResourceTest {
         assertThat(user.get("lastName"), is("Shen"));
     }
 
+    @Ignore
+    @Test
+    public void should_success_to_get_specific_users () {
+        ResourceConfig config = new ResourceConfig(UsersResource.class);
+        server = GrizzlyHttpServerFactory.createHttpServer(BASE_URI, config, true);
+
+        Client client = ClientBuilder.newClient().register(MyMessageBodyReader.class);
+        Response res = client.target(BASE_URI + "users/1").request("application/json").get();
+
+        User user = res.readEntity(User.class);
+        assertThat(res.getStatus(), is(200));
+        assertThat(user.getFirstName(), is("Sid"));
+        assertThat(user.getLastName(), is("Shen"));
+    }
 }
