@@ -1,20 +1,28 @@
 package com.sid.mobile.model;
 
 public class Product {
-    private long id;
-    private final String type;
-    private final int price;
-    private final int amount;
+    private String id;
+    private String name;
+    private String type;
+    private int price;
+    private int amount;
 
-    public Product(int id, String type, int price, int amount) {
+    public Product() {
+    }
+
+    public Product(String id, String type, int price, int amount) {
         this.id = id;
         this.type = type;
         this.price = price;
         this.amount = amount;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getType() {

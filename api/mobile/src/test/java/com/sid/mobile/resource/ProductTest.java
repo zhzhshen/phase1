@@ -37,7 +37,7 @@ public class ProductTest extends JerseyTest {
 
     String id = "1";
 
-    Product product = new Product(1, "data", 30, 500);
+    Product product = new Product("1", "data", 30, 500);
 
     @Override
     protected Application configure() {

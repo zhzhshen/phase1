@@ -14,6 +14,7 @@ public class TestData {
 
     public static final HashMap<String, Object> PRODUCT = new HashMap<String, Object>() {
         {
+            put("name", "30元流量包");
             put("type", "data");
             put("amount", 500);
             put("price", 30);

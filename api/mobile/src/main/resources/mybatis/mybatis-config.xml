@@ -30,5 +30,6 @@
     <mappers>
         <mapper resource="mybatis/mappers/PlanMapper.xml"/>
         <mapper resource="mybatis/mappers/CardMapper.xml"/>
+        <mapper resource="mybatis/mappers/ProductMapper.xml"/>
     </mappers>
 </configuration>

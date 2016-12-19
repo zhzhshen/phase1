@@ -16,5 +16,14 @@ create table Card (
   FOREIGN KEY (planId) REFERENCES Plan(id)
 );
 
+create table Product (
+  id varchar(100) PRIMARY KEY,
+  name varchar(100) NOT NULL,
+  type varchar(100) NOT NULL,
+  price DOUBLE NOT NULL,
+  amount DOUBLE NOT NULL
+);
+
 INSERT INTO Plan VALUES ('1', '88 suite', 88, 500, 100);
 INSERT INTO Card VALUES ('1', '13800000000', 0, 0, 0, '1');
+INSERT INTO Product VALUES ('1', '30 data suite', 'data', 30, 500);
