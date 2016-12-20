@@ -3,7 +3,9 @@ import migration.MigrationManager;
 import model.User;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import util.Criterion;
 import util.FinderUtil;
 
 import java.sql.SQLException;
@@ -36,17 +38,34 @@ public class SingleTableMappingTest {
     @Test
     public void should_fail_to_find_by_inexist_id () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         User user = finderUtil.get(User.class, INEXIST_ID);
+
         assertThat(user, nullValue());
     }
 
     @Test
     public void should_success_to_find_by_id () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         User user = finderUtil.get(User.class, EXISTING_ID);
+
         assertThat(user, notNullValue());
         assertThat(user.userId, is(EXISTING_ID));
         assertThat(user.firstName, is("Sid"));
         assertThat(user.lastName, is("Shen"));
         assertThat(user.age, is(24));
+    }
+
+    @Test
+    public void should_fail_to_find_by_inexist_field () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        User user = finderUtil.from(User.class).criterion(Criterion.eq("firstName", "Zhangzhe")).get();
+
+        assertThat(user, nullValue());
+    }
+
+    @Ignore
+    @Test
+    public void should_success_to_find_by_existing_field () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+        User user = finderUtil.from(User.class).criterion(Criterion.eq("firstName", "Sid")).get();
+
+        assertThat(user, notNullValue());
     }
 
     @After

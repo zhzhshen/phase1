@@ -15,9 +15,14 @@ import java.util.stream.Collectors;
 
 public class FinderUtil {
     private ConnectionConfig connectionConfig;
+    private List<Criterion> criteria;
 
     public FinderUtil(ConnectionConfig connectionConfig) {
         this.connectionConfig = connectionConfig;
+    }
+
+    public <T> CriteriaBuilder from(Class<T> klass) {
+        return new CriteriaBuilder(this, klass);
     }
 
     public <T> T get(Class<T> klass, Serializable id) throws SQLException, IllegalAccessException, InstantiationException, NoSuchFieldException {
