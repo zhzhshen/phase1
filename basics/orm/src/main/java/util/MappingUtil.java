@@ -33,4 +33,8 @@ public class MappingUtil {
     public <T> void update(T object) throws SQLException {
         ObjectFinderFactory.get(object.getClass(), connectionConfig).update(object);
     }
+
+    public <T> void delete(T object) throws SQLException {
+        ObjectFinderFactory.get(object.getClass(), connectionConfig).delete(object);
+    }
 }

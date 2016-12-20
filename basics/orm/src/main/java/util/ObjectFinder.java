@@ -65,6 +65,11 @@ public class ObjectFinder {
         connection.close();
     }
 
+    public <T> void delete(T object) throws SQLException {
+        connection.createStatement().executeUpdate(getSQLDelete(object));
+        connection.close();
+    }
+
     private String getSQLRead(Criterion... criteria) {
         return "SELECT " + String.join(",", columns.stream().map(ColumnMapping::getColumnName).collect(Collectors.toList()))
                 + " FROM " + tableName
@@ -95,8 +100,6 @@ public class ObjectFinder {
     }
 
     private <T> String getSQLUpdate(T object) {
-        String idValue = getFieldValue(id, object);
-
         return "UPDATE " + tableName
                 + " SET "
                 + String.join(",",
@@ -105,7 +108,13 @@ public class ObjectFinder {
                         .map(column -> column.getColumnName() + "=" + getFieldValue(column, object))
                         .collect(Collectors.toList()))
                 + " WHERE "
-                + id.getColumnName() + "=" + idValue;
+                + id.getColumnName() + "=" + getFieldValue(id, object);
+    }
+
+    private <T> String getSQLDelete(T object) {
+        return "DELETE FROM " + tableName
+                + " WHERE "
+                + id.getColumnName() + "=" + getFieldValue(id, object);
     }
 
     private <T> String getFieldValue(ColumnMapping column, T object) {

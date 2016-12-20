@@ -11,9 +11,11 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 
-public class SingleTableReadTest extends DBSetup {
+public class SingleTableTest extends DBSetup {
     private String EXISTING_ID = "1";
     private String INEXIST_ID = "2";
+    private User EXISTING_USER = new User(EXISTING_ID, "Sid", "Shen", 24);
+    private User INEXIST_USER = new User(INEXIST_ID, "Zhangzhe", "Shen", 30);
 
     @Test
     public void should_fail_to_find_by_inexist_id () {
@@ -77,35 +79,46 @@ public class SingleTableReadTest extends DBSetup {
 
     @Test
     public void should_success_to_create_new_record () throws SQLException {
-        User user = new User(INEXIST_ID, "Zhangzhe", "Shen", 30);
-        mappingUtil.save(user);
+        mappingUtil.save(INEXIST_USER);
 
-        assertThat(mappingUtil.get(User.class, "2"), is(user));
+        assertThat(mappingUtil.get(User.class, "2"), is(INEXIST_USER));
     }
 
     @Test(expected = SQLIntegrityConstraintViolationException.class)
     public void should_fail_to_create_new_record_existin_id () throws SQLException {
-        User user = new User(EXISTING_ID, "Zhangzhe", "Shen", 30);
-
-        mappingUtil.save(user);
+        mappingUtil.save(EXISTING_USER);
     }
 
     @Test
     public void should_fail_to_update_inexist_record () throws SQLException {
-        User user = new User(INEXIST_ID, "Zhangzhe", "Shen", 30);
-
-        mappingUtil.update(user);
+        mappingUtil.update(INEXIST_USER);
 
         assertThat(mappingUtil.get(User.class, INEXIST_ID), nullValue());
     }
 
     @Test
     public void should_success_to_update_existing_record () throws SQLException {
-        User user = new User(EXISTING_ID, "Zhangzhe", "Shen", 30);
+        User user = new User(EXISTING_ID, "Sid", "Shen", 30);
         assertThat(mappingUtil.get(User.class, EXISTING_ID), not(user));
 
         mappingUtil.update(user);
 
         assertThat(mappingUtil.get(User.class, EXISTING_ID), is(user));
+    }
+
+    @Test
+    public void should_fail_to_delete_inexist_record () throws SQLException {
+        mappingUtil.delete(INEXIST_USER);
+
+        assertThat(mappingUtil.get(User.class, INEXIST_ID), nullValue());
+    }
+
+    @Test
+    public void should_fail_to_delete_existING_record () throws SQLException {
+        assertThat(mappingUtil.get(User.class, EXISTING_ID), notNullValue());
+
+        mappingUtil.delete(EXISTING_USER);
+
+        assertThat(mappingUtil.get(User.class, EXISTING_ID), nullValue());
     }
 }
