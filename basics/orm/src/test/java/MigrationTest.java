@@ -33,7 +33,7 @@ public class MigrationTest {
     public void should_success_to_migrate () throws SQLException {
         migrationManager.migrate();
         Connection connection = DriverManager.getConnection(BASE_URL + "/" + DB_NAME, USER_NAME, PASSWORD);
-        ResultSet userTable = connection.getMetaData().getTables(DB_NAME, null, "User", new String[]{"TABLE"});
+        ResultSet userTable = connection.getMetaData().getTables(DB_NAME, null, "Users", new String[]{"TABLE"});
         assertThat(userTable.next(), is(true));
     }
 
