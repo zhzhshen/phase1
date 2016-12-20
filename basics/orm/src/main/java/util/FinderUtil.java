@@ -7,6 +7,7 @@ import annotation.Table;
 import config.ConnectionConfig;
 import mapping.ColumnMapping;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
@@ -19,7 +20,7 @@ public class FinderUtil {
         this.connectionConfig = connectionConfig;
     }
 
-    public <T> T get(Class<T> klass, String id) throws SQLException, IllegalAccessException, InstantiationException, NoSuchFieldException {
+    public <T> T get(Class<T> klass, Serializable id) throws SQLException, IllegalAccessException, InstantiationException, NoSuchFieldException {
         Connection connection = DriverManager.getConnection(connectionConfig.getBaseUrl() + "/" + connectionConfig.getDBName(),
                 connectionConfig.getUserName(),
                 connectionConfig.getPassword());
