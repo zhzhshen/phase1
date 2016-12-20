@@ -1,17 +1,17 @@
 package mapping;
 
-import util.FinderUtil;
+import util.MappingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CriteriaBuilder {
-    private final FinderUtil finderUtil;
+    private final MappingUtil mappingUtil;
     private final Class klass;
     private List<Criterion> criteria;
 
-    public <T> CriteriaBuilder(FinderUtil finderUtil, Class<T> klass) {
-        this.finderUtil = finderUtil;
+    public <T> CriteriaBuilder(MappingUtil mappingUtil, Class<T> klass) {
+        this.mappingUtil = mappingUtil;
         this.klass = klass;
         this.criteria = new ArrayList<>();
     }
@@ -22,6 +22,6 @@ public class CriteriaBuilder {
     }
 
     public <T> T get() {
-        return (T) finderUtil.get(klass, criteria.toArray(new Criterion[criteria.size()]));
+        return (T) mappingUtil.get(klass, criteria.toArray(new Criterion[criteria.size()]));
     }
 }

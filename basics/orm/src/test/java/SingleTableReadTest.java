@@ -13,14 +13,14 @@ public class SingleTableReadTest extends DBSetup {
 
     @Test
     public void should_fail_to_find_by_inexist_id () {
-        User user = finderUtil.get(User.class, INEXIST_ID);
+        User user = mappingUtil.get(User.class, INEXIST_ID);
 
         assertThat(user, nullValue());
     }
 
     @Test
     public void should_success_to_find_by_id () {
-        User user = finderUtil.get(User.class, EXISTING_ID);
+        User user = mappingUtil.get(User.class, EXISTING_ID);
 
         assertThat(user, notNullValue());
         assertThat(user.userId, is(EXISTING_ID));
@@ -31,42 +31,42 @@ public class SingleTableReadTest extends DBSetup {
 
     @Test
     public void should_fail_to_find_by_inexist_field () {
-        User user = finderUtil.from(User.class).criterion(Criterion.eq("firstName", "Zhangzhe")).get();
+        User user = mappingUtil.from(User.class).criterion(Criterion.eq("firstName", "Zhangzhe")).get();
 
         assertThat(user, nullValue());
     }
 
     @Test
     public void should_success_to_find_by_existing_field () {
-        User user = finderUtil.from(User.class).criterion(Criterion.eq("firstName", "Sid")).get();
+        User user = mappingUtil.from(User.class).criterion(Criterion.eq("firstName", "Sid")).get();
 
         assertThat(user, notNullValue());
     }
 
     @Test
     public void should_find_by_greater_than_field_return_empty () {
-        User user = finderUtil.from(User.class).criterion(Criterion.greater("age", 25)).get();
+        User user = mappingUtil.from(User.class).criterion(Criterion.greater("age", 25)).get();
 
         assertThat(user, nullValue());
     }
 
     @Test
     public void should_success_to_find_by_greater_than_field () {
-        User user = finderUtil.from(User.class).criterion(Criterion.greater("age", 20)).get();
+        User user = mappingUtil.from(User.class).criterion(Criterion.greater("age", 20)).get();
 
         assertThat(user, notNullValue());
     }
 
     @Test
     public void should_find_by_less_than_field_return_empty () {
-        User user = finderUtil.from(User.class).criterion(Criterion.less("age", 20)).get();
+        User user = mappingUtil.from(User.class).criterion(Criterion.less("age", 20)).get();
 
         assertThat(user, nullValue());
     }
 
     @Test
     public void should_success_to_find_by_less_than_field () {
-        User user = finderUtil.from(User.class).criterion(Criterion.less("age", 25)).get();
+        User user = mappingUtil.from(User.class).criterion(Criterion.less("age", 25)).get();
 
         assertThat(user, notNullValue());
     }

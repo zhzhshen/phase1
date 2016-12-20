@@ -6,7 +6,10 @@ import mapping.Criterion;
 import persistence.ConnectionPool;
 
 import java.lang.reflect.Field;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +20,7 @@ public class ObjectFinder {
     private final String tableName;
     private final List<ColumnMapping> columns;
     private ColumnMapping id;
+    private Connection connection;
 
     public ObjectFinder(Class klass, ConnectionConfig connectionConfig, String tableName, List<ColumnMapping> columns, ColumnMapping id) {
         this.klass = klass;
@@ -24,20 +28,20 @@ public class ObjectFinder {
         this.tableName = tableName;
         this.columns = columns;
         this.id = id;
+        this.connection = ConnectionPool.getConnection(connectionConfig);
     }
 
-    public ColumnMapping getId() {
+    public ColumnMapping getIdColumn() {
         return id;
     }
 
-    public <T> T resolve(Criterion... criteria) {
-        Connection connection = ConnectionPool.getConnection(connectionConfig);
+    public <T> T get(Criterion... criteria) {
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(generateSQL(criteria));
+            ResultSet rs = stmt.executeQuery(getSQLRead(criteria));
 
             if (rs.next()) {
-                return resolveObject(rs);
+                return getObject(rs);
             }
 
             return null;
@@ -53,13 +57,53 @@ public class ObjectFinder {
         }
     }
 
-    private String generateSQL(Criterion... criteria) {
+    public <T> void save(T object) {
+        try {
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(getSQLWrite(object));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                assert connection != null;
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String getSQLRead(Criterion... criteria) {
         return "SELECT " + String.join(",", columns.stream().map(ColumnMapping::getColumnName).collect(Collectors.toList()))
                 + " FROM " + tableName
                 + " WHERE " + String.join(",", Arrays.stream(criteria).map(Criterion::build).collect(Collectors.toList()));
     }
 
-    private <T> void resolveField(T result, Field field, Object value) {
+    private <T> String getSQLWrite(T object) {
+        return "INSERT INTO " + tableName + "("
+                + String.join(",", columns.stream().map(ColumnMapping::getColumnName).collect(Collectors.toList())) + ")"
+                + " VALUES("
+                + String.join(",",
+                    columns.stream()
+                        .map(column -> {
+                            try {
+                                Field field = object.getClass().getDeclaredField(column.getFieldName());
+                                field.setAccessible(true);
+                                if (String.class == field.getType()) {
+                                    return "'" + field.get(object) + "'";
+                                } else {
+                                    return String.valueOf(field.get(object));
+                                }
+                            } catch (NoSuchFieldException | IllegalAccessException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .collect(Collectors.toList()))
+                + ")";
+    }
+
+    private <T> void injectField(T result, Field field, Object value) {
         field.setAccessible(true);
 
         try {
@@ -71,11 +115,11 @@ public class ObjectFinder {
         field.setAccessible(false);
     }
 
-    private <T> T resolveObject(ResultSet rs) {
+    private <T> T getObject(ResultSet rs) {
         try {
             T result = (T) klass.newInstance();
             for (ColumnMapping columnMapping : columns) {
-                resolveField(result,
+                injectField(result,
                         klass.getField(columnMapping.getFieldName()),
                         rs.getObject(columnMapping.getColumnName()));
             }

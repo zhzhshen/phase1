@@ -6,10 +6,10 @@ import mapping.Criterion;
 
 import java.io.Serializable;
 
-public class FinderUtil {
+public class MappingUtil {
     private ConnectionConfig connectionConfig;
 
-    public FinderUtil(ConnectionConfig connectionConfig) {
+    public MappingUtil(ConnectionConfig connectionConfig) {
         this.connectionConfig = connectionConfig;
     }
 
@@ -23,6 +23,11 @@ public class FinderUtil {
 
     public <T> T get(Class<T> klass, Criterion... criteria) {
         ObjectFinder objectFinder = ObjectFinderFactory.get(klass, connectionConfig);
-        return objectFinder.resolve(criteria);
+        return objectFinder.get(criteria);
+    }
+
+    public <T> void save(T object) {
+        ObjectFinder objectFinder = ObjectFinderFactory.get(object.getClass(), connectionConfig);
+        objectFinder.save(object);
     }
 }

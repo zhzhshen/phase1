@@ -2,7 +2,7 @@ import config.ConnectionConfig;
 import migration.MigrationManager;
 import org.junit.After;
 import org.junit.Before;
-import util.FinderUtil;
+import util.MappingUtil;
 
 public class DBSetup {
     final String BASE_URL = "jdbc:mysql://localhost:3306";
@@ -11,13 +11,13 @@ public class DBSetup {
     final String PASSWORD = "mysql";
     MigrationManager migrationManager;
     ConnectionConfig connectionConfig;
-    FinderUtil finderUtil;
+    MappingUtil mappingUtil;
 
     @Before
     public void before() {
         connectionConfig = new ConnectionConfig(BASE_URL, DB_NAME, USER_NAME, PASSWORD);
         migrationManager = new MigrationManager(connectionConfig);
-        finderUtil = new FinderUtil(connectionConfig);
+        mappingUtil = new MappingUtil(connectionConfig);
         migrationManager.migrate();
     }
 

@@ -10,7 +10,7 @@ public class Criterion {
     private Serializable value;
 
     public static Criterion id(ObjectFinder objectFinder, Serializable id) {
-        return Criterion.eq(objectFinder.getId().getColumnName(), id);
+        return Criterion.eq(objectFinder.getIdColumn().getColumnName(), id);
     }
 
     public static Criterion eq(String column, Serializable value) {
