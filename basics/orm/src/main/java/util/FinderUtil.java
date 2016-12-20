@@ -1,6 +1,8 @@
 package util;
 
 import config.ConnectionConfig;
+import mapping.CriteriaBuilder;
+import mapping.Criterion;
 
 import java.io.Serializable;
 import java.sql.SQLException;

@@ -1,4 +1,6 @@
-package util;
+package mapping;
+
+import util.FinderUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

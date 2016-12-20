@@ -1,4 +1,6 @@
-package util;
+package mapping;
+
+import util.ObjectFinder;
 
 import java.io.Serializable;
 

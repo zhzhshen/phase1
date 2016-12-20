@@ -2,6 +2,7 @@ package util;
 
 import config.ConnectionConfig;
 import mapping.ColumnMapping;
+import mapping.Criterion;
 import persistence.ConnectionPool;
 
 import java.lang.reflect.Field;

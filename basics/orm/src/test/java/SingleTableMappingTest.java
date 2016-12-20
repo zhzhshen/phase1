@@ -4,7 +4,7 @@ import model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import util.Criterion;
+import mapping.Criterion;
 import util.FinderUtil;
 
 import java.sql.SQLException;
