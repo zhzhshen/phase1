@@ -1,13 +1,11 @@
 import config.ConnectionConfig;
+import mapping.Criterion;
 import migration.MigrationManager;
 import model.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import mapping.Criterion;
 import util.FinderUtil;
-
-import java.sql.SQLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -35,14 +33,14 @@ public class SingleTableMappingTest {
     }
 
     @Test
-    public void should_fail_to_find_by_inexist_id () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    public void should_fail_to_find_by_inexist_id () {
         User user = finderUtil.get(User.class, INEXIST_ID);
 
         assertThat(user, nullValue());
     }
 
     @Test
-    public void should_success_to_find_by_id () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    public void should_success_to_find_by_id () {
         User user = finderUtil.get(User.class, EXISTING_ID);
 
         assertThat(user, notNullValue());
@@ -53,15 +51,29 @@ public class SingleTableMappingTest {
     }
 
     @Test
-    public void should_fail_to_find_by_inexist_field () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    public void should_fail_to_find_by_inexist_field () {
         User user = finderUtil.from(User.class).criterion(Criterion.eq("firstName", "Zhangzhe")).get();
 
         assertThat(user, nullValue());
     }
 
     @Test
-    public void should_success_to_find_by_existing_field () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    public void should_success_to_find_by_existing_field () {
         User user = finderUtil.from(User.class).criterion(Criterion.eq("firstName", "Sid")).get();
+
+        assertThat(user, notNullValue());
+    }
+
+    @Test
+    public void should_find_by_greater_than_field_return_empty () {
+        User user = finderUtil.from(User.class).criterion(Criterion.greater("age", 25)).get();
+
+        assertThat(user, nullValue());
+    }
+
+    @Test
+    public void should_success_to_find_by_greater_than_field () {
+        User user = finderUtil.from(User.class).criterion(Criterion.greater("age", 20)).get();
 
         assertThat(user, notNullValue());
     }

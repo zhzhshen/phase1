@@ -5,7 +5,6 @@ import mapping.CriteriaBuilder;
 import mapping.Criterion;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 
 public class FinderUtil {
     private ConnectionConfig connectionConfig;
@@ -18,13 +17,11 @@ public class FinderUtil {
         return new CriteriaBuilder(this, klass);
     }
 
-    public <T> T get(Class<T> klass, Serializable id)
-            throws SQLException, IllegalAccessException, InstantiationException, NoSuchFieldException {
+    public <T> T get(Class<T> klass, Serializable id) {
         return get(klass, Criterion.id(ObjectFinderFactory.get(klass, connectionConfig), id));
     }
 
-    public <T> T get(Class<T> klass, Criterion... criteria)
-            throws IllegalAccessException, InstantiationException, SQLException, NoSuchFieldException {
+    public <T> T get(Class<T> klass, Criterion... criteria) {
         ObjectFinder objectFinder = ObjectFinderFactory.get(klass, connectionConfig);
         return objectFinder.resolve(criteria);
     }

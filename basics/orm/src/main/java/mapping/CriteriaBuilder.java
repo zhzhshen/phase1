@@ -2,7 +2,6 @@ package mapping;
 
 import util.FinderUtil;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class CriteriaBuilder {
         return this;
     }
 
-    public <T> T get() throws SQLException, NoSuchFieldException, InstantiationException, IllegalAccessException {
+    public <T> T get() {
         return (T) finderUtil.get(klass, criteria.toArray(new Criterion[criteria.size()]));
     }
 }

@@ -23,6 +23,10 @@ public class Criterion {
         return new Criterion(column, "=", value);
     }
 
+    public static Criterion greater(String column, Serializable value) {
+        return new Criterion(column, ">", value);
+    }
+
     public String build() {
         if (value instanceof String) {
             return column + relation + "'" + value + "'";
