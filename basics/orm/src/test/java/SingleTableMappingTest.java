@@ -3,7 +3,6 @@ import migration.MigrationManager;
 import model.User;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import util.Criterion;
 import util.FinderUtil;
@@ -60,7 +59,6 @@ public class SingleTableMappingTest {
         assertThat(user, nullValue());
     }
 
-    @Ignore
     @Test
     public void should_success_to_find_by_existing_field () throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
         User user = finderUtil.from(User.class).criterion(Criterion.eq("firstName", "Sid")).get();
