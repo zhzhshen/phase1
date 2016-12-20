@@ -78,6 +78,20 @@ public class SingleTableMappingTest {
         assertThat(user, notNullValue());
     }
 
+    @Test
+    public void should_find_by_less_than_field_return_empty () {
+        User user = finderUtil.from(User.class).criterion(Criterion.less("age", 20)).get();
+
+        assertThat(user, nullValue());
+    }
+
+    @Test
+    public void should_success_to_find_by_less_than_field () {
+        User user = finderUtil.from(User.class).criterion(Criterion.less("age", 25)).get();
+
+        assertThat(user, notNullValue());
+    }
+
     @After
     public void after() {
         migrationManager.clean();

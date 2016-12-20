@@ -15,6 +15,14 @@ public class Criterion {
         this.value = value;
     }
 
+    public String build() {
+        if (value instanceof String) {
+            return column + relation + "'" + value + "'";
+        } else {
+            return column + relation + value;
+        }
+    }
+
     public static Criterion id(ObjectFinder objectFinder, Serializable id) {
         return Criterion.eq(objectFinder.getId().getColumnName(), id);
     }
@@ -27,11 +35,7 @@ public class Criterion {
         return new Criterion(column, ">", value);
     }
 
-    public String build() {
-        if (value instanceof String) {
-            return column + relation + "'" + value + "'";
-        } else {
-            return column + relation + value;
-        }
+    public static Criterion less(String column, Serializable value) {
+        return new Criterion(column, "<", value);
     }
 }
