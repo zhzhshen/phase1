@@ -5,6 +5,7 @@ import mapping.CriteriaBuilder;
 import mapping.Criterion;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 
 public class MappingUtil {
     private ConnectionConfig connectionConfig;
@@ -22,12 +23,10 @@ public class MappingUtil {
     }
 
     public <T> T get(Class<T> klass, Criterion... criteria) {
-        ObjectFinder objectFinder = ObjectFinderFactory.get(klass, connectionConfig);
-        return objectFinder.get(criteria);
+        return ObjectFinderFactory.get(klass, connectionConfig).get(criteria);
     }
 
-    public <T> void save(T object) {
-        ObjectFinder objectFinder = ObjectFinderFactory.get(object.getClass(), connectionConfig);
-        objectFinder.save(object);
+    public <T> void save(T object) throws SQLException {
+        ObjectFinderFactory.get(object.getClass(), connectionConfig).save(object);
     }
 }

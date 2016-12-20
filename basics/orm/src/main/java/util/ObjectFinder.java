@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 public class ObjectFinder {
     private Class klass;
-    private ConnectionConfig connectionConfig;
     private final String tableName;
     private final List<ColumnMapping> columns;
     private ColumnMapping id;
@@ -24,7 +23,6 @@ public class ObjectFinder {
 
     public ObjectFinder(Class klass, ConnectionConfig connectionConfig, String tableName, List<ColumnMapping> columns, ColumnMapping id) {
         this.klass = klass;
-        this.connectionConfig = connectionConfig;
         this.tableName = tableName;
         this.columns = columns;
         this.id = id;
@@ -57,21 +55,9 @@ public class ObjectFinder {
         }
     }
 
-    public <T> void save(T object) {
-        try {
-            Statement stmt = connection.createStatement();
-            stmt.executeUpdate(getSQLWrite(object));
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            try {
-                assert connection != null;
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+    public <T> void save(T object) throws SQLException {
+        connection.createStatement().executeUpdate(getSQLWrite(object));
+        connection.close();
     }
 
     private String getSQLRead(Criterion... criteria) {
