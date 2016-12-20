@@ -29,4 +29,8 @@ public class MappingUtil {
     public <T> void save(T object) throws SQLException {
         ObjectFinderFactory.get(object.getClass(), connectionConfig).save(object);
     }
+
+    public <T> void update(T object) throws SQLException {
+        ObjectFinderFactory.get(object.getClass(), connectionConfig).update(object);
+    }
 }

@@ -60,6 +60,11 @@ public class ObjectFinder {
         connection.close();
     }
 
+    public <T> void update(T object) throws SQLException {
+        connection.createStatement().executeUpdate(getSQLUpdate(object));
+        connection.close();
+    }
+
     private String getSQLRead(Criterion... criteria) {
         return "SELECT " + String.join(",", columns.stream().map(ColumnMapping::getColumnName).collect(Collectors.toList()))
                 + " FROM " + tableName
@@ -87,6 +92,36 @@ public class ObjectFinder {
                         })
                         .collect(Collectors.toList()))
                 + ")";
+    }
+
+    private <T> String getSQLUpdate(T object) {
+        String idValue = getFieldValue(id, object);
+
+        return "UPDATE " + tableName
+                + " SET "
+                + String.join(",",
+                columns.stream()
+                        .filter(column -> !column.isId())
+                        .map(column -> column.getColumnName() + "=" + getFieldValue(column, object))
+                        .collect(Collectors.toList()))
+                + " WHERE "
+                + id.getColumnName() + "=" + idValue;
+    }
+
+    private <T> String getFieldValue(ColumnMapping column, T object) {
+        String value;
+        try {
+            Field field = object.getClass().getDeclaredField(column.getFieldName());
+            field.setAccessible(true);
+            if (String.class == field.getType()) {
+                value = "'" + field.get(object) + "'";
+            } else {
+                value = String.valueOf(field.get(object));
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return value;
     }
 
     private <T> void injectField(T result, Field field, Object value) {
