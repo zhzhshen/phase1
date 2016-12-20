@@ -1,3 +1,4 @@
+import config.ConnectionConfig;
 import migration.MigrationManager;
 import org.junit.After;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class MigrationTest {
 
     @Before
     public void before() throws SQLException {
-        migrationManager = new MigrationManager(BASE_URL, DB_NAME, USER_NAME, PASSWORD);
+        migrationManager = new MigrationManager(new ConnectionConfig(BASE_URL, DB_NAME, USER_NAME, PASSWORD));
     }
 
     @Test(expected = SQLException.class)
