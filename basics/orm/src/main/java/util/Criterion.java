@@ -1,10 +1,6 @@
 package util;
 
-import mapping.ColumnMapping;
-
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Criterion {
     private String column;
@@ -17,19 +13,12 @@ public class Criterion {
         this.value = value;
     }
 
-    public static Criterion eq(String column, Serializable value) {
-        return new Criterion(column, "=", value);
+    public static Criterion id(ObjectFinder objectFinder, Serializable id) {
+        return Criterion.eq(objectFinder.getId().getColumnName(), id);
     }
 
-    public static Criterion id(ObjectFinder objectFinder, Serializable id) {
-        List<ColumnMapping> ids = objectFinder.getColumns().stream()
-                .filter(column -> column.isId())
-                .collect(Collectors.toList());
-        if (ids.size() > 1) {
-            throw new RuntimeException("Class " + objectFinder.getKlass() + " have more than one columns annotated with @Id");
-        }
-        ColumnMapping idColumn = ids.get(0);
-        return Criterion.eq(idColumn.getColumnName(), id);
+    public static Criterion eq(String column, Serializable value) {
+        return new Criterion(column, "=", value);
     }
 
     public String build() {
