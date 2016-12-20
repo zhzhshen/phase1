@@ -2,6 +2,7 @@ package util;
 
 import config.ConnectionConfig;
 import mapping.ColumnMapping;
+import persistence.ConnectionPool;
 
 import java.lang.reflect.Field;
 import java.sql.*;
@@ -28,31 +29,33 @@ public class ObjectFinder {
         return id;
     }
 
-    public String generateSQL(Criterion... criteria) {
+    public <T> T resolve(Criterion... criteria) {
+        Connection connection = ConnectionPool.getConnection(connectionConfig);
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(generateSQL(criteria));
+
+            if (rs.next()) {
+                return resolveObject(rs);
+            }
+
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                assert connection != null;
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String generateSQL(Criterion... criteria) {
         return "SELECT " + String.join(",", columns.stream().map(ColumnMapping::getColumnName).collect(Collectors.toList()))
                 + " FROM " + tableName
                 + " WHERE " + String.join(",", Arrays.stream(criteria).map(Criterion::build).collect(Collectors.toList()));
-    }
-
-    public <T> T resolve(Criterion[] criteria) throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException {
-        Connection connection = DriverManager.getConnection(connectionConfig.getBaseUrl() + "/" + connectionConfig.getDBName(),
-                connectionConfig.getUserName(),
-                connectionConfig.getPassword());
-
-        Statement stmt = connection.createStatement();
-        ResultSet rs = stmt.executeQuery(generateSQL(criteria));
-
-        if (rs.next()) {
-            T result = (T) klass.newInstance();
-            for (ColumnMapping columnMapping : columns) {
-                resolveField(result,
-                        klass.getField(columnMapping.getFieldName()),
-                        rs.getObject(columnMapping.getColumnName()));
-            }
-            return result;
-        }
-
-        return null;
     }
 
     private <T> void resolveField(T result, Field field, Object value) {
@@ -65,5 +68,19 @@ public class ObjectFinder {
         }
 
         field.setAccessible(false);
+    }
+
+    private <T> T resolveObject(ResultSet rs) {
+        try {
+            T result = (T) klass.newInstance();
+            for (ColumnMapping columnMapping : columns) {
+                resolveField(result,
+                        klass.getField(columnMapping.getFieldName()),
+                        rs.getObject(columnMapping.getColumnName()));
+            }
+            return result;
+        } catch (InstantiationException | IllegalAccessException | NoSuchFieldException | SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
