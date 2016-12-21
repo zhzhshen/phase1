@@ -5,4 +5,10 @@ create table Users (
   age SMALLINT
 );
 
+create table UserInfo (
+  id varchar(100) PRIMARY KEY,
+  phone varchar(11),
+  address varchar(100)
+);
+
 INSERT INTO Users VALUES ('1', 'Sid', 'Shen', 24);

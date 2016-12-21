@@ -1,5 +1,6 @@
 package util;
 
+import annotation.OneToOne;
 import config.ConnectionConfig;
 import mapping.ColumnMapping;
 import mapping.Criterion;
@@ -20,12 +21,14 @@ public class ObjectFinder {
     private final List<ColumnMapping> columns;
     private ColumnMapping id;
     private Connection connection;
+    private ConnectionConfig connectionConfig;
 
     public ObjectFinder(Class klass, ConnectionConfig connectionConfig, String tableName, List<ColumnMapping> columns, ColumnMapping id) {
         this.klass = klass;
         this.tableName = tableName;
         this.columns = columns;
         this.id = id;
+        this.connectionConfig = connectionConfig;
         this.connection = ConnectionPool.getConnection(connectionConfig);
     }
 
@@ -56,8 +59,24 @@ public class ObjectFinder {
     }
 
     public <T> void save(T object) throws SQLException {
+        saveChildren(object);
         connection.createStatement().executeUpdate(getSQLWrite(object));
         connection.close();
+    }
+
+    private <T> void saveChildren(T object) throws SQLException {
+        List<Field> oneToOnes = Arrays.stream(object.getClass().getFields()).filter(field -> field.isAnnotationPresent(OneToOne.class)).collect(Collectors.toList());
+
+        for (Field oneToOne : oneToOnes) {
+            oneToOne.setAccessible(true);
+            Object objectToSave;
+            try {
+                objectToSave = oneToOne.get(object);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException("Cannot access to field " + klass + ":" + oneToOne.getName());
+            }
+            ObjectFinderFactory.get(objectToSave.getClass(), connectionConfig).save(objectToSave);
+        }
     }
 
     public <T> void update(T object) throws SQLException {

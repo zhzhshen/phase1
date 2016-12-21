@@ -9,5 +9,11 @@
     3. update 5[x] 20
     4. delete 5[x] 5
 2. One-to-one mapping
+	1. create record
+		1. create child record 10 [x] 34
+		2. inject saved child 10
+	2. read record 5
+	3. update record 5
+	4. delete record 5
 3. One-to-many mapping
 4. Many-to-many mapping

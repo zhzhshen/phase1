@@ -35,7 +35,9 @@ public class ObjectFinderFactory {
         List<ColumnMapping> ids = columns.stream()
                 .filter(column -> column.isId())
                 .collect(Collectors.toList());
-        if (ids.size() > 1) {
+        if (ids.size() == 0) {
+            throw new RuntimeException("Class " + klass + " have no column annotated with @Id");
+        } else if (ids.size() > 1) {
             throw new RuntimeException("Class " + klass + " have more than one columns annotated with @Id");
         }
 

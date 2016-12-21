@@ -1,9 +1,6 @@
 package model;
 
-import annotation.Column;
-import annotation.Entity;
-import annotation.Id;
-import annotation.Table;
+import annotation.*;
 
 @Entity
 @Table(name="users")
@@ -21,6 +18,9 @@ public class User {
     @Column
     public int age;
 
+    @OneToOne
+    public UserInfo userInfo;
+
     public User() {
     }
 
@@ -29,6 +29,10 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
+    }
+
+    public void info(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     @Override
