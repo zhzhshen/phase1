@@ -17,3 +17,21 @@
 	4. delete record 5
 3. One-to-many mapping
 4. Many-to-many mapping
+
+
+```
++ Entity
+	1. single entry load
+		1. id，long，int
+	  	2. field type， primitive type， char， int， long， double， string 
+	  		1. by naming convention 
+	  		2. by annotation
+	  	3. complex field aggregated values: arrays， set， list， enum
+	2. relationship loading
+		1. 1:1 ，1:n n:n， 
+		2. eager loading
+		3. lazy loading
+	3. save 
+		
++ Query 
+```
