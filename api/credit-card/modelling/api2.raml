@@ -1,0 +1,278 @@
+#%RAML 0.8
+title: credit card repayment API
+mediaType: application/json
+
+/users:
+  /{user_id}:
+    get:
+      description: |
+        user wants to view account info
+      responses:
+        200:
+          description:
+            success to view account
+        404:
+          description:
+            fail to view account
+
+    /cards:
+      get:
+        description:
+          user wants to view all cards
+        responses:
+          200:
+            description:
+              success to view all cards
+          404:
+            description:
+              fail to view all cards
+
+      /{card_id}:
+        get:
+          description:
+            user wants to view a specific card
+          responses:
+            200:
+              description:
+                success to view card
+            404:
+              description:
+                fail to view card
+
+        /contract:
+          get:
+            description:
+              user wants to view contract of a card
+            responses:
+              200:
+                description:
+                  success to view contract
+              404:
+                description:
+                  fail to view contract
+
+        /transactions:
+          get:
+            description:
+              user wants to view transactions of a card
+            responses:
+              200:
+                description:
+                  success to view transactions
+              404:
+                description:
+                  fail to view transactions
+
+          /{transaction_id}:
+            get:
+              description:
+                user wants to view a transaction
+              responses:
+                200:
+                  description:
+                    success to view transaction
+                404:
+                  description:
+                    fail to view transaction
+
+        /statements:
+          get:
+            description:
+              user wants to view all statements
+            responses:
+              200:
+                description:
+                  success to view all statements
+              404:
+                description:
+                  fail to view all statements
+
+          post:
+            description:
+              user wants to create a statement
+            responses:
+              201:
+                description:
+                  success to create statement
+              400:
+                description:
+                  fail to create statement
+              404:
+                description:
+                  fail to create statement
+
+          /{statement_id}:
+            get:
+              description:
+                user want to view a statement
+              responses:
+                200:
+                  description:
+                    success to view statement
+                404:
+                  description:
+                    fail to view statement
+
+            /repayments:
+              get:
+                description:
+                  user wants to view repayments of a card
+                responses:
+                  200:
+                    description:
+                      success to view repayments
+                  404:
+                    description:
+                      fail to view repayments
+
+              post:
+                description:
+                  user wants to create repayment
+                responses:
+                  201:
+                    description:
+                      success to create repayment
+                  400:
+                    description:
+                      fail to create repayment
+                  404:
+                    description:
+                      fail to create repayment
+
+              /{repayment_id}:
+                get:
+                  description:
+                    user wants to view a repayment
+                  responses:
+                    200:
+                      description:
+                        success to view repayment
+                    404:
+                      description:
+                        fail to view repayment
+
+            /bill:
+              get:
+                description:
+                  user wants to see the bill part of a statement
+                responses:
+                  200:
+                    description:
+                      success to view bill
+                  404:
+                    description:
+                      fail to view bill
+
+            /fine:
+              get:
+                description:
+                  user wants to see the fine part of a statement
+                responses:
+                  200:
+                    description:
+                      success to view fine
+                  404:
+                    description:
+                      fail to view fine
+
+            /interest:
+              get:
+                description:
+                  user wants to see the interest part of a statement
+                responses:
+                  200:
+                    description:
+                      success to view interest
+                  404:
+                    description:
+                      fail to view interest
+
+            /instalment:
+              get:
+                description:
+                  user wants to see the instalment part of a statement
+                responses:
+                  200:
+                    description:
+                      success to view instalment
+                  404:
+                    description:
+                      fail to view instalment
+
+            /clearing:
+              get:
+                description:
+                  user wants to see the statement clearing
+                responses:
+                  200:
+                    description:
+                      success to view clearing
+                  404:
+                    description:
+                      fail to view clearing
+
+              post:
+                description:
+                  user wants to create statement clearing
+                responses:
+                  201:
+                    description:
+                      success to create clearing
+                  400:
+                    description:
+                      fail to create clearing
+                  404:
+                    description:
+                      fail to create clearing
+
+            /instalment-contract:
+              post:
+                description:
+                  create instalment contract of a statement
+                responses:
+                  201:
+                    description:
+                      success to create instalment contract
+                  400:
+                    description:
+                      fail to create instalment contract
+                  404:
+                    description:
+                      fail to create instalment contract
+
+        /instalment-contracts:
+          get:
+            description:
+              user wants to view instalment contracts
+            responses:
+              200:
+                description: success to view contracts
+              404:
+                description: fail to view contracts
+
+          /{contract_id}:
+            get:
+              description: user wants to view a specific instalment contract
+              responses:
+                200:
+                  description: success to view contract
+                404:
+                  description: fail to view contract
+
+            /instalments:
+              get:
+                description: view instalments of an instalment contract
+                responses:
+                  200:
+                    description: success to view instalments
+                  404:
+                    description: fail to view instalments
+
+              /{instalment_id}:
+                get:
+                  description: view instalment of instalment contract
+                  responses:
+                    200:
+                      description: success to view a instalment of instalment contract
+                    404:
+                      description: fail to view a instalment of instalment contract
