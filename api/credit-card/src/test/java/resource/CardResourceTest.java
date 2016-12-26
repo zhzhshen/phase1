@@ -2,10 +2,12 @@ package resource;
 
 import com.sid.jersey.RoutesFeature;
 import com.sid.model.Card;
-import com.sid.session.Session;
 import com.sid.model.Contract;
+import com.sid.model.Transaction;
+import com.sid.session.Session;
 import com.sid.spi.repository.CardRepository;
 import com.sid.spi.repository.ContractRepository;
+import com.sid.spi.repository.TransactionRepository;
 import helper.TestData;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -40,8 +42,12 @@ public class CardResourceTest extends JerseyTest {
     @Mock
     ContractRepository contractRepository;
 
+    @Mock
+    TransactionRepository transactionRepository;
+
     Card card = new Card("1","1234567812345678", 0);
     Contract contract = new Contract("contract of card 1");
+    Transaction transaction = new Transaction(100);
 
     @Override
     protected Application configure() {
@@ -55,6 +61,7 @@ public class CardResourceTest extends JerseyTest {
                         bind(session).to(Session.class);
                         bind(cardRepository).to(CardRepository.class);
                         bind(contractRepository).to(ContractRepository.class);
+                        bind(transactionRepository).to(TransactionRepository.class);
                     }
                 });
     }
@@ -146,5 +153,27 @@ public class CardResourceTest extends JerseyTest {
 
         assertThat(response.getStatus(), is(200));
         assertThat(response.readEntity(Map.class).get("description"), is("contract of card 1"));
+    }
+
+    @Test
+    public void should_fail_to_view_transactions_of_a_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/cards/1/transactions").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_transactions_of_a_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(true);
+        when(cardRepository.findById(eq("1"))).thenReturn(card);
+        when(transactionRepository.findByCard(card)).thenReturn(Collections.singletonList(transaction));
+
+        Response response = target("/cards/1/transactions").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        Map<String, Object> transactionInfo = (Map<String, Object>) response.readEntity(List.class).get(0);
+        assertThat(transactionInfo.get("amount"), is(100.0));
     }
 }
