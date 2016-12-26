@@ -2,15 +2,15 @@ package com.sid.resource;
 
 import com.sid.jersey.Routes;
 import com.sid.model.Card;
+import com.sid.session.Session;
 import com.sid.spi.repository.CardRepository;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Map;
 
 @Path("cards")
@@ -21,6 +21,9 @@ public class CardsResource {
     @Inject
     CardRepository repository;
 
+    @Inject
+    Session session;
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(Map<String, Object> info) throws URISyntaxException {
@@ -29,5 +32,14 @@ public class CardsResource {
             return Response.status(400).build();
         }
         return Response.created(routes.card(card)).build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Card> all() {
+        if (session.validate()) {
+            return repository.findByUser(session.currentUser());
+        }
+        throw new NotFoundException();
     }
 }
