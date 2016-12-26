@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface TransactionRepository {
     List<Transaction> findByCard(Card card);
+
+    Transaction findById(String id);
 }

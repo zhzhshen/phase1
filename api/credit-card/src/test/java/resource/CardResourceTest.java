@@ -176,4 +176,26 @@ public class CardResourceTest extends JerseyTest {
         Map<String, Object> transactionInfo = (Map<String, Object>) response.readEntity(List.class).get(0);
         assertThat(transactionInfo.get("amount"), is(100.0));
     }
+
+    @Test
+    public void should_fail_to_view_transaction_of_a_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/cards/1/transactions/1").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_transaction_of_a_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(true);
+        when(cardRepository.findById(eq("1"))).thenReturn(card);
+        when(transactionRepository.findById(eq("1"))).thenReturn(transaction);
+
+        Response response = target("/cards/1/transactions/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        Map<String, Object> transactionInfo = (Map<String, Object>) response.readEntity(Map.class);
+        assertThat(transactionInfo.get("amount"), is(100.0));
+    }
 }

@@ -8,6 +8,7 @@ import com.sid.spi.repository.TransactionRepository;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -38,5 +39,13 @@ public class CardResource {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Transaction> transactions(@Context TransactionRepository transactionRepository) {
         return transactionRepository.findByCard(card);
+    }
+
+    @GET
+    @Path("transactions/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Transaction transactions(@PathParam("id") String id,
+                                    @Context TransactionRepository transactionRepository) {
+        return transactionRepository.findById(id);
     }
 }
