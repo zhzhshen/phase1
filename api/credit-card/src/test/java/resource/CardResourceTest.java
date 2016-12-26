@@ -3,7 +3,9 @@ package resource;
 import com.sid.jersey.RoutesFeature;
 import com.sid.model.Card;
 import com.sid.session.Session;
+import com.sid.model.Contract;
 import com.sid.spi.repository.CardRepository;
+import com.sid.spi.repository.ContractRepository;
 import helper.TestData;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -30,12 +32,16 @@ import static org.mockito.Mockito.when;
 
 public class CardResourceTest extends JerseyTest {
     @Mock
-    CardRepository cardRepository;
-
-    Card card = new Card("1","1234567812345678", 0);
+    Session session;
 
     @Mock
-    Session session;
+    CardRepository cardRepository;
+
+    @Mock
+    ContractRepository contractRepository;
+
+    Card card = new Card("1","1234567812345678", 0);
+    Contract contract = new Contract("contract of card 1");
 
     @Override
     protected Application configure() {
@@ -48,6 +54,7 @@ public class CardResourceTest extends JerseyTest {
                     protected void configure() {
                         bind(session).to(Session.class);
                         bind(cardRepository).to(CardRepository.class);
+                        bind(contractRepository).to(ContractRepository.class);
                     }
                 });
     }
@@ -115,5 +122,29 @@ public class CardResourceTest extends JerseyTest {
         assertThat(cardInfo.get("id"), is("1"));
         assertThat(cardInfo.get("number"), is("1234567812345678"));
         assertThat(cardInfo.get("balance"), is(0.0));
+    }
+
+
+
+
+    @Test
+    public void should_fail_to_view_contract_of_a_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/cards/1/contract").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_contract_of_a_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(true);
+        when(cardRepository.findById(eq("1"))).thenReturn(card);
+        when(contractRepository.findByCard(any())).thenReturn(contract);
+
+        Response response = target("/cards/1/contract").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        assertThat(response.readEntity(Map.class).get("description"), is("contract of card 1"));
     }
 }
