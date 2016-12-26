@@ -42,4 +42,12 @@ public class CardsResource {
         }
         throw new NotFoundException();
     }
+
+    @Path("{id}")
+    public CardResource get(@PathParam("id") String id) {
+        if (session.validate()) {
+            return new CardResource(repository.findById(id));
+        }
+        throw new NotFoundException();
+    }
 }

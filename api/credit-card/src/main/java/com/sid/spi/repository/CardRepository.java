@@ -10,4 +10,6 @@ public interface CardRepository {
     Card create(Map<String, Object> info);
 
     List<Card> findByUser(User user);
+
+    Card findById(String id);
 }

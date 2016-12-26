@@ -25,6 +25,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 public class CardResourceTest extends JerseyTest {
@@ -88,6 +89,29 @@ public class CardResourceTest extends JerseyTest {
 
         assertThat(response.getStatus(), is(200));
         Map<String, Object> cardInfo = (Map<String, Object>) response.readEntity(List.class).get(0);
+        assertThat(cardInfo.get("id"), is("1"));
+        assertThat(cardInfo.get("number"), is("1234567812345678"));
+        assertThat(cardInfo.get("balance"), is(0.0));
+    }
+
+    @Test
+    public void should_fail_to_get_a_specific_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/cards/1").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_get_a_specific_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(true);
+        when(cardRepository.findById(eq("1"))).thenReturn(card);
+
+        Response response = target("/cards/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        Map<String, Object> cardInfo = (Map<String, Object>) response.readEntity(Map.class);
         assertThat(cardInfo.get("id"), is("1"));
         assertThat(cardInfo.get("number"), is("1234567812345678"));
         assertThat(cardInfo.get("balance"), is(0.0));
