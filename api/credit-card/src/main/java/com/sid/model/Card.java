@@ -5,6 +5,9 @@ public class Card {
     private String number;
     private double balance;
 
+    public Card() {
+    }
+
     public Card(String id, String number, double balance) {
         this.id = id;
         this.number = number;

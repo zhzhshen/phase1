@@ -24,7 +24,7 @@ flyway {
             "jdbc:mysql://%s:%s/%s?user=%s&password=%s",
             System.getenv().getOrDefault("db.url.dev", "127.0.0.1"),
             System.getenv().getOrDefault("db.port.dev", "3306"),
-            System.getenv().getOrDefault("db.name.dev", "credit-card"),
+            System.getenv().getOrDefault("db.name.dev", "credit"),
             System.getenv().getOrDefault("db.user.dev", "mysql"),
             System.getenv().getOrDefault("db.password.dev", "mysql")
     )

@@ -74,7 +74,7 @@ public class CardResourceTest extends JerseyTest {
 
     @Test
     public void should_fail_to_create_a_new_card() throws URISyntaxException {
-        when(cardRepository.create(any())).thenReturn(null);
+        when(cardRepository.save(any(), any())).thenReturn(null);
 
         Response response = target("/cards").request().post(Entity.json((Map<String,Object>) TestData.CARD));
 
@@ -83,7 +83,7 @@ public class CardResourceTest extends JerseyTest {
 
     @Test
     public void should_success_to_create_card () throws URISyntaxException {
-        when(cardRepository.create(any())).thenReturn(card);
+        when(cardRepository.save(any(), any())).thenReturn(card);
 
         Response response = target("/cards").request().post(Entity.json((Map<String,Object>) TestData.CARD));
 

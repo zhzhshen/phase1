@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface CardRepository {
-    Card create(Map<String, Object> info);
+    Card save(Map<String, Object> info, User user);
 
     List<Card> findByUser(User user);
 

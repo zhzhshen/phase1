@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sid.mapper.CardMapper">
+    <select id="findById" resultType="com.sid.model.Card">
+        SELECT id, userId, number, balance from card where id = #{id}
+    </select>
+
+    <select id="findByUserId" resultType="com.sid.model.Card">
+        SELECT id, userId, number, balance from card where userId = #{userId}
+    </select>
+
+    <insert id="save">
+        insert into card(id, userId, number, balance) VALUES (#{info.id}, #{info.userId}, #{info.number}, #{info.balance})
+    </insert>
+</mapper>

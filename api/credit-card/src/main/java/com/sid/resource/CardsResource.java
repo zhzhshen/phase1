@@ -7,6 +7,7 @@ import com.sid.spi.repository.CardRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URISyntaxException;
@@ -26,8 +27,9 @@ public class CardsResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Map<String, Object> info) throws URISyntaxException {
-        Card card = repository.create(info);
+    public Response create(Map<String, Object> info,
+                           @Context Session session) throws URISyntaxException {
+        Card card = repository.save(info, session.currentUser());
         if (card == null) {
             return Response.status(400).build();
         }
