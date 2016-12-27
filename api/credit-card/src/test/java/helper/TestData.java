@@ -18,4 +18,10 @@ public class TestData {
             put("total", 200);
         }
     };
+    public static final Map<String, Object> REPAYMENT = new HashMap<String, Object>() {
+        {
+            put("statementId", "1");
+            put("amount", 100);
+        }
+    };
 }

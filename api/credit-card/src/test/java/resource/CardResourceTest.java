@@ -1,15 +1,9 @@
 package resource;
 
 import com.sid.jersey.RoutesFeature;
-import com.sid.model.Card;
-import com.sid.model.Contract;
-import com.sid.model.Statement;
-import com.sid.model.Transaction;
+import com.sid.model.*;
 import com.sid.session.Session;
-import com.sid.spi.repository.CardRepository;
-import com.sid.spi.repository.ContractRepository;
-import com.sid.spi.repository.StatementRepository;
-import com.sid.spi.repository.TransactionRepository;
+import com.sid.spi.repository.*;
 import helper.TestData;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -50,10 +44,14 @@ public class CardResourceTest extends JerseyTest {
     @Mock
     StatementRepository statementRepository;
 
+    @Mock
+    RepaymentRepository repaymentRepository;
+
     Card card = new Card("1","1234567812345678", 0);
     Contract contract = new Contract("contract of card 1");
     Transaction transaction = new Transaction(100);
     Statement statement = new Statement("1", card.getId(),2016, 12, 200);
+    Repayment repayment = new Repayment("1", statement.getId(), 100);
 
     @Override
     protected Application configure() {
@@ -69,6 +67,7 @@ public class CardResourceTest extends JerseyTest {
                         bind(contractRepository).to(ContractRepository.class);
                         bind(transactionRepository).to(TransactionRepository.class);
                         bind(statementRepository).to(StatementRepository.class);
+                        bind(repaymentRepository).to(RepaymentRepository.class);
                     }
                 });
     }
@@ -272,5 +271,39 @@ public class CardResourceTest extends JerseyTest {
         assertThat(statementInfo.get("month"), is(12));
         assertThat(statementInfo.get("year"), is(2016));
         assertThat(statementInfo.get("total"), is(200.0));
+    }
+
+    @Test
+    public void should_fail_to_view_repayments_of_statement () {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/cards/1/statements/1/repayments").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_repayments_of_statement () {
+        when(session.validate()).thenReturn(true);
+        when(cardRepository.findById(eq("1"))).thenReturn(card);
+        when(statementRepository.findByCard(eq(card))).thenReturn(Collections.singletonList(statement));
+        when(repaymentRepository.findByStatement(any())).thenReturn(Collections.singletonList(repayment));
+
+        Response response = target("/cards/1/statements/1/repayments").request().get();
+
+        assertThat(response.getStatus(), is(200));
+    }
+
+    @Test
+    public void should_success_to_create_repayment_of_statement () {
+        when(session.validate()).thenReturn(true);
+        when(cardRepository.findById(eq("1"))).thenReturn(card);
+        when(statementRepository.findById(eq("1"))).thenReturn(statement);
+        when(repaymentRepository.save(any())).thenReturn(repayment);
+
+        Response response = target("/cards/1/statements/1/repayments").request().post(Entity.json(TestData.REPAYMENT));
+
+        assertThat(response.getStatus(), is(201));
+        assertThat(response.getLocation().getPath(), is("/cards/1/statements/1/repayments/1"));
     }
 }
