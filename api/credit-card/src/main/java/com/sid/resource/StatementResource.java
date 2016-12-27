@@ -5,10 +5,7 @@ import com.sid.model.Repayment;
 import com.sid.model.Statement;
 import com.sid.spi.repository.RepaymentRepository;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -43,5 +40,13 @@ public class StatementResource {
                                     @Context RepaymentRepository repaymentRepository) {
         Repayment repayment = repaymentRepository.save(info);
         return Response.created(routes.repayment(statement, repayment)).build();
+    }
+
+    @GET
+    @Path("repayments/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Repayment repayments(@PathParam("id") String id,
+                                @Context RepaymentRepository repaymentRepository) {
+        return repaymentRepository.findById(id);
     }
 }

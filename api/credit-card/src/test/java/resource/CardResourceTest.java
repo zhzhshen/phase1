@@ -306,4 +306,28 @@ public class CardResourceTest extends JerseyTest {
         assertThat(response.getStatus(), is(201));
         assertThat(response.getLocation().getPath(), is("/cards/1/statements/1/repayments/1"));
     }
+
+    @Test
+    public void should_fail_to_view_repayment_of_statement () {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/cards/1/statements/1/repayments/1").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_repayment_of_statement () {
+        when(session.validate()).thenReturn(true);
+        when(cardRepository.findById(eq("1"))).thenReturn(card);
+        when(statementRepository.findById(eq("1"))).thenReturn(statement);
+        when(repaymentRepository.findById(eq("1"))).thenReturn(repayment);
+
+        Response response = target("/cards/1/statements/1/repayments/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        Map<String, Object> repaymentInfo = response.readEntity(Map.class);
+        assertThat(repaymentInfo.get("statementId"), is("1"));
+        assertThat(repaymentInfo.get("amount"), is(100.0));
+    }
 }

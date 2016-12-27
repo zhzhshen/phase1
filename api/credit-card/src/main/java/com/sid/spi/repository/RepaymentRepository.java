@@ -10,4 +10,6 @@ public interface RepaymentRepository {
     List<Repayment> findByStatement(Statement statement);
 
     Repayment save(Map<String, Object> info);
+
+    Repayment findById(String id);
 }
