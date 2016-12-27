@@ -18,6 +18,6 @@ public class Routes {
     }
 
     public URI statement(Statement statement) {
-        return URI.create(String.format("%sstatements/%s", baseUri, statement.getId()));
+        return URI.create(String.format("%scards/%s/statements/%s", baseUri, statement.getCardId(), statement.getId()));
     }
 }

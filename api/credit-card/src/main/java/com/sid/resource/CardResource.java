@@ -46,7 +46,7 @@ public class CardResource {
     @GET
     @Path("transactions/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Transaction transactions(@PathParam("id") String id,
+    public Transaction transaction(@PathParam("id") String id,
                                     @Context TransactionRepository transactionRepository) {
         return transactionRepository.findById(id);
     }
@@ -65,5 +65,13 @@ public class CardResource {
                                     @Context Routes routes,
                                     @Context StatementRepository statementRepository) {
         return Response.created(routes.statement(statementRepository.save(info))).build();
+    }
+
+    @GET
+    @Path("statements/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Statement statement(@PathParam("id") String id,
+                                    @Context StatementRepository statementRepository) {
+        return statementRepository.findById(id);
     }
 }

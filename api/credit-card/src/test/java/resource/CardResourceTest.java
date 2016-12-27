@@ -53,7 +53,7 @@ public class CardResourceTest extends JerseyTest {
     Card card = new Card("1","1234567812345678", 0);
     Contract contract = new Contract("contract of card 1");
     Transaction transaction = new Transaction(100);
-    Statement statement = new Statement("1",2016, 12, 200);
+    Statement statement = new Statement("1", card.getId(),2016, 12, 200);
 
     @Override
     protected Application configure() {
@@ -132,7 +132,7 @@ public class CardResourceTest extends JerseyTest {
         Response response = target("/cards/1").request().get();
 
         assertThat(response.getStatus(), is(200));
-        Map<String, Object> cardInfo = (Map<String, Object>) response.readEntity(Map.class);
+        Map<String, Object> cardInfo = response.readEntity(Map.class);
         assertThat(cardInfo.get("id"), is("1"));
         assertThat(cardInfo.get("number"), is("1234567812345678"));
         assertThat(cardInfo.get("balance"), is(0.0));
@@ -202,7 +202,7 @@ public class CardResourceTest extends JerseyTest {
         Response response = target("/cards/1/transactions/1").request().get();
 
         assertThat(response.getStatus(), is(200));
-        Map<String, Object> transactionInfo = (Map<String, Object>) response.readEntity(Map.class);
+        Map<String, Object> transactionInfo = response.readEntity(Map.class);
         assertThat(transactionInfo.get("amount"), is(100.0));
     }
 
@@ -247,6 +247,30 @@ public class CardResourceTest extends JerseyTest {
         Response response = target("/cards/1/statements").request().post(Entity.json(TestData.STATEMENT));
 
         assertThat(response.getStatus(), is(201));
-        assertThat(response.getLocation().getPath(), is("/statements/1"));
+        assertThat(response.getLocation().getPath(), is("/cards/1/statements/1"));
+    }
+
+    @Test
+    public void should_fail_to_view_statement_of_a_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(false);
+
+        Response response = target("/cards/1/statements/1").request().get();
+
+        assertThat(response.getStatus(), is(404));
+    }
+
+    @Test
+    public void should_success_to_view_statement_of_a_card() throws URISyntaxException {
+        when(session.validate()).thenReturn(true);
+        when(cardRepository.findById(eq("1"))).thenReturn(card);
+        when(statementRepository.findById(eq("1"))).thenReturn(statement);
+
+        Response response = target("/cards/1/statements/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        Map<String, Object> statementInfo = response.readEntity(Map.class);
+        assertThat(statementInfo.get("month"), is(12));
+        assertThat(statementInfo.get("year"), is(2016));
+        assertThat(statementInfo.get("total"), is(200.0));
     }
 }

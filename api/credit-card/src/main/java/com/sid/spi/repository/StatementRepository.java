@@ -10,4 +10,6 @@ public interface StatementRepository {
     List<Statement> findByCard(Card card);
 
     Statement save(Map<String, Object> info);
+
+    Statement findById(String id);
 }
