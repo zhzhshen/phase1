@@ -21,7 +21,7 @@ apply plugin: 'flyway'
 flyway {
     driver = 'com.mysql.cj.jdbc.Driver'
     url = String.format(
-            "jdbc:mysql://%s:%s/%s?user=%s&password=%s",
+            "jdbc:mysql://%s:%s/%s?user=%s&password=%s&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&createDatabaseIfNotExist=true",
             System.getenv().getOrDefault("db.url.dev", "127.0.0.1"),
             System.getenv().getOrDefault("db.port.dev", "3306"),
             System.getenv().getOrDefault("db.name.dev", "credit"),
