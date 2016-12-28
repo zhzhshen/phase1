@@ -1,0 +1,20 @@
+group 'com.sid'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile project(':core-server')
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile 'org.glassfish.jersey.core:jersey-client:2.25'
+    testCompile group: 'org.glassfish.grizzly', name: 'grizzly-http-servlet', version: '2.3.28'
+
+//    testCompile 'org.glassfish.grizzly:grizzly-http-server:2.3.28'
+
+}

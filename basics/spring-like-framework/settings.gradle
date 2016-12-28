@@ -1,2 +1,3 @@
 rootProject.name = 'spring-like-framework'
-
+include 'tests'
+include 'core-server'
